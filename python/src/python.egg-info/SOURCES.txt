@@ -1,0 +1,7 @@
+setup.py
+src/awareness/__init__.py
+src/python.egg-info/PKG-INFO
+src/python.egg-info/SOURCES.txt
+src/python.egg-info/dependency_links.txt
+src/python.egg-info/entry_points.txt
+src/python.egg-info/top_level.txt

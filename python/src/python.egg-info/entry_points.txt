@@ -1,0 +1,3 @@
+[console_scripts]
+hello_world = foo.hello:main
+
