@@ -4,3 +4,6 @@ gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 *.egg-info/
+
+cpp/
+java/
