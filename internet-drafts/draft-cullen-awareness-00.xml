@@ -115,35 +115,65 @@
                     The Version Byte is representative of the version and format of the Awareness protocol in use, and is provided to ensure that integration of future protocol versions will be possible.
                 </t>
                 <t> 
-                    The following conditions apply to the transmission of a Version Byte:
+                    The following conditions apply to transmission of the Version Byte:
                 </t>
                 <t>
-                    The following conditions apply to the reception of a Version Byte:
+                    The following conditions apply to reception of the Version Byte:
                 </t>
             </section>
             <section anchor="UnitTypeByte" title="Unit Type Byte">
                 <t>
                     The Unit Type Byte is representative of the parsing that should be enacted for the Data Bytes section of the specific Protocol Data Unit in which it occurs.
                 </t>
+                <t>
+                	The following conditions apply to transmission of the Unit Type Byte:
+                </t>
+                <t>
+                	The following conditions apply to reception of the Unit Type Byte:
+                </t>
             </section>
             <section anchor="TransmissionCauseTypeByte" title="Transmission Cause Type Byte">
                 <t>
                     The Transmission Cause Type Byte is representative of the Unit Type Byte of the Protocol Data Unit that was the cause of the sending of the Protocol Data Unit in which the Transmission Cause Type Byte occurs.
+                </t>
+                <t>
+                	The following conditions apply to transmission of the Transmission Cause Type Byte:
+                </t>
+                <t>
+                	The following conditions apply to reception of the Transmission Cause Type Byte:
                 </t>
             </section>
             <section anchor="RequestedResponseTypeByte" title="Requested Response Type Byte">
                 <t> 
                     The Requested Response Type Byte is representative of the Unit Type Byte of the Protocol Data Unit which the requesting node wishes to receive as a result of its transmission to the receiving node.
                 </t>
+                <t>
+                	The following conditions apply to transmission of the Requested Response Type Byte:
+                </t>
+                <t>
+                	The following conditions apply to reception of the Requested Response Type Byte:
+                </t>
             </section>
             <section anchor="DataLengthInteger" title="Data Length Integer">
                 <t>
                     The Data Length Integer is a 64-bit unsigned integer representative of the number of bytes to be sent in the following Data Bytes section of the Protocol Data Unit in which it occurs.
                 </t>
+                <t>
+                	The following conditions apply to transmission of the Data Length Integer:
+                </t>
+                <t>
+                	The following conditions apply to reception of the Data Length Integer:
+                </t>
             </section>
             <section anchor="DataBytes" title="Data Bytes">
                 <t>
                     The Data Bytes section is a flexible representation of the meaningful information transmitted by a Protocol Data Unit.
+                </t>
+                <t>
+                	The following conditions apply to transmission of the Data Bytes:
+                </t>
+                <t>
+                	The following conditions apply to reception of the Data Bytes:
                 </t>
             </section>
         </section>
@@ -153,7 +183,10 @@
                     A Unit Type Byte equal to 0x00 specifies that the Data Bytes contained in the unit conform to the format of the Nothing Type.
                 </t>
                 <t>
-                    A Protocol Data Unit having a Unit Type Byte equal to 0x00 MAY be transmitted only if:
+                    The following conditions apply to transmission of a Nothing Type PDU:
+                </t>
+                <t>
+                	The following conditions apply to reception of a Nothing Type PDU:
                 </t>
             </section>
             <section anchor="SearchCategory" title="Search Category of Types">
