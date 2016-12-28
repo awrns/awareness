@@ -1,9 +1,12 @@
 .gradle
+gradle/
 build/
 gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 *.egg-info/
+activate
+pinned.txt
 
 cpp/
 java/
