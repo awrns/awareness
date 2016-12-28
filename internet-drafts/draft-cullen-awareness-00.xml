@@ -89,8 +89,11 @@
     		<section anchor="Node" title="Node">
     			<t>
     				A Node is a unit of network-connected functionality, which contains variable-length lists of Functions, Endpoints, Algorithms, and Assemblies. It maintains, through its list of Functions, one or more network-accessible operations on data. Through its list of Endpoints it stores information which can be used to contact other known Nodes over the network. Its Algorithms each manage a recursive search operation being performed over the Endpoints with which the Node is in contact, and its Assemblies store known pipelines of network-accessible data processing derived from such recursive search operations.
+    			</t>
        		</section>
         	<section anchor="Function" title="Function">
+        		<t>
+        			A Function is representative of one network-accessible operation on data. A Function takes data as input, modifies its state as the data is processed, and provides data as output. Each of the three uses of data (input, state, and output) necessary within a Function is manipulated as an Item with a specific number of parameters. Therefore, a given Function has a unchanging input data 'size' (number of Item parameters), an unchanging state data 'size', and an unchanging output data 'size'. A Function provides the ability for state data to be read or written, and for input data to be provided in exchange for output data. It is expected that Functions use state data as a mechanism for recurrent processing, where output is not only derived from input but also from a previous state.
         	</section>
         	<section anchor="Endpoint" title="Endpoint">
        		</section>
