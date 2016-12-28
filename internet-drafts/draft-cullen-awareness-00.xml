@@ -103,7 +103,7 @@
        		</section>
         	<section anchor="Algorithm" title="Algorithm">
         		<t>
-        			An Algorithm provides the recursive search method that is described in more detail in the Processing Analysis section. In summary, it is provided with a Set for which a suitable Assembly must be created (that as closely as possible models the Items of the Set). 
+        			An Algorithm provides the recursive search method that is described in more detail in the Processing Analysis section. In summary, it is provided with a Set for which a suitable Assembly must be created (that as closely as possible models the inputs, states, and outputs of the Items of the Set) and a time limit within which the process must be completed. The Algorithm will begin by issuing requests to each of the Endpoints (and therefore other Nodes) known by the Node containing it to create a new Algorithm within themselves that 
         		</t>
         	</section>
         	<section anchor="Assembly" title="Assembly">
