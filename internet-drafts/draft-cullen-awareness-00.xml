@@ -61,36 +61,34 @@
       </t>
     </section>
     <section anchor="SystemArchitecture" title="System Architecture">
-        <section anchor="BlockStructure" title="Block Structure">
-            <section anchor="Node" title="Node">
-            </section>
-            <section anchor="Function" title="Function">
-            </section>
-            <section anchor="Directory" title="Directory">
-            </section>
-            <section anchor="Assembly" title="Assembly">
-            </section>
+
+    	<section anchor="DataRepresentation" title="Data Representation">
+        	<section anchor="Item" title="Item">
+        	</section>
+        	<section anchor="Set" title="Item">
+        	</section>
         </section>
-        <section anchor="DataRepresentation" title="Data Representation">
-            <section anchor="Item" title="Item">
-            </section>
-            <section anchor="Set" title="Set">
-            </section>
+
+    	<section anchor="BlockStrucutre" title="Block Structure">
+    		<section anchor="Node" title="Node">
+       		</section>
+        	<section anchor="Function" title="Function">
+        	</section>
+        	<section anchor="Endpoint" title="Endpoint">
+       		</section>
+        	<section anchor="Algorithm" title="Algorithm">
+        	</section>
+        	<section anchor="Assembly" title="Assembly">
+        	</section>
+    	</section>
+
+    	<section anchor="AdditionalFunctionality" title="Additional Functionality">
+        	<section anchor="Protocol" title="Protocol">
+        	</section>
+        	<section anchor="Fabricator" title="Fabricator">
+        	</section>
         </section>
-        <section anchor="NetworkConfiguration" title="Network Configuration">
-            <section anchor="Client" title="Client">
-            </section>
-            <section anchor="Server" title="Server">
-            </section>
-            <section anchor="Protocol" title="Protocol">
-            </section>
-        </section>
-        <section anchor="AsynchronousBehavior" title="Asynchronous Behavior">
-            <section anchor="Algorithm" title="Algorithm">
-            </section>
-            <section anchor="Fabricator" title="Fabricator">
-            </section>
-        </section>
+
     </section>
     <section anchor="ProcessingAnalysis" title="Processing Analysis">
     </section>
@@ -131,6 +129,7 @@
             <section anchor="TransmissionCauseTypeByte" title="Transmission Cause Type Byte">
                 <t>
                     The Transmission Cause Type Byte is representative of the Unit Type Byte of the Protocol Data Unit that was the cause of the sending of the Protocol Data Unit in which the Transmission Cause Type Byte occurs.
+                </t>
             </section>
             <section anchor="RequestedResponseTypeByte" title="Requested Response Type Byte">
                 <t> 
