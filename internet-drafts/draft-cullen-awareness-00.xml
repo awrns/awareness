@@ -62,15 +62,33 @@
     </section>
     <section anchor="SystemArchitecture" title="System Architecture">
 
+    	<t>
+    		This section overviews the structures and units of processing used in Awareness, and describes the features of each and their contribution to the entire functionality-distribution network.
+    	</t>
+
+
     	<section anchor="DataRepresentation" title="Data Representation">
         	<section anchor="Item" title="Item">
+        		<t>
+        			The concept of Awareness is based on a very simple representation of data where each of the multiple parameters comprising a data point is stored as a floating-point value between 0.0 and 1.0, inclusive. A single data point, or item, is an array of one or more of these parameters. A data item's parameters carry meaning by their order, and are implicitly numerically indexed. Data items used for a specific purpose always maintain their parameter content and meaning (the number of parameters nor the parameter order does not change). Data items' parameters have 64-bit (double) precision. Although initially it might seem difficult to encode non-numeric data in such a representation, the practice of exclusively allowing a numerical representation makes data easier to be computationally understood by means of machine learning.
+        		</t>
         	</section>
-        	<section anchor="Set" title="Item">
+        	<section anchor="Set" title="Set">
+        		<t>
+        			It is often necessary to store and manipulate collections of data points, which are known as Sets. A Set simply consists of one or more Items, which are ordered and carry meaning by their order similarly to parameters within an Item. Within a Set, all Items always contain parameter arrays of equal length.
+        		</t>
         	</section>
         </section>
 
     	<section anchor="BlockStrucutre" title="Block Structure">
+
+    		<t>
+    			This section describes the abstractions used in an implementation of Awareness over a network.
+    		</t>
+
     		<section anchor="Node" title="Node">
+    			<t>
+    				A Node is a unit of network-connected functionality, which contains variable-length lists of Functions, Endpoints, Algorithms, and Assemblies. It maintains, through its list of Functions, one or more network-accessible operations on data. Through its list of Endpoints it stores information which can be used to contact other known Nodes over the network. Its Algorithms each manage a recursive search operation being performed over the Endpoints with which the Node is in contact, and its Assemblies store known pipelines of network-accessible data processing derived from such recursive search operations.
        		</section>
         	<section anchor="Function" title="Function">
         	</section>
@@ -296,8 +314,26 @@
                 	</t>
                 </section>
                 <section anchor="NonsenseUnit" title="Nonsense Unit">
+                	<t>
+                		A Unit Type Byte equal to 0x10 specifies that the PDU in which it is received is of the Nonsense Unit type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of a Nonsense Unit PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of a Nonsense Unit PDU:
+                	</t>
                 </section>
                 <section anchor="NonsenseData" title="Nonsense Data">
+                	<t>
+                		A Unit Type Byte equal to 0x11 specifies that the PDU in which it is received is of the Nonsense Data type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of a Nonsense Data PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of a Nonsense Data PDU:
+                	</t>
                 </section>
             </section>
         </section>
