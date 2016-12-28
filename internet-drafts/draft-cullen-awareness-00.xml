@@ -10,7 +10,7 @@
 <?rfc strict="yes" ?> <!-- give errors regarding ID-nits and DTD validation -->
 <!-- control the table of contents (ToC): -->
 <?rfc toc="yes"?> <!-- generate a ToC -->
-<?rfc tocdepth="4"?> <!-- the number of levels of subsections in ToC. default: 3 -->
+<?rfc tocdepth="3"?> <!-- the number of levels of subsections in ToC. default: 3 -->
 <!-- control references: -->
 <?rfc symrefs="yes"?> <!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
 <?rfc sortrefs="yes" ?> <!-- sort the reference entries alphabetically -->
