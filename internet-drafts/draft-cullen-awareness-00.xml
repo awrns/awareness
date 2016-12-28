@@ -94,10 +94,12 @@
         	<section anchor="Function" title="Function">
         		<t>
         			A Function is representative of one locally-implemented, but network-accessible operation on data. A Function takes data as input, modifies its state as the data is processed, and provides data as output. Each of the three uses of data (input, state, and output) necessary within a Function is manipulated as an Item with a specific number of parameters. Therefore, a given Function has a unchanging input data 'size' (number of Item parameters), an unchanging state data 'size', and an unchanging output data 'size'. A Function provides the ability for state data to be read or written, and for input data to be provided in exchange for output data. It is expected that Functions use state data as a mechanism for recurrent processing, where output is not only derived from input but also from a previous state.
+        		</t>
         	</section>
         	<section anchor="Endpoint" title="Endpoint">
         		<t>
         			An Endpoint is very similar in operation to a Function, with the exception that it refers to a Function accessible over the network rather than implemented locally. However, it also provides the same ability for state data to be read or written, and for input data to be exchanged for output data. In this way an Endpoint additionally serves the purpose of a network client, and as such must also store the IP address and port at which the remote Node to which it refers can be accessed. Finally, an Endpoint provides the ability to be connected or disconnected to the remote Node.
+        		</t>
        		</section>
         	<section anchor="Algorithm" title="Algorithm">
         		
