@@ -75,7 +75,7 @@
         	</section>
         	<section anchor="Set" title="Set">
         		<t>
-        			It is often necessary to store and manipulate collections of data points, which are known as Sets. A Set simply consists of one or more Items, which are ordered and carry meaning by their order similarly to parameters within an Item. Within a Set, all Items always contain parameter arrays of equal length.
+        			It is often necessary to store and manipulate collections of data points, which are known as Sets. A Set provides the structure necessary to encode the input, state, and output of a Function over multiple iterations, and additionally can be used to model a new Function. It consists of three 'streams' of Items - one for input, one for state, and one for output. Within one stream, the number of parameters present in each Item contained in the stream must be equal. For example, a Set might have input Items all containing 4 parameters, state Items all containing 2 parameters, and output Items all containing 1 parameter. The number of Items contained in all three streams in a Set will be equal.
         		</t>
         	</section>
         </section>
@@ -102,8 +102,9 @@
         		</t>
        		</section>
         	<section anchor="Algorithm" title="Algorithm">
-        		
-
+        		<t>
+        			An Algorithm provides the recursive search method that is described in more detail in the Processing Analysis section. In summary, it is provided with a Set for which a suitable Assembly must be created (that as closely as possible models the Items of the Set). 
+        		</t>
         	</section>
         	<section anchor="Assembly" title="Assembly">
         	</section>
