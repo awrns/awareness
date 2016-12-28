@@ -178,41 +178,122 @@
             </section>
         </section>
         <section anchor="DataUnitTypes" title="Data Unit Types">
-            <section anchor="NothingType" title="Nothing Type">
+            <section anchor="Nothing" title="Nothing">
                 <t>
-                    A Unit Type Byte equal to 0x00 specifies that the Data Bytes contained in the unit conform to the format of the Nothing Type.
+                    A Unit Type Byte equal to 0x00 specifies that the PDU in which it is received is of the Nothing type.
                 </t>
                 <t>
-                    The following conditions apply to transmission of a Nothing Type PDU:
+                    The following conditions apply to transmission of a Nothing PDU:
                 </t>
                 <t>
-                	The following conditions apply to reception of a Nothing Type PDU:
+                	The following conditions apply to reception of a Nothing PDU:
                 </t>
             </section>
             <section anchor="SearchCategory" title="Search Category of Types">
                 <section anchor="LocalSearch" title="Local Search">
+                	<t>
+                		A Unit Type Byte equal to 0x01 specifies that the PDU in which it is received is of the Local Search type.
+                	</t>
+                	<t>
+                		The following conditions apply to transmission of a Local Search PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to reception of a Local Search PDU:
+                	</t>
                 </section>
                 <section anchor="PropagatingSearch" title="Propagating Search">
+                	<t>
+                		A Unit Type Byte equal to 0x02 specifies that the PDU in which it is received is of the Propagating Search type.
+                	</t>
+                	<t>
+                		The following conditions apply to transmission of a Propagating Search PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to reception of a Propagating Search PDU:
+                	</t>
                 </section>
                 <section anchor="SearchStatus" title="Search Status">
+                	<t>
+                		A Unit Type Byte equal to 0x03 specifies that the PDU in which it is received is of the Search Status type.
+                	</t>
+                	<t>
+                		The following conditions apply to transmission of a Search Status PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to reception of a Search Status PDU:
+                	</t>
                 </section>
             </section>
             <section anchor="ProcessCategory" title="Process Category of Types">
                 <section anchor="DataProcess" title="Data Process">
+                	<t>
+                		A Unit Type Byte equal to 0x04 specifies that the PDU in which it is received is of the Data Process type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of a Data Process PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of a Data Process PDU:
+                	</t>
                 </section>
                 <section anchor="ProcessStatus" title="Process Status">
+                	<t>
+                		A Unit Type Byte equal to 0x05 specifies that the PDU in which it is received is of the Process Status type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of a Process Status PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of a Process Status PDU:
+                	</t>
                 </section>
             </section>
             <section anchor="PrimitiveCategory" title="Primitive Category of Types">
                 <section anchor="ItemTransfer" title="Item Transfer">
+                	<t>
+                		A Unit Type Byte equal to 0x06 specifies that the PDU in which it is received is of the Item Transfer type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of an Item Transfer PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of an Item Transfer PDU:
+                	</t>
                 </section>
                 <section anchor="SetTransfer" title="Set Transfer">
+                	<t>
+                		A Unit Type Byte equal to 0x07 specifies that the PDU in which it is received is of the Set Transfer type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of a Set Transfer PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of a Set Transfer PDU:
+                	</t>
                 </section>
                 <section anchor="AssemblyTransfer" title="Assembly Transfer">
+                	<t>
+                		A Unit Type Byte equal to 0x08 specifies that the PDU in which it is received is of the Assembly Transfer type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of an Assembly Transfer PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of an Assembly Tranfer PDU:
+                	</t>
                 </section>
             </section>
             <section anchor="ErrorCategory" title="Error Category of Types">
                 <section anchor="UnfulfillableRequest" title="Unfulfillable Request">
+                	<t>
+                		A Unit Type Byte equal to 0x09 specifies that the PDU in which it is received is of the Unfulfillable Request type.
+                	</t>
+                	<t>
+                		The following conditions apply to the transmission of an Unfulfillable Request PDU:
+                	</t>
+                	<t>
+                		The following conditions apply to the reception of an Unfulfillable Request PDU:
+                	</t>
                 </section>
                 <section anchor="NonsenseUnit" title="Nonsense Unit">
                 </section>
