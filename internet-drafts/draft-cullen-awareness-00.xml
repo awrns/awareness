@@ -122,14 +122,13 @@
     </section>
     <section anchor="ProtocolVocabulary" title="Protocol Vocabulary">
         <section anchor="ProtocolDataUnit" title="Protocol Data Unit">
-            <t>
-            </t>
+
             <texttable anchor="ProtocolDataUnitFormat" title="Protocol Data Unit Format">
                 <ttcol align='center'>1B</ttcol>
                 <ttcol align='center'>1B</ttcol>
                 <ttcol align='center'>1B</ttcol>
                 <ttcol align='center'>1B</ttcol>
-                <ttcol align='center'>8B</ttcol>
+                <ttcol align='center'>8B (64bit) unsigned integer</ttcol>
                 <ttcol align='center'>(varies)</ttcol>
                 <c>Version Byte</c>
                 <c>Unit Type Byte</c>
@@ -208,7 +207,7 @@
         <section anchor="DataUnitTypes" title="Data Unit Types">
             <section anchor="Nothing" title="Nothing">
                 <t>
-                    A Unit Type Byte equal to 0x00 specifies that the PDU in which it is received is of the Nothing type.
+                    A Unit Type Byte equal to 0x00 specifies that the PDU in which it is received is of the Nothing type. A Nothing PDU's Data Bytes section contains no data.
                 </t>
                 <t>
                     The following conditions apply to transmission of a Nothing PDU:
@@ -222,6 +221,12 @@
                 	<t>
                 		A Unit Type Byte equal to 0x01 specifies that the PDU in which it is received is of the Local Search type.
                 	</t>
+                	<texttable anchor="DataBytesFormatfortheLocalSearchPDU" title="Data Bytes Format for the Local Search PDU">
+                		<ttcol align='center'>1B</ttcol>
+                		<ttcol align='center'>4B (32bit) unsigned integer</ttcol>
+                		<c>Depth Limit</c>
+                		<c>Timeout Milliseconds</c>
+            		</texttable>
                 	<t>
                 		The following conditions apply to transmission of a Local Search PDU:
                 	</t>
