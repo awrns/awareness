@@ -11,4 +11,4 @@ test:
 
 general:
   artifacts:
-    - "python/build"
+    - "python/build/distributions"
