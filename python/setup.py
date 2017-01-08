@@ -137,15 +137,15 @@ class GradleDistribution(Distribution, object):
         except IOError:
             raise StopIteration
 
-setup(
-    distclass=GradleDistribution,
-    package_dir={'': 'src'},
-    packages=find_packages('src'),
-    include_package_data=True,
-
-    entry_points={
-        'console_scripts': [
-            'hello_world = foo.hello:main',
-        ],
-    }
-)
+#setup(
+#    distclass=GradleDistribution,
+#    package_dir={'': 'src'},
+#    packages=find_packages('src'),
+#    include_package_data=True,
+#
+#    entry_points={
+#        'console_scripts': [
+#            'hello_world = foo.hello:main',
+#        ],
+#    }
+#)
