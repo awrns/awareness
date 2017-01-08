@@ -1,1 +1,3 @@
 include 'python'
+
+project(":python").name = "awareness-python"
