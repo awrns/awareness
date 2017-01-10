@@ -1,4 +1,3 @@
-import awareness
 
-def test_basic():
-    assert True
+def test_import():
+    import awareness
