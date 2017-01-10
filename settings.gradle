@@ -1,4 +1,3 @@
 include 'python'
 
-project(":python").group = "python"
 project(":python").name = "awareness"
