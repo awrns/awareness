@@ -10,3 +10,7 @@ test:
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+machine:
+  environment:
+    AWRNS_PYTHON_ARTIFACT: awareness-python-0.1.0.tar.gz
