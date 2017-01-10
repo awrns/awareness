@@ -1,8 +1,10 @@
 .gradle
+.cache
 build/
 gradle-app.setting
 .gradletasknamecache
 *.egg-info/
+*.pyc
 activate
 pinned.txt
 
