@@ -1,8 +1,9 @@
 plugins {
     id "com.linkedin.python-sdist" version "0.3.36"
+    id "com.palantir.git-version" version "0.5.3"
 }
 
-version="0.1.0"
+version gitVersion()
 
 repositories {
     pyGradlePyPi()
