@@ -1,8 +1,25 @@
-from ABC import ABCMeta
+from abc import ABCMeta, abstractproperty, abstractmethod
 
 class Endpoint:
     __metaclass__ = ABCMeta
 
-class LocalEndpoint(Endpoint): pass
+    @abstractproperty
+    def address(self): pass
 
-class RemoteEndpoint(Endpoint): pass
+    @abstractproperty
+    def abilities(self): pass
+
+
+class LocalEndpoint(Endpoint):
+
+    address = ""
+    abilities = []
+    algorithms = []
+    remoteEndpoints = []
+    assemblies = []
+
+
+class RemoteEndpoint(Endpoint):
+
+    address = ""
+    abilities = []
