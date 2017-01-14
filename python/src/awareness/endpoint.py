@@ -9,6 +9,20 @@ class Endpoint:
     @abstractproperty
     def abilities(self): pass
 
+    @abstractmethod
+    def getAcceptableData(self): pass
+
+    @abstractmethod
+    def localSearch(self): pass
+
+    @abstractmethod
+    def propagatingSearch(self): pass
+
+    @abstractmethod
+    def dataProcess(self): pass
+
+
+
 
 class LocalEndpoint(Endpoint):
 
