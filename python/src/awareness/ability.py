@@ -1,10 +1,14 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
+import endpoint
+import data
+import backend
+import protocol
 
 class Ability:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def endpoint(self): pass
+    def container(self): pass
 
     @abstractproperty
     def inputs(self): pass
@@ -19,14 +23,14 @@ class Ability:
 
 class LocalAbility(Ability):
 
-    endpoint = None
+    container = None
 
     inputs = 0
     outputs = 0
 
 class RemoteAbility(Ability):
 
-    endpoint = None
+    container = None
 
     inputs = 0
     outputs = 0
