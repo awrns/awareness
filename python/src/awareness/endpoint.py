@@ -9,8 +9,6 @@ class Endpoint:
     @abstractproperty
     def abilities(self): pass
 
-    @abstractmethod
-    def getAcceptableData(self): pass
 
     @abstractmethod
     def localSearch(self): pass
@@ -18,19 +16,22 @@ class Endpoint:
     @abstractmethod
     def propagatingSearch(self): pass
 
+
     @abstractmethod
-    def dataProcess(self): pass
+    def getAcceptableData(self): pass
 
-
+    @abstractmethod
+    def processData(self): pass
 
 
 class LocalEndpoint(Endpoint):
 
     address = ""
     abilities = []
-    algorithms = []
-    remoteEndpoints = []
     assemblies = []
+
+
+    remoteEndpoints = []
 
 
 class RemoteEndpoint(Endpoint):
