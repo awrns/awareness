@@ -1,7 +1,8 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import endpoint
-import data
+import algorithm
 import backend
+import data
+import endpoint
 import protocol
 
 class Ability:
