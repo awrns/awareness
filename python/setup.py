@@ -150,6 +150,6 @@ setup(
     author_email='aedancullen@gmail.com',
     url='https://github.com/awrns/awareness',
     #download_url
-    keywords = ['network', 'learning', 'distribution', 'processing', 'transfer'],
+    keywords = ['functionality', 'distribution', 'network', 'learning', 'processing', 'transfer'],
     classifiers = [],
 )
