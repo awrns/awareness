@@ -17,6 +17,8 @@ class Ability:
     @abstractproperty
     def outputs(self): pass
 
+    @abstractproperty
+    def state(self): pass
 
     @abstractmethod
     def process(self): pass

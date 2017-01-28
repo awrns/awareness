@@ -14,7 +14,7 @@ class Endpoint:
 
     @abstractproperty
     def abilities(self): pass
-
+    
 
     @abstractmethod
     def localSearch(self): pass

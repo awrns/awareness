@@ -15,4 +15,8 @@ class DataUnit:
     def __init__(self): pass
 
     @abstractmethod
+    def deserialize(self): pass
+
+    @abstractmethod
     def serialize(self): pass
+
