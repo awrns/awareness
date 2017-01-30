@@ -13,9 +13,16 @@ class Item:
     @abstractproperty
     def outputs(self): pass
 
+
+    @abstractmethod
+    def similarity(self): pass
+
 class Set:
 
     @abstractproperty
     def items(self): pass
+
+    @abstractmethod
+    def similarity(self): pass
 
 class Assembly: pass
