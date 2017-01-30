@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import ability
-import algorithm
-import backend
-import data
-import endpoint
+import ability as i_ability
+import algorithm as i_algorithm
+import backend as i_backend
+import data as i_data
+import endpoint as i_endpoint
 
 class DataUnit:
     __metaclass__ = ABCMeta

@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import ability
-import algorithm
-import backend
-import data
-import protocol
+import ability as i_ability
+import algorithm as i_algorithm
+import backend as i_backend
+import data as i_data
+import protocol as i_protocol
 
 
 class Endpoint:
@@ -32,6 +32,10 @@ class Endpoint:
 
 class LocalEndpoint(Endpoint):
 
+    algorithm = None
+    backend = None
+    protocol = None
+
     address = ""
     abilities = []
     assemblies = []
@@ -42,8 +46,22 @@ class LocalEndpoint(Endpoint):
     remoteEndpoints = []
 
 
-    def __init__(self, address, abilities = [], assemblies = [], algorithms = [], remoteEndpoints = []):
+    def __init__(
+        self,
+        address,
+        algorithm = i_algorithm.Algorithm,
+        backend = i_backend.NativeBackend,
+        protocol = i_protocol.Protocol0,
+        abilities = [],
+        assemblies = [],
+        algorithms = [],
+        remoteEndpoints = []
+    ):
+
         self.address = address
+        self.algorithm = algorithm
+        self.backend = backend
+        self.protocol = protocol
         self.abilities = abilities
         self.assemblies = assemblies
         self.algorithms = algorithms
@@ -51,13 +69,15 @@ class LocalEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        search = algorithm.LocalSearch(callback, self.abilities, set, time)
+        search = self.algorithm.LocalSearch(self, set, time)
         self.algorithms.append(search)
+        self.backend.async(search.run(callback))
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        search = algorithm.PropagatingSearch(callback, self.abilities, set, depth, time)
+        search = self.algorithm.PropagatingSearch(self, set, depth, time)
         self.algorithms.append(search)
+        self.backend.async(search.run(callback))
 
 
     def getAcceptableData(self):

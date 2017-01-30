@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import ability
-import algorithm
-import backend
-import endpoint
-import protocol
+import ability as i_ability
+import algorithm as i_algorithm
+import backend as i_backend
+import endpoint as i_endpoint
+import protocol as i_protocol
 
 class Item:
 
