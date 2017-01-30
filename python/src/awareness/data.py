@@ -8,21 +8,27 @@ import protocol as i_protocol
 class Item:
 
     @abstractproperty
-    def inputs(self): pass
+    def inputs(self):
+        pass
 
     @abstractproperty
-    def outputs(self): pass
+    def outputs(self):
+        pass
 
 
     @abstractmethod
-    def similarity(self): pass
+    def similarity(self):
+        pass
 
 class Set:
 
     @abstractproperty
-    def items(self): pass
+    def items(self):
+        pass
 
     @abstractmethod
-    def similarity(self): pass
+    def similarity(self):
+        pass
 
-class Assembly: pass
+class Assembly:
+    pass

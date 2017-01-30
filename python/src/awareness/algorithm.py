@@ -8,9 +8,11 @@ import protocol as i_protocol
 class Algorithm:
     
     @abstractmethod
-    def __init__(self): pass
+    def __init__(self):
+        pass
 
     @abstractmethod
-    def run(self): pass
+    def run(self):
+        pass
 
 

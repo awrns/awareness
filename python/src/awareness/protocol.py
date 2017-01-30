@@ -9,14 +9,18 @@ class DataUnit:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def struct(self): pass
+    def struct(self):
+        pass
 
     @abstractmethod
-    def __init__(self): pass
+    def __init__(self):
+        pass
 
     @abstractmethod
-    def deserialize(self): pass
+    def deserialize(self):
+        pass
 
     @abstractmethod
-    def serialize(self): pass
+    def serialize(self):
+        pass
 

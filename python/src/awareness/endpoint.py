@@ -10,24 +10,30 @@ class Endpoint:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def address(self): pass
+    def address(self):
+        pass
 
     @abstractproperty
-    def abilities(self): pass
+    def abilities(self):
+        pass
     
 
     @abstractmethod
-    def localSearch(self): pass
+    def localSearch(self):
+        pass
 
     @abstractmethod
-    def propagatingSearch(self): pass
+    def propagatingSearch(self):
+        pass
 
 
     @abstractmethod
-    def getAcceptableData(self): pass
+    def getAcceptableData(self):
+        pass
 
     @abstractmethod
-    def processData(self): pass
+    def processData(self):
+        pass
 
 
 class LocalEndpoint(Endpoint):
@@ -69,13 +75,13 @@ class LocalEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        search = self.algorithm.LocalSearch(self, set, time)
+        search = self.algorithm.LocalSearch(self.algorithms, set, time)
         self.algorithms.append(search)
         self.backend.async(search.run(callback))
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        search = self.algorithm.PropagatingSearch(self, set, depth, time)
+        search = self.algorithm.PropagatingSearch(self.algorithms, set, depth, time)
         self.algorithms.append(search)
         self.backend.async(search.run(callback))
 
