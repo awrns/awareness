@@ -38,8 +38,6 @@ class Endpoint:
 
 class LocalEndpoint(Endpoint):
 
-    server = None
-
     algorithm = None
     backend = None
     protocol = None
