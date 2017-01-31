@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import algorithm
-import backend
-import data
-import endpoint
-import protocol
+import algorithm as i_algorithm
+import backend as i_backend
+import data as i_data
+import endpoint as i_endpoint
+import protocol as i_protocol
 
 class Ability:
     __metaclass__ = ABCMeta

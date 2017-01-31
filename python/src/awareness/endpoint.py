@@ -38,6 +38,8 @@ class Endpoint:
 
 class LocalEndpoint(Endpoint):
 
+    server = None
+
     algorithm = None
     backend = None
     protocol = None
@@ -46,8 +48,6 @@ class LocalEndpoint(Endpoint):
     abilities = []
     assemblies = []
 
-    algorithms = []
-
 
     remoteEndpoints = []
 
@@ -55,35 +55,29 @@ class LocalEndpoint(Endpoint):
     def __init__(
         self,
         address,
-        algorithm = i_algorithm.Algorithm,
+        algorithm = i_algorithm.DefaultAlgorithm,
         backend = i_backend.NativeBackend,
         protocol = i_protocol.Protocol0,
         abilities = [],
         assemblies = [],
-        algorithms = [],
         remoteEndpoints = []
     ):
 
         self.address = address
-        self.algorithm = algorithm
-        self.backend = backend
-        self.protocol = protocol
+        self.algorithm = algorithm()
+        self.backend = backend()
+        self.protocol = protocol()
         self.abilities = abilities
         self.assemblies = assemblies
-        self.algorithms = algorithms
         self.remoteEndpoints = remoteEndpoints
 
 
     def localSearch(self, callback, set, time):
-        search = self.algorithm.LocalSearch(self.algorithms, set, time)
-        self.algorithms.append(search)
-        self.backend.async(search.run(callback))
+        self.backend.async(self.algorithm.localSearch(callback, set, time))
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        search = self.algorithm.PropagatingSearch(self.algorithms, set, depth, time)
-        self.algorithms.append(search)
-        self.backend.async(search.run(callback))
+        self.backend.async(self.algorithm.localSearch(callback, set, depth, time))
 
 
     def getAcceptableData(self):

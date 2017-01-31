@@ -1,5 +1,6 @@
-import ability
-import algorithm
-import data
-import endpoint
-import protocol
+from abc import ABCMeta, abstractproperty, abstractmethod
+import ability as i_ability
+import algorithm as i_algorithm
+import data as i_data
+import endpoint as i_endpoint
+import protocol as i_protocol
