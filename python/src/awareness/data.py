@@ -5,6 +5,7 @@ import backend as i_backend
 import endpoint as i_endpoint
 import protocol as i_protocol
 
+
 class Item:
 
     @abstractproperty
@@ -19,6 +20,7 @@ class Item:
     @abstractmethod
     def similarity(self):
         pass
+
 
 class Set:
 

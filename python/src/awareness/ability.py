@@ -5,6 +5,7 @@ import data as i_data
 import endpoint as i_endpoint
 import protocol as i_protocol
 
+
 class Ability:
     __metaclass__ = ABCMeta
 
@@ -30,6 +31,7 @@ class LocalAbility(Ability):
 
     inputs = 0
     outputs = 0
+
 
 class RemoteAbility(Ability):
 
