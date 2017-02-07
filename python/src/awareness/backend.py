@@ -13,13 +13,9 @@ class Backend:
         pass
 
     @abstractmethod
-    def send(self):
+    def connect(self):
         pass
-
-    @abstractmethod
-    def receive(self):
-        pass
-
+        
 
 class NativeBackend(Backend):
 
