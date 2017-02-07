@@ -37,5 +37,9 @@ class RemoteAbility(Ability):
 
     container = None
 
-    inputs = 0
-    outputs = 0
+    def state(self):
+        pass
+
+    def process(self):
+        pass
+

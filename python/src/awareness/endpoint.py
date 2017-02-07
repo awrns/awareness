@@ -16,6 +16,14 @@ class Endpoint:
     @abstractproperty
     def abilities(self):
         pass
+
+    @abstractproperty
+    def backend(self):
+        pass
+
+    @abstractproperty
+    def protocol(self):
+        pass
     
 
     @abstractmethod
@@ -38,34 +46,34 @@ class Endpoint:
 
 class LocalEndpoint(Endpoint):
 
-    algorithm = None
+    address = ""
+    abilities = []
+
     backend = None
     protocol = None
 
-    address = ""
-    abilities = []
+
+    algorithm = None
     assemblies = []
-
-
     remoteEndpoints = []
 
 
     def __init__(
         self,
         address,
-        algorithm = i_algorithm.DefaultAlgorithm,
+        abilities = [],
         backend = i_backend.NativeBackend,
         protocol = i_protocol.Protocol0,
-        abilities = [],
+        algorithm = i_algorithm.DefaultAlgorithm,
         assemblies = [],
         remoteEndpoints = []
     ):
 
         self.address = address
-        self.algorithm = algorithm()
+        self.abilities = abilities
         self.backend = backend()
         self.protocol = protocol()
-        self.abilities = abilities
+        self.algorithm = algorithm()
         self.assemblies = assemblies
         self.remoteEndpoints = remoteEndpoints
 
@@ -96,8 +104,19 @@ class RemoteEndpoint(Endpoint):
     address = ""
     abilities = []
 
-    def __init__(self, address, abilities = []):
+    backend = None
+    protocol = None
+
+    def __init__(
+        self,
+        address,
+        abilities = [],
+        backend = i_backend.NativeBackend,
+        protocol = i_protocol.Protocol0,
+    ):
         self.address = address
         self.abilities = abilities
+        self.backend = backend
+        self.protocol = protocol
 
 
