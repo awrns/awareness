@@ -133,3 +133,27 @@ class RemoteEndpoint(Endpoint):
 
             self.abilities.append(newAbility)
 
+
+    def localSearch(self, callback, set, time):
+        connection = self.backend.connect(self.address)
+        self.protocol.localSearch(connection, callback, set, time)
+
+
+    def propagatingSearch(self, callback, set, time):
+        connection = self.backend.connect(self.address)
+        self.protocol.propagatingSearch(connection, callback, set, time)
+
+
+    def getAcceptableData(self):
+        acceptableData = []
+
+        for eachAbility in self.abilities:
+            eachAcceptableData = (eachAbility.inputs, eachAbility.outputs)
+            acceptableData.append(eachAcceptableData)
+
+        return acceptableData
+
+
+    def processData(self, index, input):
+        return self.abilities[index].run(input)
+        
