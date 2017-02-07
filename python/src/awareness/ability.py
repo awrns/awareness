@@ -18,11 +18,8 @@ class Ability:
     @abstractproperty
     def outputs(self): pass
 
-    @abstractproperty
-    def state(self): pass
-
     @abstractmethod
-    def process(self): pass
+    def run(self): pass
 
 
 class LocalAbility(Ability):
@@ -36,12 +33,19 @@ class LocalAbility(Ability):
 class RemoteAbility(Ability):
 
     container = None
+    index = 0
 
-    connection = None
+    inputs = 0
+    outputs = 0
 
-    def state(self):
-        pass
+    def __init__(self, container, index, inputs, outputs):
+        self.container = container
+        self.index = index
+        self.inputs = inputs
+        self.outputs = outputs
 
-    def process(self):
-        pass
+    def run(self, input):
+        connection = self.container.backend.connect(self.container.address)
+        output = self.container.protocol.processData(connection, self.index, input)
+        return output
 

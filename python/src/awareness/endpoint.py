@@ -90,13 +90,14 @@ class LocalEndpoint(Endpoint):
         acceptableData = []
 
         for eachAbility in self.abilities:
-            acceptableData.append(eachAbility.getAcceptableData())
+            eachAcceptableData = (eachAbility.inputs, eachAbility.outputs)
+            acceptableData.append(eachAcceptableData)
 
         return acceptableData
 
 
     def processData(self, index, input):
-        return self.abilities[index].processData(input)
+        return self.abilities[index].run(input)
 
 
 class RemoteEndpoint(Endpoint):
@@ -119,4 +120,16 @@ class RemoteEndpoint(Endpoint):
         self.backend = backend
         self.protocol = protocol
 
+        if self.abilities == []:
+            self.retrieveAbilities()
+
+
+    def retrieveAbilities(self):
+        connection = self.backend.connect(self.address)
+        acceptableData = self.protocol.getAcceptableData(connection)
+        for i in range(len(acceptableData)):
+            eachAcceptableData = acceptableData[i]
+            newAbility = i_ability.RemoteAbility(self, i, eachAcceptableData[0], eachAcceptableData[1])
+
+            self.abilities.append(newAbility)
 
