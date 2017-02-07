@@ -9,11 +9,11 @@ import protocol as i_protocol
 class Item:
 
     @abstractproperty
-    def inputs(self):
+    def input(self):
         pass
 
     @abstractproperty
-    def outputs(self):
+    def output(self):
         pass
 
 
