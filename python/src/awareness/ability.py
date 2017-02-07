@@ -37,6 +37,8 @@ class RemoteAbility(Ability):
 
     container = None
 
+    connection = None
+
     def state(self):
         pass
 
