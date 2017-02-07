@@ -6,22 +6,25 @@ import data as i_data
 import endpoint as i_endpoint
 
 
-class DataUnit:
+class Protocol:
     __metaclass__ = ABCMeta
 
-    @abstractproperty
-    def struct(self):
+    @abstractmethod
+    def localSearch(self, connection, callback, set, time):
         pass
 
     @abstractmethod
-    def __init__(self):
+    def propagatingSearch(self, connection, callback, set, time):
         pass
 
     @abstractmethod
-    def deserialize(self):
+    def getAcceptableData(self, connection):
         pass
 
     @abstractmethod
-    def serialize(self):
+    def processData(self, connection, index, input):
         pass
 
+class Protocol0(Protocol):
+
+    pass
