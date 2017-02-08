@@ -25,9 +25,16 @@ class Ability:
 class LocalAbility(Ability):
 
     container = None
+    index = 0
 
     inputs = 0
     outputs = 0
+
+    def __init__(self, container, index, inputs, outputs):
+        self.container = container
+        self.index = index
+        self.inputs = inputs
+        self.outputs = outputs
 
 
 class RemoteAbility(Ability):
