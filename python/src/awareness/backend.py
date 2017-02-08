@@ -7,6 +7,7 @@ import protocol as i_protocol
 
 
 class Backend:
+    __metaclass__ = ABCMeta
 
     @abstractmethod
     def async(self):

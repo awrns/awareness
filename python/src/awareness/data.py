@@ -7,6 +7,7 @@ import protocol as i_protocol
 
 
 class Item:
+    __metaclass__ = ABCMeta
 
     @abstractproperty
     def input(self):
@@ -23,6 +24,7 @@ class Item:
 
 
 class Set:
+    __metaclass__ = ABCMeta
 
     @abstractproperty
     def items(self):
@@ -33,4 +35,6 @@ class Set:
         pass
 
 class Assembly:
+    __metaclass__ = ABCMeta
+
     pass

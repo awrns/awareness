@@ -7,6 +7,7 @@ import protocol as i_protocol
 
 
 class Algorithm:
+    __metaclass__ = ABCMeta
     
     @abstractmethod
     def __init__(self):

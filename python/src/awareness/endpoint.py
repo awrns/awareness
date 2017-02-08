@@ -62,18 +62,18 @@ class LocalEndpoint(Endpoint):
         self,
         address,
         abilities = [],
-        backend = i_backend.NativeBackend,
-        protocol = i_protocol.Protocol0,
-        algorithm = i_algorithm.DefaultAlgorithm,
+        backend = None,
+        protocol = None,
+        algorithm = None,
         assemblies = [],
         remoteEndpoints = []
     ):
 
         self.address = address
         self.abilities = abilities
-        self.backend = backend()
-        self.protocol = protocol()
-        self.algorithm = algorithm()
+        self.backend = backend() if backend else i_backend.NativeBackend()
+        self.protocol = protocol() if protocol else i_protocol.Protocol0()
+        self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
         self.assemblies = assemblies
         self.remoteEndpoints = remoteEndpoints
 
@@ -112,13 +112,13 @@ class RemoteEndpoint(Endpoint):
         self,
         address,
         abilities = [],
-        backend = i_backend.NativeBackend,
-        protocol = i_protocol.Protocol0,
+        backend = None,
+        protocol = None,
     ):
         self.address = address
         self.abilities = abilities
-        self.backend = backend
-        self.protocol = protocol
+        self.backend = backend() if backend else i_backend.NativeBackend()
+        self.protocol = protocol() if protocol else i_protocol.Protocol0()
 
         if self.abilities == []:
             self.retrieveAbilities()
