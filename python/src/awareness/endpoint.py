@@ -24,7 +24,7 @@ class Endpoint:
     @abstractproperty
     def protocol(self):
         pass
-    
+
 
     @abstractmethod
     def localSearch(self):
@@ -79,11 +79,11 @@ class LocalEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        self.backend.async(self.algorithm.localSearch(callback, set, time))
+        self.backend.async(self.algorithm.localSearch(self, callback, set, time))
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        self.backend.async(self.algorithm.localSearch(callback, set, depth, time))
+        self.backend.async(self.algorithm.propagatingSearch(self, callback, set, depth, time))
 
 
     def getAcceptableData(self):
@@ -139,9 +139,9 @@ class RemoteEndpoint(Endpoint):
         self.protocol.localSearch(connection, callback, set, time)
 
 
-    def propagatingSearch(self, callback, set, time):
+    def propagatingSearch(self, callback, set, depth, time):
         connection = self.backend.connect(self.address)
-        self.protocol.propagatingSearch(connection, callback, set, time)
+        self.protocol.propagatingSearch(connection, callback, set, depth, time)
 
 
     def getAcceptableData(self):
@@ -156,4 +156,3 @@ class RemoteEndpoint(Endpoint):
 
     def processData(self, index, input):
         return self.abilities[index].run(input)
-        
