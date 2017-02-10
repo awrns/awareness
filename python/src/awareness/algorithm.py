@@ -10,10 +10,6 @@ class Algorithm:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self):
-        pass
-
-    @abstractmethod
     def localSearch(self):
         pass
 
@@ -25,4 +21,7 @@ class Algorithm:
 class DefaultAlgorithm(Algorithm):
 
     def localSearch(self, endpoint, callback, set, time):
+        pass
+
+    def propagatingSearch(self, endpoint, callback, set, depth, time):
         pass
