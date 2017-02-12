@@ -79,11 +79,11 @@ class LocalEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        self.backend.async(self.algorithm.localSearch(self, callback, set, time))
+        self.backend.async(self.algorithm.localSearch, [self.abilities, set, time], callback)
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        self.backend.async(self.algorithm.propagatingSearch(self, callback, set, depth, time))
+        self.backend.async(self.algorithm.propagatingSearch, [self.abilities, set, depth, time], callback)
 
 
     def getAcceptableData(self):
@@ -108,6 +108,8 @@ class RemoteEndpoint(Endpoint):
     backend = None
     protocol = None
 
+    connection = None
+
     def __init__(
         self,
         address,
@@ -124,8 +126,17 @@ class RemoteEndpoint(Endpoint):
             self.retrieveAbilities()
 
 
+    def connect(self):
+        self.connection = self.backend.connect(self.address)
+
+    def disconnect(self):
+        self.connection.close()
+        self.connection = None
+
+
     def retrieveAbilities(self):
-        connection = self.backend.connect(self.address)
+        connection = self.connection if self.connection else self.backend.connect(self.address)
+
         acceptableData = self.protocol.getAcceptableData(connection)
         for i in range(len(acceptableData)):
             eachAcceptableData = acceptableData[i]
@@ -133,15 +144,23 @@ class RemoteEndpoint(Endpoint):
 
             self.abilities.append(newAbility)
 
+        if not self.connection: connection.close()
+
 
     def localSearch(self, callback, set, time):
-        connection = self.backend.connect(self.address)
-        self.protocol.enactLocalSearch(connection, callback, set, time)
+        connection = self.connection if self.connection else self.backend.connect(self.address)
+
+        self.backend.async(self.protocol.localSearch, [connection, set, time], callback)
+
+        if not self.connection: connection.close()
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        connection = self.backend.connect(self.address)
-        self.protocol.enactPropagatingSearch(connection, callback, set, depth, time)
+        connection = self.connection if self.connection else self.backend.connect(self.address)
+
+        self.backend.async(self.protocol.propagatingSearch, [connection, set, depth, time], callback)
+
+        if not self.connection: connection.close()
 
 
     def getAcceptableData(self):

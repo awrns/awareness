@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
+from multiprocessing import Pool
 import ability as i_ability
 import algorithm as i_algorithm
 import data as i_data
