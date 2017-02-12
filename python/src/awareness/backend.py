@@ -16,7 +16,7 @@ class Backend:
     @abstractmethod
     def connect(self):
         pass
-        
+
 
 class NativeBackend(Backend):
 

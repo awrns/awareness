@@ -10,7 +10,7 @@ class Ability:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def container(self): pass
+    def endpoint(self): pass
 
     @abstractproperty
     def inputs(self): pass
@@ -24,14 +24,14 @@ class Ability:
 
 class LocalAbility(Ability):
 
-    container = None
+    endpoint = None
     index = 0
 
     inputs = 0
     outputs = 0
 
-    def __init__(self, container, index, inputs, outputs):
-        self.container = container
+    def __init__(self, endpoint, index, inputs, outputs):
+        self.endpoint = endpoint
         self.index = index
         self.inputs = inputs
         self.outputs = outputs
@@ -39,20 +39,20 @@ class LocalAbility(Ability):
 
 class RemoteAbility(Ability):
 
-    container = None
+    endpoint = None
     index = 0
 
     inputs = 0
     outputs = 0
 
-    def __init__(self, container, index, inputs, outputs):
-        self.container = container
+    def __init__(self, endpoint, index, inputs, outputs):
+        self.endpoint = endpoint
         self.index = index
         self.inputs = inputs
         self.outputs = outputs
 
     def run(self, input):
-        connection = self.container.backend.connect(self.container.address)
-        output = self.container.protocol.processData(connection, self.index, input)
+        connection = self.endpoint.backend.connect(self.endpoint.address)
+        output = self.endpoint.protocol.processData(connection, self.index, input)
         return output
 
