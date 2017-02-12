@@ -136,12 +136,12 @@ class RemoteEndpoint(Endpoint):
 
     def localSearch(self, callback, set, time):
         connection = self.backend.connect(self.address)
-        self.protocol.localSearch(connection, callback, set, time)
+        self.protocol.enactLocalSearch(connection, callback, set, time)
 
 
     def propagatingSearch(self, callback, set, depth, time):
         connection = self.backend.connect(self.address)
-        self.protocol.propagatingSearch(connection, callback, set, depth, time)
+        self.protocol.enactPropagatingSearch(connection, callback, set, depth, time)
 
 
     def getAcceptableData(self):

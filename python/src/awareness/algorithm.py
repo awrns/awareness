@@ -26,3 +26,6 @@ class DefaultAlgorithm(Algorithm):
 
     def localSearch(self, endpoint, callback, set, time):
         pass
+
+    def propagatingSearch(self, endpoint, callback, set, depth, time):
+        pass

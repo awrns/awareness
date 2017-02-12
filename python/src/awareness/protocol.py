@@ -10,20 +10,26 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def localSearch(self, connection, callback, set, time):
+    def enactLocalSearch(self, connection, callback, set, time):
         pass
 
     @abstractmethod
-    def propagatingSearch(self, connection, callback, set, time):
+    def enactPropagatingSearch(self, connection, callback, set, time):
         pass
 
     @abstractmethod
-    def getAcceptableData(self, connection):
+    def enactGetAcceptableData(self, connection):
         pass
 
     @abstractmethod
-    def processData(self, connection, index, input):
+    def enactProcessData(self, connection, index, input):
         pass
+
+
+    @abstractmethod
+    def provide(self, endpoint, connection):
+        pass
+
 
 class Protocol0(Protocol):
 
