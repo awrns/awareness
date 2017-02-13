@@ -27,11 +27,11 @@ class Endpoint:
 
 
     @abstractmethod
-    def localSearch(self):
+    def localSearch(self, callback, set, time):
         pass
 
     @abstractmethod
-    def propagatingSearch(self):
+    def propagatingSearch(self, callback, set, depth, time):
         pass
 
 
@@ -40,7 +40,7 @@ class Endpoint:
         pass
 
     @abstractmethod
-    def processData(self):
+    def processData(self, index, input):
         pass
 
 

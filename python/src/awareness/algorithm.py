@@ -20,7 +20,7 @@ class Algorithm:
 
 class DefaultAlgorithm(Algorithm):
 
-    def localSearch(self, abilities, callback, set, time):
+    def localSearch(self, abilities, set, time):
         pass
 
     def propagatingSearch(self, abilities, set, depth, time):

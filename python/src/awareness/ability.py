@@ -10,16 +10,20 @@ class Ability:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def endpoint(self): pass
+    def endpoint(self):
+        pass
 
     @abstractproperty
-    def inputs(self): pass
+    def inputs(self):
+        pass
 
     @abstractproperty
-    def outputs(self): pass
+    def outputs(self):
+        pass
 
     @abstractmethod
-    def run(self, input): pass
+    def run(self, input):
+        pass
 
 
 class LocalAbility(Ability):
