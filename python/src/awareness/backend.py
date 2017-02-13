@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-from multiprocessing import Pool
+import multiprocessing
 import ability as i_ability
 import algorithm as i_algorithm
 import data as i_data
@@ -11,18 +11,20 @@ class Backend:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def async(self):
+    def async(self, function, args, callback):
         pass
 
     @abstractmethod
-    def connect(self):
+    def connect(self, address):
         pass
 
     @abstractmethod
-    def listen(self):
+    def listen(self, address, port):
         pass
 
 
 class NativeBackend(Backend):
 
-    pass
+    def async(self, function, args, callback):
+        pool = multiprocessing.Pool(processes=1)
+        pool.apply_async(function, args, callback)

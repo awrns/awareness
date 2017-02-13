@@ -19,7 +19,7 @@ class Ability:
     def outputs(self): pass
 
     @abstractmethod
-    def run(self): pass
+    def run(self, input): pass
 
 
 class LocalAbility(Ability):

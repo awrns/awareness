@@ -19,7 +19,7 @@ class Item:
 
 
     @abstractmethod
-    def similarity(self):
+    def similarity(self, other):
         pass
 
 
