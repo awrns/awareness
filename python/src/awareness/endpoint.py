@@ -79,11 +79,11 @@ class LocalEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        self.backend.async(self.algorithm.localSearch, [self.abilities, set, time], callback)
+        self.backend.async(self.algorithm.localSearch, [self, set, time], callback)
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        self.backend.async(self.algorithm.propagatingSearch, [self.abilities, set, depth, time], callback)
+        self.backend.async(self.algorithm.propagatingSearch, [self, set, depth, time], callback)
 
 
     def getAcceptableData(self):
@@ -140,7 +140,7 @@ class RemoteEndpoint(Endpoint):
 
     def propagatingSearch(self, callback, set, depth, time):
         self.backend.async(self.protocol.propagatingSearch, [self, set, depth, time], callback)
-        
+
 
     def getAcceptableData(self):
         acceptableData = []

@@ -10,18 +10,18 @@ class Algorithm:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def localSearch(self, abilities, set, time):
+    def localSearch(self, endpoint, set, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, abilities, set, depth, time):
+    def propagatingSearch(self, endpoint, set, depth, time):
         raise NotImplementedError()
 
 
 class DefaultAlgorithm(Algorithm):
 
-    def localSearch(self, abilities, set, time):
+    def localSearch(self, endpoint, set, time):
         pass
 
-    def propagatingSearch(self, abilities, set, depth, time):
+    def propagatingSearch(self, endpoint, set, depth, time):
         pass
