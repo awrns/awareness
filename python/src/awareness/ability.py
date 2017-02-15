@@ -56,10 +56,8 @@ class RemoteAbility(Ability):
         self.outputs = outputs
 
     def run(self, input):
-        connection = self.endpoint.connection if self.endpoint.connection else self.endpoint.backend.connect(self.endpoint.address)
 
-        output = self.endpoint.protocol.processData(connection, self.index, input)
+        output = self.endpoint.protocol.processData(self.endpoint, self.index, input)
 
-        if not self.endpoint.connection: connection.close()
         return output
 
