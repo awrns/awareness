@@ -18,9 +18,8 @@ class Item:
         raise NotImplementedError()
 
 
-    @abstractmethod
     def similarity(self, other):
-        raise NotImplementedError()
+        pass
 
 
 class Set:
@@ -30,9 +29,9 @@ class Set:
     def items(self):
         raise NotImplementedError()
 
-    @abstractmethod
+
     def similarity(self):
-        raise NotImplementedError()
+        pass
 
 class Assembly:
     __metaclass__ = ABCMeta
