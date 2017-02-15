@@ -10,24 +10,24 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def localSearch(self, connection, set, time):
+    def localSearch(self, endpoint, set, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, connection, set, depth, time):
+    def propagatingSearch(self, endpoint, set, depth, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def getAcceptableData(self, connection):
+    def getAcceptableData(self, endpoint):
         raise NotImplementedError()
 
     @abstractmethod
-    def processData(self, connection, index, input):
+    def processData(self, endpoint, index, input):
         raise NotImplementedError()
 
 
     @abstractmethod
-    def provide(self, endpoint, connection):
+    def provide(self, endpoint):
         raise NotImplementedError()
 
 
