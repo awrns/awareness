@@ -11,16 +11,16 @@ class Item:
 
     @abstractproperty
     def input(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def output(self):
-        pass
+        raise NotImplementedError()
 
 
     @abstractmethod
     def similarity(self, other):
-        pass
+        raise NotImplementedError()
 
 
 class Set:
@@ -28,11 +28,11 @@ class Set:
 
     @abstractproperty
     def items(self):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def similarity(self):
-        pass
+        raise NotImplementedError()
 
 class Assembly:
     __metaclass__ = ABCMeta

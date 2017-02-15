@@ -11,11 +11,11 @@ class Algorithm:
 
     @abstractmethod
     def localSearch(self, abilities, set, time):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def propagatingSearch(self, abilities, set, depth, time):
-        pass
+        raise NotImplementedError()
 
 
 class DefaultAlgorithm(Algorithm):

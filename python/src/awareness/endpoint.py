@@ -11,37 +11,37 @@ class Endpoint:
 
     @abstractproperty
     def address(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def abilities(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def backend(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def protocol(self):
-        pass
+        raise NotImplementedError()
 
 
     @abstractmethod
     def localSearch(self, callback, set, time):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def propagatingSearch(self, callback, set, depth, time):
-        pass
+        raise NotImplementedError()
 
 
     @abstractmethod
     def getAcceptableData(self):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def processData(self, index, input):
-        pass
+        raise NotImplementedError()
 
 
 class LocalEndpoint(Endpoint):

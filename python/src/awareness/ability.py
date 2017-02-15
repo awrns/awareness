@@ -11,19 +11,19 @@ class Ability:
 
     @abstractproperty
     def endpoint(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def inputs(self):
-        pass
+        raise NotImplementedError()
 
     @abstractproperty
     def outputs(self):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def run(self, input):
-        pass
+        raise NotImplementedError()
 
 
 class LocalAbility(Ability):

@@ -11,24 +11,24 @@ class Protocol:
 
     @abstractmethod
     def localSearch(self, connection, set, time):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def propagatingSearch(self, connection, set, depth, time):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def getAcceptableData(self, connection):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def processData(self, connection, index, input):
-        pass
+        raise NotImplementedError()
 
 
     @abstractmethod
     def provide(self, endpoint, connection):
-        pass
+        raise NotImplementedError()
 
 
 class Protocol0(Protocol):

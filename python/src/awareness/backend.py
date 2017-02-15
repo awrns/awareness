@@ -12,15 +12,15 @@ class Backend:
 
     @abstractmethod
     def async(self, function, args, callback):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def connect(self, address):
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def listen(self, address, port):
-        pass
+        raise NotImplementedError()
 
 
 class NativeBackend(Backend):
