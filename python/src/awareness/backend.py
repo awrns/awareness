@@ -20,7 +20,7 @@ class Backend:
         raise NotImplementedError()
 
     @abstractmethod
-    def listen(self, port, host='', use_ipv6=False, backlog=5):
+    def listen(self, host='', port=1024, use_ipv6=False, backlog=5):
         raise NotImplementedError()
 
 
