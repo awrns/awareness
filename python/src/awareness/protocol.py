@@ -27,7 +27,7 @@ class Protocol:
 
 
     @abstractmethod
-    def provide(self, endpoint):
+    def provide(self, listener, endpoint):
         raise NotImplementedError()
 
 
