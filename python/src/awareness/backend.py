@@ -20,7 +20,7 @@ class Backend:
         raise NotImplementedError()
 
     @abstractmethod
-    def listen(self, port, host='', use_ipv6=false, backlog=5):
+    def listen(self, port, host='', use_ipv6=False, backlog=5):
         raise NotImplementedError()
 
 
@@ -31,10 +31,10 @@ class NativeBackend(Backend):
         pool = multiprocessing.Pool(processes=1)
         pool.apply_async(function, [args], callback)
 
-    def connect(self, host, port):
+    def connect(self, host, port=1024):
         return socket.create_connection((host, port))
 
-    def listen(self, port, host='', use_ipv6=false, backlog=5):
+    def listen(self, host='', port=1024, use_ipv6=False, backlog=5):
         type = socket.AF_INET6 if use_ipv6 else socket.AF_INET
 
         listener = socket.socket(type, socket.SOCK_STREAM)
