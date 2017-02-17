@@ -27,4 +27,4 @@ class NativeBackend(Backend):
 
     def async(self, function, args, callback):
         pool = multiprocessing.Pool(processes=1)
-        pool.apply_async(function, args, callback)
+        pool.apply_async(function, [args], callback)
