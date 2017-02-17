@@ -10,7 +10,11 @@ class Endpoint:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def address(self):
+    def host(self):
+        raise NotImplementedError()
+
+    @abstractproperty
+    def port(self):
         raise NotImplementedError()
 
     @abstractproperty
@@ -46,12 +50,12 @@ class Endpoint:
 
 class LocalEndpoint(Endpoint):
 
-    address = ""
+    host = ""
+    port = 0
     abilities = []
 
     backend = None
     protocol = None
-
 
     algorithm = None
     assemblies = []
@@ -60,7 +64,8 @@ class LocalEndpoint(Endpoint):
 
     def __init__(
         self,
-        address,
+        host,
+        port,
         abilities = [],
         backend = None,
         protocol = None,
@@ -69,7 +74,8 @@ class LocalEndpoint(Endpoint):
         remoteEndpoints = []
     ):
 
-        self.address = address
+        self.host = host
+        self.port = port
         self.abilities = abilities
         self.backend = backend() if backend else i_backend.NativeBackend()
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
@@ -102,7 +108,8 @@ class LocalEndpoint(Endpoint):
 
 class RemoteEndpoint(Endpoint):
 
-    address = ""
+    host = ""
+    port = 0
     abilities = []
 
     backend = None
@@ -111,12 +118,14 @@ class RemoteEndpoint(Endpoint):
 
     def __init__(
         self,
-        address,
+        host,
+        port,
         abilities = [],
         backend = None,
         protocol = None,
     ):
-        self.address = address
+        self.host = host
+        self.port = port
         self.abilities = abilities
         self.backend = backend() if backend else i_backend.NativeBackend()
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
