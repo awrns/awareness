@@ -12,7 +12,7 @@ class Backend:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def async(self, function, args, callback=lambda:None):
+    def async(self, function, args, callback=lambda *args,**kwargs:None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -26,7 +26,7 @@ class Backend:
 
 class NativeBackend(Backend):
 
-    def async(self, function, args, callback=lambda:None):
+    def async(self, function, args, callback=lambda *args,**kwargs:None):
 
         pool = multiprocessing.Pool(processes=1)
         pool.apply_async(function, [args], callback)
