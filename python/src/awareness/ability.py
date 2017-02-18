@@ -14,12 +14,18 @@ class Ability:
         raise NotImplementedError()
 
     @abstractproperty
+    def index(self):
+        raise NotImplementedError()
+
+
+    @abstractproperty
     def inputs(self):
         raise NotImplementedError()
 
     @abstractproperty
     def outputs(self):
         raise NotImplementedError()
+
 
     @abstractmethod
     def run(self, input):
