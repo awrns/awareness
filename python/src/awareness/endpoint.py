@@ -51,7 +51,7 @@ class Endpoint:
 class LocalEndpoint(Endpoint):
 
     host = ""
-    port = 0
+    port = -1
     abilities = []
 
     backend = None
@@ -98,7 +98,7 @@ class LocalEndpoint(Endpoint):
 class RemoteEndpoint(Endpoint):
 
     host = ""
-    port = 0
+    port = -1
     abilities = []
 
     backend = None
@@ -111,7 +111,8 @@ class RemoteEndpoint(Endpoint):
         self.abilities = abilities
         self.backend = backend() if backend else i_backend.NativeBackend()
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
-
+        
+        self.backend.async(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
         if self.abilities == []:
             self.retrieveAbilities()
 
