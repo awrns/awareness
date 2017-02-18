@@ -33,4 +33,19 @@ class Protocol:
 
 class Protocol0(Protocol):
 
-    pass
+    def localSearch(self, endpoint, set, time):
+        pass
+
+    def propagatingSearch(self, endpoint, set, depth, time):
+        pass
+
+    def getAcceptableData(self, endpoint):
+        pass
+
+    def processData(self, endpoint, index, input):
+        pass
+
+    def provide(self, listener, endpoint):
+        pass
+
+

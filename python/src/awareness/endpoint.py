@@ -56,13 +56,12 @@ class LocalEndpoint(Endpoint):
 
     backend = None
     protocol = None
-
     algorithm = None
     assemblies = []
     remoteEndpoints = []
 
 
-    def __init__(self, host, port, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteEndpoints = []):
+    def __init__(self, host="", port=1024, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteEndpoints = []):
         self.host = host
         self.port = port
         self.abilities = abilities
@@ -71,6 +70,8 @@ class LocalEndpoint(Endpoint):
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
         self.assemblies = assemblies
         self.remoteEndpoints = remoteEndpoints
+
+        self.backend.async(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
     def localSearch(self, callback, set, time):
@@ -111,8 +112,6 @@ class RemoteEndpoint(Endpoint):
         self.abilities = abilities
         self.backend = backend() if backend else i_backend.NativeBackend()
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
-        
-        self.backend.async(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
         if self.abilities == []:
             self.retrieveAbilities()
 

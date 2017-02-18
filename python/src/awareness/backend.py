@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
 import multiprocessing
 import socket
+
 import ability as i_ability
 import algorithm as i_algorithm
 import data as i_data
