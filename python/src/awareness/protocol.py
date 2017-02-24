@@ -52,9 +52,9 @@ class Protocol0(Protocol):
     SET_RESPONSE =          0x21
     ASSEMBLY_RESPONSE =     0x22
 
-    INCOMPATIBLE =          0x30
-    NONSENSE_UNIT =         0x31
-    NONSENSE_DATA =         0x32
+    INCOMPATIBLE_ERROR =    0x30
+    UNIT_ERROR =            0x31
+    DATA_ERROR =            0x32
 
 
     localSearchStruct =         struct.Struct("!")
