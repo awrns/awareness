@@ -99,6 +99,7 @@ class Protocol0(Protocol):
 
 
     def provide(self, listener, endpoint):
-        pass
+        
+        connection, address = listener.accept()
 
 
