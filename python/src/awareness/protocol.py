@@ -13,19 +13,19 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def localSearch(self, endpoint, set, time):
+    def localSearch(self, connection, set, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, endpoint, set, depth, time):
+    def propagatingSearch(self, connection, set, depth, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def getAcceptableData(self, endpoint):
+    def getAcceptableData(self, connection):
         raise NotImplementedError()
 
     @abstractmethod
-    def processData(self, endpoint, index, input):
+    def processData(self, connection, index, input, outputs):
         raise NotImplementedError()
 
 
@@ -34,10 +34,11 @@ class Protocol:
         raise NotImplementedError()
 
 
+
 class Protocol0(Protocol):
 
 
-    pduStruct = lambda datalen: struct.Struct("!5cQ" + datalen + "s")
+    pduHeaderStruct = struct.Struct("!3cQ")
 
 
     VERSION_BYTE =          0xA0
@@ -61,29 +62,41 @@ class Protocol0(Protocol):
     propagatingSearchStruct =   struct.Struct("!")
 
     getAcceptableDataStruct =   struct.Struct("!")
-    processDataStruct =         lambda paramnum: struct.Struct("!B" + paramnum + "B")
+    processDataStruct =         lambda paramNum: struct.Struct("!B" + paramNum + "B")
 
-    itemResponseStruct =        lambda paramnum: struct.Struct("!" + paramnum + "B")
-    setResponseStruct =         lambda itemnum, paramnum: struct.Struct("!Q" + itemnum*paramnum + "B")
+    itemResponseStruct =        lambda paramNum: struct.Struct("!" + paramNum + "B")
+    setResponseStruct =         lambda itemNum, paramNum: struct.Struct("!Q" + itemNum*paramNum + "B")
     assemblyResponseStruct =    struct.Struct("!")
 
 
-    def localSearch(self, endpoint, set, time):
+    def localSearch(self, connection, set, time):
         pass
 
-    def propagatingSearch(self, endpoint, set, depth, time):
+    def propagatingSearch(self, connection, set, depth, time):
         pass
 
-    def getAcceptableData(self, endpoint):
+    def getAcceptableData(self, connection):
         pass
 
-    def processData(self, endpoint, index, input):
-        
-        connection = endpoint.backend.connect(endpoint.host, endpoint.port)
+    def processData(self, connection, index, input, outputs):
 
+        dataStruct = self.processDataStruct(len(input))
+        data = dataStruct.pack(index, *input)
 
+        header = self.pduHeaderStruct.pack(self.VERSION_BYTE, self.PROCESS_DATA, self.ITEM_RESPONSE, len(data))
 
-        connection.close()
+        connection.sendall(header)
+        connection.sendall(data)
+
+        recvHeader = connection.recv(self.pduHeaderStruct.size)
+        version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
+
+        itemStruct = self.itemResponseStruct(outputs)
+        recvData = connection.recv(dataLen)
+        output = itemStruct.unpack(recvData)
+
+        return output
+
 
     def provide(self, listener, endpoint):
         pass
