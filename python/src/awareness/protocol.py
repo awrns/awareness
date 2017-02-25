@@ -40,6 +40,7 @@ class Protocol0(Protocol):
 
     pduHeaderStruct = struct.Struct("!3cQ")
 
+    NOTHING = 0xFF
 
     VERSION_BYTE =          0xA0
 
@@ -78,7 +79,7 @@ class Protocol0(Protocol):
     def getAcceptableData(self, connection):
         pass
 
-    def processData(self, connection, index, input, outputNum):
+    def processData(self, connection, index, input):
 
         dataStruct = self.processDataStruct(len(input))
         data = dataStruct.pack(index, *input)
@@ -90,9 +91,9 @@ class Protocol0(Protocol):
 
         recvHeader = connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
-
-        itemStruct = self.itemResponseStruct(outputNum)
         recvData = connection.recv(dataLen)
+
+        itemStruct = self.itemResponseStruct(dataLen)
         output = itemStruct.unpack(recvData)
 
         return output
@@ -104,6 +105,23 @@ class Protocol0(Protocol):
             
             recvHeader = connection.recv(self.pduHeaderStruct.size)
             version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
+            recvData = connection.recv(dataLen)
+
+            if unitType == self.PROCESS_DATA:
+                dataStruct = self.processDataStruct(dataLen - 1)
+                index, input = dataStruct.unpack(recvData)
+                input = list(input)
+
+                output = endpoint.processData(index, input)
+
+                itemStruct = self.itemResponseStruct(len(output))
+                data = itemStruct.pack(*output)
+
+                header = self.pduHeaderStruct.pack(self.VERSION_BYTE, self.ITEM_RESPONSE, self.NOTHING, len(data))
+                
+                connection.sendall(header)
+                connection.sendall(data)
+
         
         connection, address = listener.accept()
 
