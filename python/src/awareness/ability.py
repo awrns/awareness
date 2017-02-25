@@ -19,11 +19,11 @@ class Ability:
 
 
     @abstractproperty
-    def inputs(self):
+    def inputNum(self):
         raise NotImplementedError()
 
     @abstractproperty
-    def outputs(self):
+    def outputNum(self):
         raise NotImplementedError()
 
 
@@ -37,14 +37,14 @@ class LocalAbility(Ability):
     endpoint = None
     index = 0
 
-    inputs = 0
-    outputs = 0
+    inputNum = 0
+    outputNum = 0
 
-    def __init__(self, endpoint, index, inputs, outputs):
+    def __init__(self, endpoint, index, inputNum, outputNum):
         self.endpoint = endpoint
         self.index = index
-        self.inputs = inputs
-        self.outputs = outputs
+        self.inputNum = inputNum
+        self.outputNum = outputNum
 
 
 class RemoteAbility(Ability):
@@ -52,14 +52,14 @@ class RemoteAbility(Ability):
     endpoint = None
     index = 0
 
-    inputs = 0
-    outputs = 0
+    inputNum = 0
+    outputNum = 0
 
-    def __init__(self, endpoint, index, inputs, outputs):
+    def __init__(self, endpoint, index, inputNum, outputNum):
         self.endpoint = endpoint
         self.index = index
-        self.inputs = inputs
-        self.outputs = outputs
+        self.inputNum = inputNum
+        self.outputNum = outputNum
 
     def run(self, input):
 

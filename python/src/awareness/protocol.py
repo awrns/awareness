@@ -78,7 +78,7 @@ class Protocol0(Protocol):
     def getAcceptableData(self, connection):
         pass
 
-    def processData(self, connection, index, input, outputs):
+    def processData(self, connection, index, input, outputNum):
 
         dataStruct = self.processDataStruct(len(input))
         data = dataStruct.pack(index, *input)
@@ -91,7 +91,7 @@ class Protocol0(Protocol):
         recvHeader = connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
 
-        itemStruct = self.itemResponseStruct(outputs)
+        itemStruct = self.itemResponseStruct(outputNum)
         recvData = connection.recv(dataLen)
         output = itemStruct.unpack(recvData)
 

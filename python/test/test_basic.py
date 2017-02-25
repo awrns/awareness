@@ -3,7 +3,7 @@ import awareness
 
 class TestAbility(awareness.ability.LocalAbility):
     def run(self, input):
-        output = [None] * self.outputs
+        output = [None] * self.outputNum
         output[0] = input[0] + 1
         return output
 
