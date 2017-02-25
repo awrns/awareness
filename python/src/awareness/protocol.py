@@ -99,7 +99,14 @@ class Protocol0(Protocol):
 
 
     def provide(self, listener, endpoint):
+
+        def handle(connection):
+            
+            recvHeader = connection.recv(self.pduHeaderStruct.size)
+            version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         
         connection, address = listener.accept()
+
+        endpoint.backend.asyncConnectionSafe(handle, connection)
 
 
