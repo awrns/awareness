@@ -53,9 +53,9 @@ class LocalEndpoint(Endpoint):
     host = ""
     port = -1
     abilities = []
-
     backend = None
     protocol = None
+
     algorithm = None
     assemblies = []
     remoteEndpoints = []
@@ -74,12 +74,10 @@ class LocalEndpoint(Endpoint):
         self.backend.async(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
-    def localSearch(self, callback, set, time):
-        self.backend.async(self.algorithm.localSearch, (self, set, time), callback=callback)
+    def localSearch(self, set, time): self.algorithm.localSearch(self.remoteEndpoints, set, time)
 
 
-    def propagatingSearch(self, callback, set, depth, time):
-        self.backend.async(self.algorithm.propagatingSearch, (self, set, depth, time), callback=callback)
+    def propagatingSearch(self, set, depth, time): self.algorithm.propagatingSearch(self.remoteEndpoints, set, depth, time)
 
 
     def getAcceptableData(self):
@@ -101,10 +99,10 @@ class RemoteEndpoint(Endpoint):
     host = ""
     port = -1
     abilities = []
-
     backend = None
     protocol = None
 
+    connection = None
 
     def __init__(self, host, port, abilities = [], backend = None, protocol = None):
         self.host = host
@@ -113,11 +111,19 @@ class RemoteEndpoint(Endpoint):
         self.backend = backend() if backend else i_backend.NativeBackend()
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         if self.abilities == []:
+            self.connect()
             self.retrieveAbilities()
+            self.disconnect()
 
+    def connect(self):
+        self.connection = self.backend.connect(self.host, port=self.port)
+
+    def disconnect(self):
+        self.connection.close()
+        self.connection = None
 
     def retrieveAbilities(self):
-        acceptableData = self.protocol.getAcceptableData(self)
+        acceptableData = self.protocol.getAcceptableData(self.connection)
         for i in range(len(acceptableData)):
             eachAcceptableData = acceptableData[i]
             newAbility = i_ability.RemoteAbility(self, i, eachAcceptableData[0], eachAcceptableData[1])
@@ -126,11 +132,11 @@ class RemoteEndpoint(Endpoint):
 
 
     def localSearch(self, callback, set, time):
-        self.backend.async(self.protocol.localSearch, (self, set, time), callback=callback)
+        self.protocol.localSearch(self.connection, set, time)
 
 
     def propagatingSearch(self, callback, set, depth, time):
-        self.backend.async(self.protocol.propagatingSearch, (self, set, depth, time), callback=callback)
+        self.protocol.propagatingSearch(self.connection, set, depth, time)
 
 
     def getAcceptableData(self):
