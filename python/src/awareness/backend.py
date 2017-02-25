@@ -23,7 +23,7 @@ class Backend:
         raise NotImplementedError()
 
     @abstractmethod
-    def listen(self, host='', port=1024, use_ipv6=False, backlog=5):
+    def listen(self, host='', port=1600, use_ipv6=False, backlog=5):
         raise NotImplementedError()
 
 
@@ -44,11 +44,11 @@ class NativeBackend(Backend):
         thread.start()
 
 
-    def connect(self, host, port=1024):
+    def connect(self, host, port=1600):
         return socket.create_connection((host, port))
 
 
-    def listen(self, host='', port=1024, use_ipv6=False, backlog=5):
+    def listen(self, host='', port=1600, use_ipv6=False, backlog=5):
         type = socket.AF_INET6 if use_ipv6 else socket.AF_INET
 
         listener = socket.socket(type, socket.SOCK_STREAM)

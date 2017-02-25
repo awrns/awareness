@@ -61,7 +61,7 @@ class LocalEndpoint(Endpoint):
     remoteEndpoints = []
 
 
-    def __init__(self, host="", port=1024, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteEndpoints = []):
+    def __init__(self, host="", port=1600, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteEndpoints = []):
         self.host = host
         self.port = port
         self.abilities = abilities
