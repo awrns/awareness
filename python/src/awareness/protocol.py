@@ -37,38 +37,42 @@ class Protocol:
 
 class Protocol0(Protocol):
 
-
     pduHeaderStruct = struct.Struct("!3cQ")
-
-    NOTHING = 0xFF
 
     VERSION_BYTE =          0xA0
 
-    LOCAL_SEARCH =          0x00
-    PROPAGATING_SEARCH =    0x01
+    NOTHING =               0x00
+    INFO =                  0x01
 
-    GET_ACCEPTABLE_DATA =   0x10
-    PROCESS_DATA =          0x11
+    SET_SEARCH =            0x10
+    GET_SEARCH =            0x11
 
-    ITEM_RESPONSE =         0x20
-    SET_RESPONSE =          0x21
-    ASSEMBLY_RESPONSE =     0x22
+    SET_DATA =              0x20
+    GET_DATA =              0x21
 
-    INCOMPATIBLE_ERROR =    0x30
-    UNIT_ERROR =            0x31
-    DATA_ERROR =            0x32
+    UNIT_ERROR =            0x30
+    DATA_ERROR =            0x31
 
+    nothingStruct =         lambda dataLen: struct.Struct("!")
+    infoStruct =            lambda dataLen: struct.Struct("!")
 
-    localSearchStruct =         struct.Struct("!")
-    propagatingSearchStruct =   struct.Struct("!")
+    setSearchStruct =       lambda dataLen: struct.Struct("!")
+    getSearchStruct =       lambda dataLen: struct.Struct("!")
 
-    getAcceptableDataStruct =   struct.Struct("!")
-    processDataStruct =         lambda paramNum: struct.Struct("!B" + paramNum + "B")
+    setDataStruct =         lambda dataLen: struct.Struct("!")
+    getDataStruct =         lambda dataLen: struct.Struct("!")
 
-    itemResponseStruct =        lambda paramNum: struct.Struct("!" + paramNum + "B")
-    setResponseStruct =         lambda itemNum, paramNum: struct.Struct("!Q" + itemNum*paramNum + "B")
-    assemblyResponseStruct =    struct.Struct("!")
+    unitErrorStruct =       lambda dataLen: struct.Struct("!")
+    dataErrorStruct =       lambda dataLen: struct.Struct("!")
 
+    units = {NOTHING: nothingStruct,
+             INFO: infoStruct,
+             SET_SEARCH: setSearchStruct,
+             GET_SEARCH: getSearchStruct,
+             SET_DATA: setDataStruct,
+             GET_DATA: getDataStruct,
+             UNIT_ERROR: unitErrorStruct,
+             DATA_ERROR: dataErrorStruct}
 
     def localSearch(self, connection, set, time):
         pass
