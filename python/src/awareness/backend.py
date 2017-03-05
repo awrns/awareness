@@ -15,11 +15,15 @@ class Backend:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def async(self, function, args, callback=lambda *args,**kwargs:None):
+    def processingAsync(self, function, args, callback=lambda *args,**kwargs:None):
         raise NotImplementedError()
 
     @abstractmethod
-    def connect(self, host, port):
+    def threadingAsync(self, function, args, callback=lambda *args,**kwargs:None):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def connect(self, host, port=1600):
         raise NotImplementedError()
 
     @abstractmethod
@@ -30,13 +34,13 @@ class Backend:
 class NativeBackend(Backend):
 
 
-    def async(self, function, args, callback=lambda *args,**kwargs:None):
+    def processingAsync(self, function, args, callback=lambda *args,**kwargs:None):
 
         pool = multiprocessing.Pool(1)
         pool.apply_async(function, [args], callback)
 
 
-    def asyncConnectionSafe(self, function, args, callback=lambda *args,**kwargs:None):
+    def threadingAsync(self, function, args, callback=lambda *args,**kwargs:None):
 
         def wrapWithCallback(task, callback): callback(task)
 

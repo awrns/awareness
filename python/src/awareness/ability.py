@@ -28,7 +28,7 @@ class Ability:
 
 
     @abstractmethod
-    def run(self, input):
+    def run(self, set):
         raise NotImplementedError()
 
 
@@ -61,9 +61,9 @@ class RemoteAbility(Ability):
         self.inputNum = inputNum
         self.outputNum = outputNum
 
-    def run(self, input):
+    def run(self, set):
 
-        output = self.endpoint.protocol.processData(self.endpoint, self.index, input)
+        output = self.endpoint.protocol.processData(self.endpoint, self.index, set)
 
         return output
 

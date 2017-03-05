@@ -31,11 +31,11 @@ class Endpoint:
 
 
     @abstractmethod
-    def localSearch(self, callback, set, time):
+    def localSearch(self, set, time):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, callback, set, depth, time):
+    def propagatingSearch(self, set, depth, time):
         raise NotImplementedError()
 
 
@@ -44,7 +44,7 @@ class Endpoint:
         raise NotImplementedError()
 
     @abstractmethod
-    def processData(self, index, input):
+    def processData(self, index, set):
         raise NotImplementedError()
 
 
@@ -71,7 +71,7 @@ class LocalEndpoint(Endpoint):
         self.assemblies = assemblies
         self.remoteEndpoints = remoteEndpoints
 
-        self.backend.async(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
+        self.backend.processingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
     def localSearch(self, set, time): self.algorithm.localSearch(self.remoteEndpoints, set, time)
@@ -90,8 +90,8 @@ class LocalEndpoint(Endpoint):
         return acceptableData
 
 
-    def processData(self, index, input):
-        return self.abilities[index].run(input)
+    def processData(self, index, set):
+        return self.abilities[index].run(set)
 
 
 class RemoteEndpoint(Endpoint):
@@ -131,11 +131,11 @@ class RemoteEndpoint(Endpoint):
             self.abilities.append(newAbility)
 
 
-    def localSearch(self, callback, set, time):
+    def localSearch(self, set, time):
         self.protocol.localSearch(self.connection, set, time)
 
 
-    def propagatingSearch(self, callback, set, depth, time):
+    def propagatingSearch(self, set, depth, time):
         self.protocol.propagatingSearch(self.connection, set, depth, time)
 
 
@@ -149,5 +149,5 @@ class RemoteEndpoint(Endpoint):
         return acceptableData
 
 
-    def processData(self, index, input):
-        return self.abilities[index].run(input)
+    def processData(self, index, set):
+        return self.abilities[index].run(set)
