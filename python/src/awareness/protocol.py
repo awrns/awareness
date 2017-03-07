@@ -13,19 +13,15 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def localSearch(self, connection, set, time):
+    def info(self, connection):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, connection, set, depth, time):
+    def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def getAcceptableData(self, connection):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def processData(self, connection, index, input, outputs):
+    def process(self, index, inputSet, progressCallback=None):
         raise NotImplementedError()
 
 
@@ -74,16 +70,14 @@ class Protocol0(Protocol):
              UNIT_ERROR: unitErrorStruct,
              DATA_ERROR: dataErrorStruct}
 
-    def localSearch(self, connection, set, time):
-        pass
 
-    def propagatingSearch(self, connection, set, depth, time):
-        pass
+    def info(self, connection):
+        raise NotImplementedError()
 
-    def getAcceptableData(self, connection):
-        pass
+    def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
+        raise NotImplementedError()
 
-    def processData(self, connection, index, input):
+    def process(self, connection, index, inputSet, progressCallback=None):
 
         dataStruct = self.processDataStruct(len(input))
         data = dataStruct.pack(index, *input)

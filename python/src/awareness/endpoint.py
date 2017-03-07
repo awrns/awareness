@@ -31,20 +31,15 @@ class Endpoint:
 
 
     @abstractmethod
-    def localSearch(self, set, time):
+    def info(self):
         raise NotImplementedError()
 
     @abstractmethod
-    def propagatingSearch(self, set, depth, time):
-        raise NotImplementedError()
-
-
-    @abstractmethod
-    def getAcceptableData(self):
+    def search(self, propagationLimit, trainingSet, testSet, progressCallback):
         raise NotImplementedError()
 
     @abstractmethod
-    def processData(self, index, set):
+    def process(self, index, inputSet, progressCallback):
         raise NotImplementedError()
 
 
@@ -74,13 +69,13 @@ class LocalEndpoint(Endpoint):
         self.backend.processingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
-    def localSearch(self, set, time): self.algorithm.localSearch(self.remoteEndpoints, set, time)
+    def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
+        self.algorithm.search(self.abilities, self.remoteEndpoints, trainingSet, testSet, progressCallback)
 
+    def process(self, index, inputSet, progressCallback=None):
+        return self.abilities[index].run(inputSet)
 
-    def propagatingSearch(self, set, depth, time): self.algorithm.propagatingSearch(self.remoteEndpoints, set, depth, time)
-
-
-    def getAcceptableData(self):
+    def info(self):
         acceptableData = []
 
         for eachAbility in self.abilities:
@@ -88,10 +83,6 @@ class LocalEndpoint(Endpoint):
             acceptableData.append(eachAcceptableData)
 
         return acceptableData
-
-
-    def processData(self, index, set):
-        return self.abilities[index].run(set)
 
 
 class RemoteEndpoint(Endpoint):
@@ -131,15 +122,13 @@ class RemoteEndpoint(Endpoint):
             self.abilities.append(newAbility)
 
 
-    def localSearch(self, set, time):
-        self.protocol.localSearch(self.connection, set, time)
+    def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
+        self.algorithm.search(self.connection, trainingSet, testSet, progressCallback)
 
+    def process(self, index, inputSet, progressCallback=None):
+        return self.abilities[index].run(inputSet)
 
-    def propagatingSearch(self, set, depth, time):
-        self.protocol.propagatingSearch(self.connection, set, depth, time)
-
-
-    def getAcceptableData(self):
+    def info(self):
         acceptableData = []
 
         for eachAbility in self.abilities:
@@ -147,7 +136,3 @@ class RemoteEndpoint(Endpoint):
             acceptableData.append(eachAcceptableData)
 
         return acceptableData
-
-
-    def processData(self, index, set):
-        return self.abilities[index].run(set)
