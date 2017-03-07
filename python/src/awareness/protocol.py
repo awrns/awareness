@@ -123,6 +123,6 @@ class Protocol0(Protocol):
         
         connection, address = listener.accept()
 
-        endpoint.backend.asyncConnectionSafe(handle, connection)
+        endpoint.backend.threadingAsync(handle, connection)
 
 

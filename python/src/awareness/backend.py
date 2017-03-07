@@ -15,11 +15,11 @@ class Backend:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def processingAsync(self, function, args, callback=lambda *args,**kwargs:None):
+    def processingAsync(self, function, args, callback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def threadingAsync(self, function, args, callback=lambda *args,**kwargs:None):
+    def threadingAsync(self, function, args, callback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -34,13 +34,15 @@ class Backend:
 class NativeBackend(Backend):
 
 
-    def processingAsync(self, function, args, callback=lambda *args,**kwargs:None):
+    def processingAsync(self, function, args, callback=None):
+        if not callback: callback = lambda *args,**kwargs:None
 
         pool = multiprocessing.Pool(1)
         pool.apply_async(function, [args], callback)
 
 
-    def threadingAsync(self, function, args, callback=lambda *args,**kwargs:None):
+    def threadingAsync(self, function, args, callback=None):
+        if not callback: callback = lambda *args,**kwargs:None
 
         def wrapWithCallback(task, callback): callback(task)
 

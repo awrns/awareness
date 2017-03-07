@@ -63,7 +63,7 @@ class RemoteAbility(Ability):
 
     def run(self, inputSet):
 
-        output = self.endpoint.protocol.processData(self.endpoint, self.index, inputSet)
+        output = self.endpoint.protocol.process(self.endpoint, self.index, inputSet)
 
         return output
 
