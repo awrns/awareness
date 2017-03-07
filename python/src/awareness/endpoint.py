@@ -31,7 +31,7 @@ class Endpoint:
 
 
     @abstractmethod
-    def info(self):
+    def profile(self):
         raise NotImplementedError()
 
     @abstractmethod
@@ -75,14 +75,13 @@ class LocalEndpoint(Endpoint):
     def process(self, index, inputSet, progressCallback=None):
         return self.abilities[index].run(inputSet)
 
-    def info(self):
-        acceptableData = []
+    def profile(self):
+        profile = []
 
         for eachAbility in self.abilities:
-            eachAcceptableData = (eachAbility.inputs, eachAbility.outputs)
-            acceptableData.append(eachAcceptableData)
+            profile.append(eachAbility.profile)
 
-        return acceptableData
+        return profile
 
 
 class RemoteEndpoint(Endpoint):
@@ -128,11 +127,10 @@ class RemoteEndpoint(Endpoint):
     def process(self, index, inputSet, progressCallback=None):
         return self.abilities[index].run(inputSet)
 
-    def info(self):
-        acceptableData = []
+    def profile(self):
+        profile = []
 
         for eachAbility in self.abilities:
-            eachAcceptableData = (eachAbility.inputs, eachAbility.outputs)
-            acceptableData.append(eachAcceptableData)
+            profile.append(eachAbility.profile)
 
-        return acceptableData
+        return profile
