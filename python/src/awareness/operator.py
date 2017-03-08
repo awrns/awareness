@@ -6,7 +6,7 @@ import data as i_data
 import protocol as i_protocol
 
 
-class Endpoint:
+class Operator:
     __metaclass__ = ABCMeta
 
     @abstractproperty
@@ -43,7 +43,7 @@ class Endpoint:
         raise NotImplementedError()
 
 
-class LocalEndpoint(Endpoint):
+class LocalOperator(Operator):
 
     host = ""
     port = -1
@@ -53,10 +53,10 @@ class LocalEndpoint(Endpoint):
 
     algorithm = None
     assemblies = []
-    remoteEndpoints = []
+    remoteOperators = []
 
 
-    def __init__(self, host="", port=1600, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteEndpoints = []):
+    def __init__(self, host="", port=1600, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteOperators = []):
         self.host = host
         self.port = port
         self.abilities = abilities
@@ -64,16 +64,16 @@ class LocalEndpoint(Endpoint):
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
         self.assemblies = assemblies
-        self.remoteEndpoints = remoteEndpoints
+        self.remoteOperators = remoteOperators
 
         self.backend.processingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
-        self.algorithm.search(self.abilities, self.remoteEndpoints, trainingSet, testSet, progressCallback)
+        self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
-        return self.abilities[index].run(inputSet)
+        return self.abilities[index].run(inputSet, progressCallback)
 
     def profile(self):
         profile = []
@@ -84,7 +84,7 @@ class LocalEndpoint(Endpoint):
         return profile
 
 
-class RemoteEndpoint(Endpoint):
+class RemoteOperator(Operator):
 
     host = ""
     port = -1
@@ -125,7 +125,7 @@ class RemoteEndpoint(Endpoint):
         self.algorithm.search(self.connection, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
-        return self.abilities[index].run(inputSet)
+        return self.abilities[index].run(inputSet, progressCallback)
 
     def profile(self):
         profile = []

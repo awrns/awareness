@@ -7,7 +7,7 @@ import socket
 import ability as i_ability
 import algorithm as i_algorithm
 import data as i_data
-import endpoint as i_endpoint
+import operator as i_operator
 import protocol as i_protocol
 
 

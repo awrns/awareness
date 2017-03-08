@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import algorithm as i_algorithm
 import backend as i_backend
 import data as i_data
-import endpoint as i_endpoint
+import operator as i_operator
 import protocol as i_protocol
 
 
@@ -10,7 +10,7 @@ class Ability:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def endpoint(self):
+    def operator(self):
         raise NotImplementedError()
 
     @abstractproperty
@@ -24,41 +24,41 @@ class Ability:
 
 
     @abstractmethod
-    def run(self, inputSet):
+    def run(self, inputSet, progressCallback=None):
         raise NotImplementedError()
 
 
 class LocalAbility(Ability):
 
-    endpoint = None
+    operator = None
     index = 0
 
     profile = []
 
 
-    def __init__(self, endpoint, index, profile):
-        self.endpoint = endpoint
+    def __init__(self, operator, index, profile):
+        self.operator = operator
         self.index = index
         self.profile = profile
 
 
 class RemoteAbility(Ability):
 
-    endpoint = None
+    operator = None
     index = 0
 
     profile = []
 
 
-    def __init__(self, endpoint, index, profile):
-        self.endpoint = endpoint
+    def __init__(self, operator, index, profile):
+        self.operator = operator
         self.index = index
         self.profile = profile
 
 
-    def run(self, inputSet):
+    def run(self, inputSet, progressCallback=None):
 
-        output = self.endpoint.protocol.process(self.endpoint, self.index, inputSet)
+        output = self.operator.protocol.process(self.index, inputSet, progressCallback)
 
         return output
 

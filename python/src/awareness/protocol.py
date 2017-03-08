@@ -6,7 +6,7 @@ import ability as i_ability
 import algorithm as i_algorithm
 import backend as i_backend
 import data as i_data
-import endpoint as i_endpoint
+import operator as i_operator
 
 
 class Protocol:
@@ -26,7 +26,7 @@ class Protocol:
 
 
     @abstractmethod
-    def provide(self, listener, endpoint):
+    def provide(self, listener, operator):
         raise NotImplementedError()
 
 
@@ -97,7 +97,7 @@ class Protocol0(Protocol):
         return output
 
 
-    def provide(self, listener, endpoint):
+    def provide(self, listener, operator):
 
         def handle(connection):
             
@@ -110,7 +110,7 @@ class Protocol0(Protocol):
                 index, input = dataStruct.unpack(recvData)
                 input = list(input)
 
-                output = endpoint.processData(index, input)
+                output = operator.processData(index, input)
 
                 itemStruct = self.itemResponseStruct(len(output))
                 data = itemStruct.pack(*output)
@@ -123,6 +123,6 @@ class Protocol0(Protocol):
         
         connection, address = listener.accept()
 
-        endpoint.backend.threadingAsync(handle, connection)
+        operator.backend.threadingAsync(handle, connection)
 
 

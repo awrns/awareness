@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import ability as i_ability
 import algorithm as i_algorithm
 import backend as i_backend
-import endpoint as i_endpoint
+import operator as i_operator
 import protocol as i_protocol
 
 
