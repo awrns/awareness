@@ -156,12 +156,10 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
 
-    name='Awareness Operator',
-    description='The functionality-distribution network, a new way to think about data transfer and processing on the Internet.',
+    description='A Python implementation of the Awareness operator, a new way to think about data transfer and processing on the Internet.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
     url='https://github.com/awrns/operator',
-    #download_url
     keywords = ['functionality', 'distribution', 'network', 'learning', 'processing', 'transfer'],
 )
 
