@@ -3,8 +3,6 @@ plugins {
     id "com.palantir.git-version" version "0.5.3"
 }
 
-version gitVersion()
-
 repositories {
     pyGradlePyPi()
 }
