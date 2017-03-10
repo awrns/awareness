@@ -137,19 +137,31 @@ class GradleDistribution(Distribution, object):
         except IOError:
             raise StopIteration
 
+#setup(
+#    distclass=GradleDistribution,
+#    package_dir={'': 'src'},
+#    packages=find_packages('src'),
+#    include_package_data=True,
+#
+#    entry_points={
+#        'console_scripts': [
+#            'hello_world = foo.hello:main',
+#        ],
+#    }
+#)
+
 setup(
     distclass=GradleDistribution,
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
 
-    name='awareness',
-    version='0.1.0',
-    description='The Functionality-Distribution Network, a new way to think about data transfer and processing on the Internet.',
+    name='Awareness Operator',
+    description='The functionality-distribution network, a new way to think about data transfer and processing on the Internet.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
-    url='https://github.com/awrns/awareness',
+    url='https://github.com/awrns/operator',
     #download_url
     keywords = ['functionality', 'distribution', 'network', 'learning', 'processing', 'transfer'],
-    classifiers = [],
 )
+
