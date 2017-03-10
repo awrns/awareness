@@ -36,11 +36,11 @@ class Operator:
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, propagationLimit, trainingSet, testSet, progressCallback):
+    def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputSet, progressCallback):
+    def process(self, index, inputSet, progressCallback=None):
         raise NotImplementedError()
 
 
