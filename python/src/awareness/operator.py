@@ -19,20 +19,20 @@ class Operator:
         raise NotImplementedError()
 
     @abstractproperty
-    def abilities(self):
+    def abilities(self):  # List of LocalAbility.
         raise NotImplementedError()
 
     @abstractproperty
-    def backend(self):
+    def backend(self):  # Any derivation from i_backend.Backend.
         raise NotImplementedError()
 
     @abstractproperty
-    def protocol(self):
+    def protocol(self):  # Any derivation from i_protocol.Protocol.
         raise NotImplementedError()
 
 
     @abstractmethod
-    def profile(self):
+    def profile(self):  # List of return values of profile() calls on each LocalAbility in abilities.
         raise NotImplementedError()
 
     @abstractmethod
@@ -53,8 +53,8 @@ class LocalOperator(Operator):
     protocol = None
 
     algorithm = None
-    assemblies = []
-    remoteOperators = []
+    assemblies = []  # List of i_assembly.Assembly.
+    remoteOperators = []  # List of RemoteOperator.
 
 
     def __init__(self,
@@ -70,26 +70,30 @@ class LocalOperator(Operator):
         self.host = host
         self.port = port
         self.abilities = abilities
-        self.backend = backend() if backend else i_backend.NativeBackend()
+        self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
         self.assemblies = assemblies
         self.remoteOperators = remoteOperators
 
+        # Kickoff the server process. Get a listener from self.backend, and give it to self.protocol to use.
         self.backend.processingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
+        # Search both the LocalAbilities here and the RemoteAbilities that the RemoteOperators make available.
         self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
+        # Hand inputSet to our indexed LocalAbility.
         return self.abilities[index].run(inputSet, progressCallback)
 
     def profile(self):
+        # Building a list of tuples.
         profile = []
 
         for eachAbility in self.abilities:
-            profile.append(eachAbility.profile)
+            profile.append(eachAbility.profile)  # eachAbility.profile is a 2-tuple
 
         return profile
 
