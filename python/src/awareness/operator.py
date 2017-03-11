@@ -32,7 +32,11 @@ class Operator:
 
 
     @abstractmethod
-    def profile(self):  # List of return values of profile() calls on each LocalAbility in abilities.
+    def searchCapabilities(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def processCapabilities(self):
         raise NotImplementedError()
 
     @abstractmethod
@@ -88,14 +92,18 @@ class LocalOperator(Operator):
         # Hand inputSet to our indexed LocalAbility.
         return self.abilities[index].run(inputSet, progressCallback)
 
-    def profile(self):
+    def searchCapabilities(self):
+
+        pass
+
+    def processCapabilities(self):
         # Building a list of tuples.
-        profile = []
+        capabilities = []
 
         for eachAbility in self.abilities:
-            profile.append(eachAbility.profile)  # eachAbility.profile is a 2-tuple
+            capabilities.append(eachAbility.profile)  # eachAbility.profile is a 2-tuple
 
-        return profile
+        return capabilities
 
 
 class RemoteOperator(Operator):
@@ -118,8 +126,10 @@ class RemoteOperator(Operator):
         self.host = host
         self.port = port
         self.abilities = abilities
-        self.backend = backend() if backend else i_backend.NativeBackend()
+        self.backend = backend() if backend else i_backend.NativeBackend()  # Set to default if None.
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
+
+        # Do a quick routine to get the Ability details.
         if self.abilities == []:
             self.connect()
             self.retrieveAbilities()
@@ -147,10 +157,15 @@ class RemoteOperator(Operator):
     def process(self, index, inputSet, progressCallback=None):
         return self.abilities[index].run(inputSet, progressCallback)
 
-    def profile(self):
-        profile = []
+
+    def searchCapabilities(self):
+
+        pass
+
+    def processCapabilities(self):
+        capabilities = []
 
         for eachAbility in self.abilities:
-            profile.append(eachAbility.profile)
+            capabilities.append(eachAbility.profile)
 
-        return profile
+        return capabilities
