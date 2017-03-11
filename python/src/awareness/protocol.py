@@ -90,7 +90,7 @@ class Protocol0(Protocol):
     dataResponseDatumStruct =       struct.Struct("!")
 
 
-    unitsPreStruct = {NOTHING: nothingPreStruct,
+    unitPreStructs = {NOTHING: nothingPreStruct,
                       INFO: infoPreStruct,
                       SET_SEARCH: setSearchPreStruct,
                       GET_SEARCH: getSearchPreStruct,
@@ -102,7 +102,7 @@ class Protocol0(Protocol):
                       DATA_RESPONSE: dataResponsePreStruct}
 
 
-    unitsDatumStruct = {NOTHING: nothingDatumStruct,
+    unitDatumStructs = {NOTHING: nothingDatumStruct,
                         INFO: infoDatumStruct,
                         SET_SEARCH: setSearchDatumStruct,
                         GET_SEARCH: getSearchDatumStruct,
@@ -127,7 +127,7 @@ class Protocol0(Protocol):
         pass
 
 
-    def send(self, connection, unitType, params):
+    def send(self, connection, unitType, params, datums):
 
         tranData = self.units[unitType].pack(params)
         tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, len(tranData))
@@ -147,26 +147,26 @@ class Protocol0(Protocol):
             return None
 
         try:
-            unitPreStruct = self.unitsPreStruct[unitType]
-            unitDatumStruct = self.unitsDatumStruct[unitType]
+            unitPreStruct = self.unitPreStructs[unitType]
+            unitDatumStruct = self.unitDatumStructs[unitType]
         except:
             self.send(connection, self.UNIT_ERROR, ())
             return None
 
 
         try:
-            paramsPre = unitPreStruct.unpack(recvData[:unitPreStruct.size])
-            paramsDatum = []
+            params = unitPreStruct.unpack(recvData[:unitPreStruct.size])
+            datums = []
             for i in range(len(recvData[unitPreStruct.size:])):
                 startDataIndex = unitPreStruct.size + (i*unitDatumStruct.size)
                 dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
-                paramsDatum.append(unitDatumStruct.unpack(dataRoi))
+                datums.append(unitDatumStruct.unpack(dataRoi))
         except:
             self.send(connection, self.DATA_ERROR, ())
             return None
 
 
-        return unitType, paramsPre, paramsDatum
+        return unitType, params, datums
 
 
 
