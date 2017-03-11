@@ -57,7 +57,16 @@ class LocalOperator(Operator):
     remoteOperators = []
 
 
-    def __init__(self, host="", port=1600, abilities = [], backend = None, protocol = None, algorithm = None, assemblies = [], remoteOperators = []):
+    def __init__(self,
+                 host="",
+                 port=1600,
+                 abilities = [],
+                 backend = None,
+                 protocol = None,
+                 algorithm = None,
+                 assemblies = [],
+                 remoteOperators = []):
+
         self.host = host
         self.port = port
         self.abilities = abilities
@@ -95,7 +104,13 @@ class RemoteOperator(Operator):
 
     connection = None
 
-    def __init__(self, host, port, abilities = [], backend = None, protocol = None):
+    def __init__(self,
+                 host,
+                 port,
+                 abilities = [],
+                 backend = None,
+                 protocol = None):
+
         self.host = host
         self.port = port
         self.abilities = abilities

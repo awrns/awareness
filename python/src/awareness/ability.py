@@ -37,7 +37,11 @@ class LocalAbility(Ability):
     profile = []
 
 
-    def __init__(self, operator, index, profile):
+    def __init__(self,
+                 operator,
+                 index,
+                 profile):
+
         self.operator = operator
         self.index = index
         self.profile = profile
@@ -51,7 +55,11 @@ class RemoteAbility(Ability):
     profile = []
 
 
-    def __init__(self, operator, index, profile):
+    def __init__(self,
+                 operator,
+                 index,
+                 profile):
+    
         self.operator = operator
         self.index = index
         self.profile = profile

@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import struct
 import misc
 import ability as i_ability
 import algorithm as i_algorithm
@@ -30,88 +29,7 @@ class Protocol:
 
 
 
-class Protocol0(Protocol):
-
-    pduHeaderStruct = struct.Struct("!2cQ")
-
-    searchIds = []
-    processIds = []
-
-    VERSION_BYTE =          0xA0
-
-    NOTHING =               0x00
-    INFO =                  0x01
-
-    SET_SEARCH =            0x10
-    GET_SEARCH =            0x11
-
-    SET_DATA =              0x20
-    GET_DATA =              0x21
-
-    UNIT_ERROR =            0x30
-    DATA_ERROR =            0x31
-
-    INFO_RESPONSE =         0x40
-    SEARCH_RESPONSE =       0x41
-    DATA_RESPONSE =         0x42
-
-
-    nothingPreStruct =              struct.Struct("!")
-    infoPreStruct =                 struct.Struct("!")
-
-    setSearchPreStruct =            struct.Struct("!")
-    getSearchPreStruct =            struct.Struct("!")
-
-    setDataPreStruct =              struct.Struct("!")
-    getDataPreStruct =              struct.Struct("!")
-
-    unitErrorPreStruct =            struct.Struct("!")
-    dataErrorPreStruct =            struct.Struct("!")
-
-    infoResponsePreStruct =         struct.Struct("!")
-    searchResponsePreStruct =       struct.Struct("!")
-    dataResponsePreStruct =         struct.Struct("!")
-
-
-    nothingDatumStruct =            struct.Struct("!")
-    infoDatumStruct =               struct.Struct("!")
-
-    setSearchDatumStruct =          struct.Struct("!")
-    getSearchDatumStruct =          struct.Struct("!")
-
-    setDataDatumStruct =            struct.Struct("!")
-    getDataDatumStruct =            struct.Struct("!")
-
-    unitErrorDatumStruct =          struct.Struct("!")
-    dataErrorDatumStruct =          struct.Struct("!")
-
-    infoResponseDatumStruct =       struct.Struct("!")
-    searchResponseDatumStruct =     struct.Struct("!")
-    dataResponseDatumStruct =       struct.Struct("!")
-
-
-    unitPreStructs = {NOTHING: nothingPreStruct,
-                      INFO: infoPreStruct,
-                      SET_SEARCH: setSearchPreStruct,
-                      GET_SEARCH: getSearchPreStruct,
-                      SET_DATA: setDataPreStruct,
-                      GET_DATA: getDataPreStruct,
-                      UNIT_ERROR: unitErrorPreStruct,
-                      DATA_ERROR: dataErrorPreStruct,
-                      INFO_RESPONSE: infoResponsePreStruct,
-                      DATA_RESPONSE: dataResponsePreStruct}
-
-
-    unitDatumStructs = {NOTHING: nothingDatumStruct,
-                        INFO: infoDatumStruct,
-                        SET_SEARCH: setSearchDatumStruct,
-                        GET_SEARCH: getSearchDatumStruct,
-                        SET_DATA: setDataDatumStruct,
-                        GET_DATA: getDataDatumStruct,
-                        UNIT_ERROR: unitErrorDatumStruct,
-                        DATA_ERROR: dataErrorDatumStruct,
-                        INFO_RESPONSE: infoResponseDatumStruct,
-                        DATA_RESPONSE: dataResponseDatumStruct}
+class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def info(self, connection):
@@ -127,10 +45,10 @@ class Protocol0(Protocol):
         pass
 
 
-    def send(self, connection, unitType, params, datums):
+    def send(self, connection, unitType, requestedType, params, datums):
 
         tranData = self.units[unitType].pack(params)
-        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, len(tranData))
+        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranData))
 
         connection.sendall(tranHeader)
         connection.sendall(tranData)
@@ -139,18 +57,18 @@ class Protocol0(Protocol):
     def receive(self, connection):
 
         recvHeader =  connection.recv(self.pduHeaderStruct.size)
-        version, unitType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
+        version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen)
 
         if version != self.VERSION_BYTE:
-            self.send(connection, self.UNIT_ERROR, ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, ())
             return None
 
         try:
             unitPreStruct = self.unitPreStructs[unitType]
             unitDatumStruct = self.unitDatumStructs[unitType]
         except:
-            self.send(connection, self.UNIT_ERROR, ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, ())
             return None
 
 
@@ -162,11 +80,11 @@ class Protocol0(Protocol):
                 dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
                 datums.append(unitDatumStruct.unpack(dataRoi))
         except:
-            self.send(connection, self.DATA_ERROR, ())
+            self.send(connection, self.DATA_ERROR, self.NOTHING, ())
             return None
 
 
-        return unitType, params, datums
+        return unitType, requestedType, params, datums
 
 
 
