@@ -7,10 +7,13 @@ import protocol as i_protocol
 
 class ProgressingResult:
 
+    progress = 0
     result = None
+
     stopping = False
 
-    def progressCallback(self, result):
+    def progressCallback(self, progress, result):
+        self.progress = progress
         self.result = result
         return self.stopping
 

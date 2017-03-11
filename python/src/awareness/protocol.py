@@ -32,7 +32,10 @@ class Protocol:
 
 class Protocol0(Protocol):
 
-    pduHeaderStruct = struct.Struct("!3cQ")
+    pduHeaderStruct = struct.Struct("!2cQ")
+
+    searchIds = []
+    processIds = []
 
     VERSION_BYTE =          0xA0
 
@@ -48,76 +51,133 @@ class Protocol0(Protocol):
     UNIT_ERROR =            0x30
     DATA_ERROR =            0x31
 
-    nothingStruct =         lambda dataLen: struct.Struct("!")
-    infoStruct =            lambda dataLen: struct.Struct("!")
+    INFO_RESPONSE =         0x40
+    SEARCH_RESPONSE =       0x41
+    DATA_RESPONSE =         0x42
 
-    setSearchStruct =       lambda dataLen: struct.Struct("!")
-    getSearchStruct =       lambda dataLen: struct.Struct("!")
 
-    setDataStruct =         lambda dataLen: struct.Struct("!")
-    getDataStruct =         lambda dataLen: struct.Struct("!")
+    nothingPreStruct =              struct.Struct("!")
+    infoPreStruct =                 struct.Struct("!")
 
-    unitErrorStruct =       lambda dataLen: struct.Struct("!")
-    dataErrorStruct =       lambda dataLen: struct.Struct("!")
+    setSearchPreStruct =            struct.Struct("!")
+    getSearchPreStruct =            struct.Struct("!")
 
-    units = {NOTHING: nothingStruct,
-             INFO: infoStruct,
-             SET_SEARCH: setSearchStruct,
-             GET_SEARCH: getSearchStruct,
-             SET_DATA: setDataStruct,
-             GET_DATA: getDataStruct,
-             UNIT_ERROR: unitErrorStruct,
-             DATA_ERROR: dataErrorStruct}
+    setDataPreStruct =              struct.Struct("!")
+    getDataPreStruct =              struct.Struct("!")
+
+    unitErrorPreStruct =            struct.Struct("!")
+    dataErrorPreStruct =            struct.Struct("!")
+
+    infoResponsePreStruct =         struct.Struct("!")
+    searchResponsePreStruct =       struct.Struct("!")
+    dataResponsePreStruct =         struct.Struct("!")
+
+
+    nothingDatumStruct =            struct.Struct("!")
+    infoDatumStruct =               struct.Struct("!")
+
+    setSearchDatumStruct =          struct.Struct("!")
+    getSearchDatumStruct =          struct.Struct("!")
+
+    setDataDatumStruct =            struct.Struct("!")
+    getDataDatumStruct =            struct.Struct("!")
+
+    unitErrorDatumStruct =          struct.Struct("!")
+    dataErrorDatumStruct =          struct.Struct("!")
+
+    infoResponseDatumStruct =       struct.Struct("!")
+    searchResponseDatumStruct =     struct.Struct("!")
+    dataResponseDatumStruct =       struct.Struct("!")
+
+
+    unitsPreStruct = {NOTHING: nothingPreStruct,
+                      INFO: infoPreStruct,
+                      SET_SEARCH: setSearchPreStruct,
+                      GET_SEARCH: getSearchPreStruct,
+                      SET_DATA: setDataPreStruct,
+                      GET_DATA: getDataPreStruct,
+                      UNIT_ERROR: unitErrorPreStruct,
+                      DATA_ERROR: dataErrorPreStruct,
+                      INFO_RESPONSE: infoResponsePreStruct,
+                      DATA_RESPONSE: dataResponsePreStruct}
+
+
+    unitsDatumStruct = {NOTHING: nothingDatumStruct,
+                        INFO: infoDatumStruct,
+                        SET_SEARCH: setSearchDatumStruct,
+                        GET_SEARCH: getSearchDatumStruct,
+                        SET_DATA: setDataDatumStruct,
+                        GET_DATA: getDataDatumStruct,
+                        UNIT_ERROR: unitErrorDatumStruct,
+                        DATA_ERROR: dataErrorDatumStruct,
+                        INFO_RESPONSE: infoResponseDatumStruct,
+                        DATA_RESPONSE: dataResponseDatumStruct}
 
 
     def info(self, connection):
-        raise NotImplementedError()
+        
+        pass
 
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
-        raise NotImplementedError()
+        
+        pass
 
     def process(self, connection, index, inputSet, progressCallback=None):
 
-        dataStruct = self.processDataStruct(len(input))
-        data = dataStruct.pack(index, *input)
+        pass
 
-        header = self.pduHeaderStruct.pack(self.VERSION_BYTE, self.PROCESS_DATA, self.ITEM_RESPONSE, len(data))
 
-        connection.sendall(header)
-        connection.sendall(data)
+    def send(self, connection, unitType, params):
 
-        recvHeader = connection.recv(self.pduHeaderStruct.size)
-        version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
+        tranData = self.units[unitType].pack(params)
+        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, len(tranData))
+
+        connection.sendall(tranHeader)
+        connection.sendall(tranData)
+
+
+    def receive(self, connection):
+
+        recvHeader =  connection.recv(self.pduHeaderStruct.size)
+        version, unitType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen)
 
-        itemStruct = self.itemResponseStruct(dataLen)
-        output = itemStruct.unpack(recvData)
+        if version != self.VERSION_BYTE:
+            self.send(connection, self.UNIT_ERROR, ())
+            return None
 
-        return output
+        try:
+            unitPreStruct = self.unitsPreStruct[unitType]
+            unitDatumStruct = self.unitsDatumStruct[unitType]
+        except:
+            self.send(connection, self.UNIT_ERROR, ())
+            return None
+
+
+        try:
+            paramsPre = unitPreStruct.unpack(recvData[:unitPreStruct.size])
+            paramsDatum = []
+            for i in range(len(recvData[unitPreStruct.size:])):
+                startDataIndex = unitPreStruct.size + (i*unitDatumStruct.size)
+                dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
+                paramsDatum.append(unitDatumStruct.unpack(dataRoi))
+        except:
+            self.send(connection, self.DATA_ERROR, ())
+            return None
+
+
+        return unitType, paramsPre, paramsDatum
+
 
 
     def provide(self, listener, operator):
 
         def handle(connection):
             
-            recvHeader = connection.recv(self.pduHeaderStruct.size)
-            version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
-            recvData = connection.recv(dataLen)
+            unitType, datums = self.receive(connection)
 
-            if unitType == self.PROCESS_DATA:
-                dataStruct = self.processDataStruct(dataLen - 1)
-                index, input = dataStruct.unpack(recvData)
-                input = list(input)
-
-                output = operator.processData(index, input)
-
-                itemStruct = self.itemResponseStruct(len(output))
-                data = itemStruct.pack(*output)
-
-                header = self.pduHeaderStruct.pack(self.VERSION_BYTE, self.ITEM_RESPONSE, self.NOTHING, len(data))
-                
-                connection.sendall(header)
-                connection.sendall(data)
+            if unitType == self.INFO:
+                self.send(connection, self.INFO_RESPONSE, )
 
         
         connection, address = listener.accept()
