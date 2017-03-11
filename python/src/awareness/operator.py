@@ -155,7 +155,7 @@ class RemoteOperator(Operator):
         self.algorithm.search(self.connection, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
-        return self.abilities[index].run(inputSet, progressCallback)
+        return self.abilities[index].run(self.connection, inputSet, progressCallback)
 
 
     def searchCapabilities(self):

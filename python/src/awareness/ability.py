@@ -59,15 +59,15 @@ class RemoteAbility(Ability):
                  operator,
                  index,
                  profile):
-    
+
         self.operator = operator
         self.index = index
         self.profile = profile
 
 
-    def run(self, inputSet, progressCallback=None):
+    def run(self, connection, inputSet, progressCallback=None):
 
-        output = self.operator.protocol.process(self.index, inputSet, progressCallback)
+        output = self.operator.protocol.process(connection, self.index, inputSet, progressCallback)
 
         return output
 

@@ -43,7 +43,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def processCapabilities(self, connection):
         
-        pass
+        self.send(connection, self.BLANK, self.PROCESS_CAPABILITIES, (), ())
+
+        unitType, requestedType, params, datums = self.receive(connection)
+
+        
+
 
 
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
@@ -81,14 +86,14 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         recvData = connection.recv(dataLen)
 
         if version != self.VERSION_BYTE:
-            self.send(connection, self.UNIT_ERROR, self.NOTHING, ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
             return None
 
         try:
             unitPreStruct = self.unitPreStructs[unitType]
             unitDatumStruct = self.unitDatumStructs[unitType]
         except:
-            self.send(connection, self.UNIT_ERROR, self.NOTHING, ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
             return None
 
 
@@ -100,7 +105,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
                 datums.append(unitDatumStruct.unpack(dataRoi))
         except:
-            self.send(connection, self.DATA_ERROR, self.NOTHING, ())
+            self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
             return None
 
 
