@@ -47,11 +47,21 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def send(self, connection, unitType, requestedType, params, datums):
 
-        tranData = self.units[unitType].pack(params)
-        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranData))
+        unitPreStruct = self.unitPreStructs[unitType]
+        unitDatumStruct = self.unitDatumStructs[unitType]
+
+        tranDatums = ''
+        tranPre = unitPreStruct.pack(params)
+
+        for datum in datums:
+            tranDatums.append(unitDatumStruct.pack(datum))
+
+
+        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPre))
 
         connection.sendall(tranHeader)
-        connection.sendall(tranData)
+        connection.sendall(tranPre)
+        connection.sendall(tranDatums)
 
 
     def receive(self, connection):
