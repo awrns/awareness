@@ -25,9 +25,7 @@ class ProgressingResult:
 class Protocol0Constants:
 
     pduHeaderStruct = struct.Struct("!3cQ")
-
-    searchIds = []
-    processIds = []
+    
 
     VERSION_BYTE =          0xA0
 
