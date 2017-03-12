@@ -60,22 +60,22 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         pass
 
 
-    def send(self, connection, unitType, requestedType, params, datums):
+    def send(self, connection, unitType, requestedType, pres, datums):
 
         unitPreStruct = self.unitPreStructs[unitType]
         unitDatumStruct = self.unitDatumStructs[unitType]
 
         tranDatums = ''
-        tranPre = unitPreStruct.pack(params)
+        tranPres = unitPreStruct.pack(pres)
 
         for datum in datums:
             tranDatums.append(unitDatumStruct.pack(datum))
 
 
-        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPre))
+        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPres))
 
         connection.sendall(tranHeader)
-        connection.sendall(tranPre)
+        connection.sendall(tranPres)
         connection.sendall(tranDatums)
 
 
@@ -98,7 +98,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
         try:
-            params = unitPreStruct.unpack(recvData[:unitPreStruct.size])
+            pres = unitPreStruct.unpack(recvData[:unitPreStruct.size])
             datums = []
             for i in range(len(recvData[unitPreStruct.size:])):
                 startDataIndex = unitPreStruct.size + (i*unitDatumStruct.size)
@@ -109,7 +109,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             return None
 
 
-        return unitType, requestedType, params, datums
+        return unitType, requestedType, pres, datums
 
 
 
