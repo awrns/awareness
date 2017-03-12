@@ -13,12 +13,12 @@ class Protocol0Constants:
     BLANK =                 0x01
 
     SEARCH_CAPABILITIES =   0x10
-    SEARCH_TASK_PARAMS =    0x11
+    SEARCH_TASK_PARAMS =         0x11
     SEARCH_TASK_START =     0x12
     SEARCH_TASK_STOP =      0x13
 
     PROCESS_CAPABILITIES =  0x20
-    PROCESS_TASK_PARAMS =   0x21
+    PROCESS_TASK_PARAMS =        0x21
     PROCESS_TASK_START =    0x22
     PROCESS_TASK_STOP =     0x23
 

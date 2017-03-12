@@ -32,11 +32,7 @@ class Operator:
 
 
     @abstractmethod
-    def searchCapabilities(self):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def processCapabilities(self):
+    def capabilities(self):
         raise NotImplementedError()
 
     @abstractmethod
@@ -92,11 +88,7 @@ class LocalOperator(Operator):
         # Hand inputSet to our indexed LocalAbility.
         return self.abilities[index].run(inputSet, progressCallback)
 
-    def searchCapabilities(self):
-
-        pass
-
-    def processCapabilities(self):
+    def capabilities(self):
         # Building a list of tuples.
         capabilities = []
 
@@ -158,11 +150,7 @@ class RemoteOperator(Operator):
         return self.abilities[index].run(self.connection, inputSet, progressCallback)
 
 
-    def searchCapabilities(self):
-
-        pass
-
-    def processCapabilities(self):
+    def capabilities(self):
         capabilities = []
 
         for eachAbility in self.abilities:

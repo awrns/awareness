@@ -11,12 +11,9 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def searchCapabilities(self, connection):
+    def capabilities(self, connection):
         raise NotImplementedError()
 
-    @abstractmethod
-    def processCapabilities(self, connection):
-        raise NotImplementedError()
 
     @abstractmethod
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
@@ -36,12 +33,7 @@ class Protocol:
 class Protocol0(Protocol, misc.Protocol0Constants):
 
 
-    def searchCapabilities(self, connection):
-        
-        pass
-
-
-    def processCapabilities(self, connection):
+    def capabilities(self, connection):
         
         self.send(connection, self.BLANK, self.PROCESS_CAPABILITIES, (), ())
 
