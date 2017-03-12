@@ -1,26 +1,6 @@
 import struct
 
 
-class ProgressingResult:
-
-    progress = -1
-    result = None
-
-    running = True
-
-    def progressCallback(self, progress, result):
-
-        if self.running:
-            self.progress = progress
-            self.result = result
-
-        return self.running
-
-    def stop(self):
-        self.running = False
-
-
-
 
 class Protocol0Constants:
 
