@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
 import misc
-import ability as i_ability
+import affinity as i_affinity
 import algorithm as i_algorithm
 import backend as i_backend
 import data as i_data

@@ -7,7 +7,7 @@ import operator as i_operator
 import protocol as i_protocol
 
 
-class Ability:
+class Affinity:
     __metaclass__ = ABCMeta
 
     @abstractproperty
@@ -29,7 +29,7 @@ class Ability:
         raise NotImplementedError()
 
 
-class LocalAbility(Ability):
+class LocalAffinity(Affinity):
 
     operator = None
     index = 0
@@ -47,7 +47,7 @@ class LocalAbility(Ability):
         self.profile = profile
 
 
-class RemoteAbility(Ability):
+class RemoteAffinity(Affinity):
 
     operator = None
     index = 0

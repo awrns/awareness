@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
 import misc
-import ability as i_ability
+import affinity as i_affinity
 import algorithm as i_algorithm
 import backend as i_backend
 import data as i_data
@@ -19,7 +19,7 @@ class Operator:
         raise NotImplementedError()
 
     @abstractproperty
-    def abilities(self):  # List of LocalAbility.
+    def affinities(self):  # List of LocalAffinity.
         raise NotImplementedError()
 
     @abstractproperty
@@ -48,7 +48,7 @@ class LocalOperator(Operator):
 
     host = ""
     port = -1
-    abilities = []
+    affinities = []
     backend = None
     protocol = None
 
@@ -60,7 +60,7 @@ class LocalOperator(Operator):
     def __init__(self,
                  host="",
                  port=1600,
-                 abilities = [],
+                 affinities = [],
                  backend = None,
                  protocol = None,
                  algorithm = None,
@@ -69,7 +69,7 @@ class LocalOperator(Operator):
 
         self.host = host
         self.port = port
-        self.abilities = abilities
+        self.affinities = affinities
         self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
@@ -81,19 +81,19 @@ class LocalOperator(Operator):
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
-        # Search both the LocalAbilities here and the RemoteAbilities that the RemoteOperators make available.
+        # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
         self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
-        # Hand inputSet to our indexed LocalAbility.
-        return self.abilities[index].run(inputSet, progressCallback)
+        # Hand inputSet to our indexed LocalAffinity.
+        return self.affinities[index].run(inputSet, progressCallback)
 
     def capabilities(self):
         # Building a list of tuples.
         capabilities = []
 
-        for eachAbility in self.abilities:
-            capabilities.append(eachAbility.profile)  # eachAbility.profile is a 2-tuple
+        for eachAffinity in self.affinities:
+            capabilities.append(eachAffinity.profile)  # eachAbility.profile is a 2-tuple
 
         return capabilities
 
@@ -102,7 +102,7 @@ class RemoteOperator(Operator):
 
     host = ""
     port = -1
-    abilities = []
+    affinities = []
     backend = None
     protocol = None
 
@@ -111,18 +111,18 @@ class RemoteOperator(Operator):
     def __init__(self,
                  host,
                  port,
-                 abilities = [],
+                 affinities = [],
                  backend = None,
                  protocol = None):
 
         self.host = host
         self.port = port
-        self.abilities = abilities
+        self.affinities = affinities
         self.backend = backend() if backend else i_backend.NativeBackend()  # Set to default if None.
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
 
-        # Do a quick routine to get the Ability details.
-        if self.abilities == []:
+        # Do a quick routine to get the Affinity details.
+        if len(self.affinities) == 0:
             self.connect()
             self.retrieveAbilities()
             self.disconnect()
@@ -134,26 +134,26 @@ class RemoteOperator(Operator):
         self.connection.close()
         self.connection = None
 
-    def retrieveAbilities(self):
+    def retrieveAffinities(self):
         acceptableData = self.protocol.getAcceptableData(self.connection)
         for i in range(len(acceptableData)):
             eachAcceptableData = acceptableData[i]
-            newAbility = i_ability.RemoteAbility(self, i, eachAcceptableData[0], eachAcceptableData[1])
+            newAffinity = i_affinity.RemoteAffinity(self, i, eachAcceptableData[0], eachAcceptableData[1])
 
-            self.abilities.append(newAbility)
+            self.affinities.append(newAffinity)
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
         self.algorithm.search(self.connection, trainingSet, testSet, progressCallback)
 
     def process(self, index, inputSet, progressCallback=None):
-        return self.abilities[index].run(self.connection, inputSet, progressCallback)
+        return self.affinities[index].run(self.connection, inputSet, progressCallback)
 
 
     def capabilities(self):
         capabilities = []
 
-        for eachAbility in self.abilities:
-            capabilities.append(eachAbility.profile)
+        for eachAffinity in self.affinities:
+            capabilities.append(eachAffinity.profile)
 
         return capabilities

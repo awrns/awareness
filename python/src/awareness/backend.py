@@ -3,7 +3,7 @@ import multiprocessing
 import threading
 import socket
 import misc
-import ability as i_ability
+import affinity as i_affinity
 import algorithm as i_algorithm
 import data as i_data
 import operator as i_operator
