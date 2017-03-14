@@ -46,7 +46,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         pass
 
 
-    def send(self, connection, valid, unitType, requestedType, pres, datums):
+    def send(self, connection, unitType, requestedType, pres, datums):
 
         unitPreStruct = self.unitPreStructs[unitType]
         unitDatumStruct = self.unitDatumStructs[unitType]
@@ -74,6 +74,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
             return None
+
+        if unitType not in valid or requestedType not in valid[unitType]:
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
+            return None
+
 
         try:
             unitPreStruct = self.unitPreStructs[unitType]
