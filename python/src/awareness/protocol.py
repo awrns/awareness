@@ -35,13 +35,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def capabilities(self, connection):
         
-        self.send(connection, self.BLANK, self.PROCESS_CAPABILITIES, (), ())
-
-        unitType, requestedType, params, datums = self.receive(connection)
-
-        
-
-
+        pass
 
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
         
@@ -52,7 +46,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         pass
 
 
-    def send(self, connection, unitType, requestedType, pres, datums):
+    def send(self, connection, valid, unitType, requestedType, pres, datums):
 
         unitPreStruct = self.unitPreStructs[unitType]
         unitDatumStruct = self.unitDatumStructs[unitType]
@@ -71,7 +65,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         connection.sendall(tranDatums)
 
 
-    def receive(self, connection):
+    def receive(self, connection, valid):
 
         recvHeader =  connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
@@ -109,10 +103,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         def handle(connection):
             
-            unitType, datums = self.receive(connection)
-
-            if unitType == self.INFO:
-                self.send(connection, self.INFO_RESPONSE, )
+            pass
 
         
         connection, address = listener.accept()
@@ -120,5 +111,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         operator.backend.threadingAsync(handle, connection)
 
 
-    def access(self, connection, sendQueue, receiveCallbacks):
+    def access(self, connection, sendQueue, receiveCallbacks)
+    
         pass

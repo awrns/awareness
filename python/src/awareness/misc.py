@@ -92,3 +92,21 @@ class Protocol0Constants:
                         PROCESS_STATUS: processStatusDatumStruct,
                         UNIT_ERROR: unitErrorDatumStruct,
                         DATA_ERROR: dataErrorDatumStruct}
+
+
+    validProviderToAccessor = {BLANK: (),
+                               SEARCH_CAPABILITIES: (),
+                               SEARCH_PARAMS: (),
+                               SEARCH_STATUS: (),
+                               PROCESS_CAPABILITIES: (),
+                               PROCESS_PARAMS: (),
+                               PROCESS_STATUS: ()}
+
+
+    validAccessorToProvider = {BLANK: (SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               SEARCH_PARAMS: (BLANK),
+                               SEARCH_START: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               SEARCH_STOP: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               PROCESS_PARAMS: (BLANK),
+                               PROCESS_START: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               PROCESS_STOP: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS)}
