@@ -76,8 +76,8 @@ class LocalOperator(Operator):
         self.assemblies = assemblies
         self.remoteOperators = remoteOperators
 
-        # Kickoff the server process. Get a listener from self.backend, and give it to self.protocol to use.
-        self.backend.processingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
+        # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
+        self.backend.threadingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
