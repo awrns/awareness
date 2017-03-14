@@ -96,31 +96,46 @@ class Protocol0Constants:
                         DATA_ERROR: dataErrorDatumStruct}
 
 
-    validProviderToAccessor = {BLANK: (),
-                               SEARCH_CAPABILITIES: (),
-                               SEARCH_PARAMS: (),
-                               SEARCH_STATUS: (),
-                               PROCESS_CAPABILITIES: (),
-                               PROCESS_PARAMS: (),
-                               PROCESS_STATUS: ()}
+    validProviderToAccessor = {BLANK: (NOTHING),
+                               SEARCH_CAPABILITIES: (NOTHING),
+                               SEARCH_PARAMS: (NOTHING),
+                               SEARCH_STATUS: (NOTHING),
+                               PROCESS_CAPABILITIES: (NOTHING),
+                               PROCESS_PARAMS: (NOTHING),
+                               PROCESS_STATUS: (NOTHING)}
 
 
-    validAccessorToProvider = {BLANK: (SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
-                               SEARCH_PARAMS: (BLANK),
-                               SEARCH_START: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
-                               SEARCH_STOP: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
-                               PROCESS_PARAMS: (BLANK),
-                               PROCESS_START: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
-                               PROCESS_STOP: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS)}
+    validAccessorToProvider = {BLANK: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               SEARCH_PARAMS: (NOTHING, BLANK),
+                               SEARCH_START: (NOTHING, BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               SEARCH_STOP: (NOTHING, BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               PROCESS_PARAMS: (NOTHING, BLANK),
+                               PROCESS_START: (NOTHING, BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
+                               PROCESS_STOP: (NOTHING, BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS)}
 
 
 class AccessorCallbackSet:
     __metaclass__ = ABCMeta
 
     @abstractproperty
-    def searchStatusUpdate(self):
+    def searchCapabilities(self):
+        raise NotImplementedError()
+
+    def searchParams(self):
         raise NotImplementedError()
 
     @abstractproperty
-    def processStatusUpdate(self):
+    def searchStatus(self):
+        raise NotImplementedError()
+
+    @abstractproperty
+    def processCapabilities(self):
+        raise NotImplementedError()
+
+    @abstractproperty
+    def processParams(self):
+        raise NotImplementedError()
+
+    @abstractproperty
+    def processStatus(self):
         raise NotImplementedError()

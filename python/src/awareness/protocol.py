@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
+import socket
 import misc
 import affinity as i_affinity
 import algorithm as i_algorithm
@@ -125,15 +126,64 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         
         connection, address = listener.accept()
 
-        operator.backend.threadingAsync(self.provide, (connection, operator))
+        operator.backend.threadingAsync(self.provideReceiveMonitor, (connection, operator))
 
 
 
     def provideReceiveMonitor(self, connection, operator):
 
-        pass
+        while True:
+            try:
+
+                res = self.receive(connection, self.validAccessorToProvider)
+
+                if res is not None:
+
+                    unitType, requestedType, pres, datums = res
+
+                    if unitType == self.BLANK:
+                        if requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
+                        elif requestedType == self.SEARCH_CAPABILITIES: pass  # TODO stuff.
+
+            except socket.error:
+                break
 
 
     def accessReceiveMonitor(self, connection, callbackSet):
 
-        pass
+        while True:
+            try:
+
+                res = self.receive(connection, self.validProviderToAccessor)
+
+                if res is not None:
+
+                    unitType, requestedType, pres, datums = res
+
+                    if unitType == self.BLANK:
+                        pass
+# TODO Consolidate pres and datums for easier unpacking/management...
+                    elif unitType == self.SEARCH_CAPABILITIES:
+                        callbackSet.searchCapabilities(pres, datums)
+
+                    elif unitType == self.SEARCH_PARAMS:
+                        callbackSet.searchParams(pres, datums)
+
+                    elif unitType == self.SEARCH_STATUS:
+                        callbackSet.searchStatus(pres, datums)
+
+                    elif unitType == self.PROCESS_CAPABILITIES:
+                        callbackSet.processCapabilities(pres, datums)
+
+                    elif unitType == self.PROCESS_PARAMS:
+                        callbackSet.processParams(pres, datums)
+
+                    elif unitType == self.PROCESS_STATUS:
+                        callbackSet.processStatus(pres, datums)
+
+
+            except socket.error:
+                break
+
+
+
