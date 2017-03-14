@@ -32,7 +32,11 @@ class Operator:
 
 
     @abstractmethod
-    def capabilities(self):
+    def searchCapabilities(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def processCapabilities(self):
         raise NotImplementedError()
 
     @abstractmethod
@@ -77,7 +81,7 @@ class LocalOperator(Operator):
         self.remoteOperators = remoteOperators
 
         # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
-        self.backend.threadingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
+        self.backend.threadingAsync(self.protocol.serve, (self.backend.listen(host=host,port=port), self))
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressCallback=None):
@@ -88,7 +92,10 @@ class LocalOperator(Operator):
         # Hand inputSet to our indexed LocalAffinity.
         return self.affinities[index].run(inputSet, progressCallback)
 
-    def capabilities(self):
+    def searchCapabilities(self):
+        pass
+
+    def processCapabilities(self):
         # Building a list of tuples.
         capabilities = []
 
@@ -149,8 +156,10 @@ class RemoteOperator(Operator):
     def process(self, index, inputSet, progressCallback=None):
         return self.affinities[index].run(self.connection, inputSet, progressCallback)
 
+    def searchCapabilities(self):
+        pass
 
-    def capabilities(self):
+    def processCapabilities(self):
         capabilities = []
 
         for eachAffinity in self.affinities:

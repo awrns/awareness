@@ -11,9 +11,12 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def capabilities(self, connection):
+    def searchCapabilities(self, connection):
         raise NotImplementedError()
 
+    @abstractmethod
+    def processCapabilities(self, connection):
+        raise NotImplementedError()
 
     @abstractmethod
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
@@ -25,7 +28,17 @@ class Protocol:
 
 
     @abstractmethod
-    def provide(self, listener, operator):
+    def serve(self, listener, operator):
+        raise NotImplementedError()
+
+
+    @abstractmethod
+    def provideReceiveMonitor(self, connection, operator):
+        raise NotImplementedError()
+
+
+    @abstractmethod
+    def accessReceiveMonitor(self, connection, callbackSet):
         raise NotImplementedError()
 
 
@@ -33,7 +46,11 @@ class Protocol:
 class Protocol0(Protocol, misc.Protocol0Constants):
 
 
-    def capabilities(self, connection):
+    def searchCapabilities(self, connection):
+        
+        pass
+
+    def processCapabilities(self, connection):
         
         pass
 
@@ -104,18 +121,19 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
 
-    def provide(self, listener, operator):
-
-        def handle(connection):
-            
-            pass
-
+    def serve(self, listener, operator):
         
         connection, address = listener.accept()
 
-        operator.backend.threadingAsync(handle, connection)
+        operator.backend.threadingAsync(self.provide, (connection, operator))
 
 
-    def access(self, connection, sendQueue, receiveCallbacks):
+
+    def provideReceiveMonitor(self, connection, operator):
+
+        pass
+
+
+    def accessReceiveMonitor(self, connection, callbackSet):
 
         pass

@@ -1,3 +1,5 @@
+from abc import ABCMeta, abstractproperty
+
 import struct
 
 
@@ -110,3 +112,15 @@ class Protocol0Constants:
                                PROCESS_PARAMS: (BLANK),
                                PROCESS_START: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS),
                                PROCESS_STOP: (BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS)}
+
+
+class AccessorCallbackSet:
+    __metaclass__ = ABCMeta
+
+    @abstractproperty
+    def searchStatusUpdate(self):
+        raise NotImplementedError()
+
+    @abstractproperty
+    def processStatusUpdate(self):
+        raise NotImplementedError()
