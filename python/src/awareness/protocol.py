@@ -111,6 +111,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         operator.backend.threadingAsync(handle, connection)
 
 
-    def access(self, connection, sendQueue, receiveCallbacks)
-    
+    def access(self, connection, sendQueue, receiveCallbacks):
+
         pass
