@@ -13,16 +13,16 @@ class Protocol0Constants:
     BLANK =                 0x01
 
     SEARCH_CAPABILITIES =   0x10
-    SEARCH_TASK_PARAMS =    0x11
-    SEARCH_TASK_START =     0x12
-    SEARCH_TASK_STOP =      0x13
-    SEARCH_TASK_STATUS =    0x14
+    SEARCH_PARAMS =    0x11
+    SEARCH_START =     0x12
+    SEARCH_STOP =      0x13
+    SEARCH_STATUS =    0x14
 
     PROCESS_CAPABILITIES =  0x20
-    PROCESS_TASK_PARAMS =   0x21
-    PROCESS_TASK_START =    0x22
-    PROCESS_TASK_STOP =     0x23
-    PROCESS_TASK_STATUS =   0x24
+    PROCESS_PARAMS =   0x21
+    PROCESS_START =    0x22
+    PROCESS_STOP =     0x23
+    PROCESS_STATUS =   0x24
 
     UNIT_ERROR =            0x30
     DATA_ERROR =            0x31
@@ -31,16 +31,16 @@ class Protocol0Constants:
     blankPreStruct =                    struct.Struct("!")
 
     searchCapabilitiesPreStruct =       struct.Struct("!")
-    searchTaskParamsPreStruct =         struct.Struct("!")
-    searchTaskStartPreStruct =          struct.Struct("!")
-    searchTaskStopPreStruct =           struct.Struct("!")
-    searchTaskStatusPreStruct =         struct.Struct("!")
+    searchParamsPreStruct =             struct.Struct("!")
+    searchStartPreStruct =              struct.Struct("!")
+    searchStopPreStruct =               struct.Struct("!")
+    searchStatusPreStruct =             struct.Struct("!")
 
     processCapabilitiesPreStruct =      struct.Struct("!")
-    processTaskParamsPreStruct =        struct.Struct("!")
-    processTaskStartPreStruct =         struct.Struct("!")
-    processTaskStopPreStruct =          struct.Struct("!")
-    processTaskStatusPreStruct =         struct.Struct("!")
+    processParamsPreStruct =            struct.Struct("!")
+    processStartPreStruct =             struct.Struct("!")
+    processStopPreStruct =              struct.Struct("!")
+    processStatusPreStruct =            struct.Struct("!")
 
     unitErrorPreStruct =                struct.Struct("!")
     dataErrorPreStruct =                struct.Struct("!")
@@ -49,16 +49,16 @@ class Protocol0Constants:
     blankDatumStruct =                  struct.Struct("!")
 
     searchCapabilitiesDatumStruct =     struct.Struct("!")
-    searchTaskParamsDatumStruct =       struct.Struct("!")
-    searchTaskStartDatumStruct =        struct.Struct("!")
-    searchTaskStopDatumStruct =         struct.Struct("!")
-    searchTaskStatusDatumStruct =       struct.Struct("!")
+    searchParamsDatumStruct =           struct.Struct("!")
+    searchStartDatumStruct =            struct.Struct("!")
+    searchStopDatumStruct =             struct.Struct("!")
+    searchStatusDatumStruct =           struct.Struct("!")
 
     processCapabilitiesDatumStruct =    struct.Struct("!")
-    processTaskParamsDatumStruct =      struct.Struct("!")
-    processTaskStartDatumStruct =       struct.Struct("!")
-    processTaskStopDatumStruct =        struct.Struct("!")
-    processTaskStatusDatumStruct =      struct.Struct("!")
+    processParamsDatumStruct =          struct.Struct("!")
+    processStartDatumStruct =           struct.Struct("!")
+    processStopDatumStruct =            struct.Struct("!")
+    processStatusDatumStruct =          struct.Struct("!")
 
     unitErrorDatumStruct =              struct.Struct("!")
     dataErrorDatumStruct =              struct.Struct("!")
@@ -66,29 +66,29 @@ class Protocol0Constants:
 
     unitPreStructs = {BLANK: blankPreStruct,
                       SEARCH_CAPABILITIES: searchCapabilitiesPreStruct,
-                      SEARCH_TASK_PARAMS: searchTaskParamsPreStruct,
-                      SEARCH_TASK_START: searchTaskStartPreStruct,
-                      SEARCH_TASK_STOP: searchTaskStopPreStruct,
-                      SEARCH_TASK_STATUS: searchTaskStatusPreStruct,
+                      SEARCH_PARAMS: searchParamsPreStruct,
+                      SEARCH_START: searchStartPreStruct,
+                      SEARCH_STOP: searchStopPreStruct,
+                      SEARCH_STATUS: searchStatusPreStruct,
                       PROCESS_CAPABILITIES: processCapabilitiesPreStruct,
-                      PROCESS_TASK_PARAMS: processTaskParamsPreStruct,
-                      PROCESS_TASK_START: processTaskStartPreStruct,
-                      PROCESS_TASK_STOP: processTaskStopPreStruct,
-                      PROCESS_TASK_STATUS: processTaskStatusPreStruct,
+                      PROCESS_PARAMS: processParamsPreStruct,
+                      PROCESS_START: processStartPreStruct,
+                      PROCESS_STOP: processStopPreStruct,
+                      PROCESS_STATUS: processStatusPreStruct,
                       UNIT_ERROR: unitErrorPreStruct,
                       DATA_ERROR: dataErrorPreStruct}
 
 
     unitDatumStructs = {BLANK: blankDatumStruct,
                         SEARCH_CAPABILITIES: searchCapabilitiesDatumStruct,
-                        SEARCH_TASK_PARAMS: searchTaskParamsDatumStruct,
-                        SEARCH_TASK_START: searchTaskStartDatumStruct,
-                        SEARCH_TASK_STOP: searchTaskStopDatumStruct,
-                        SEARCH_TASK_STATUS: searchTaskStatusDatumStruct,
+                        SEARCH_PARAMS: searchParamsDatumStruct,
+                        SEARCH_START: searchStartDatumStruct,
+                        SEARCH_STOP: searchStopDatumStruct,
+                        SEARCH_STATUS: searchStatusDatumStruct,
                         PROCESS_CAPABILITIES: processCapabilitiesDatumStruct,
-                        PROCESS_TASK_PARAMS: processTaskParamsDatumStruct,
-                        PROCESS_TASK_START: processTaskStartDatumStruct,
-                        PROCESS_TASK_STOP: processTaskStopDatumStruct,
-                        PROCESS_TASK_STATUS: processTaskStatusDatumStruct,
+                        PROCESS_PARAMS: processParamsDatumStruct,
+                        PROCESS_START: processStartDatumStruct,
+                        PROCESS_STOP: processStopDatumStruct,
+                        PROCESS_STATUS: processStatusDatumStruct,
                         UNIT_ERROR: unitErrorDatumStruct,
                         DATA_ERROR: dataErrorDatumStruct}
