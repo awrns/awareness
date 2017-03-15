@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractproperty, abstractmethod
-import socket
 import misc
 import affinity as i_affinity
 import algorithm as i_algorithm
@@ -145,7 +144,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         if requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
                         elif requestedType == self.SEARCH_CAPABILITIES: pass  # TODO stuff.
 
-            except socket.error:
+            except:
                 break
 
 
@@ -182,7 +181,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         pass
 
 
-            except socket.error:
+            except:
                 break
 
 
