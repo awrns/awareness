@@ -114,28 +114,3 @@ class Protocol0Constants:
                                PROCESS_STOP: (NOTHING, BLANK, SEARCH_CAPABILITIES, PROCESS_CAPABILITIES, SEARCH_PARAMS, PROCESS_PARAMS, SEARCH_STATUS, PROCESS_STATUS)}
 
 
-class AccessorCallbackSet:
-    __metaclass__ = ABCMeta
-
-    @abstractproperty
-    def searchCapabilities(self):
-        raise NotImplementedError()
-
-    def searchParams(self):
-        raise NotImplementedError()
-
-    @abstractproperty
-    def searchStatus(self):
-        raise NotImplementedError()
-
-    @abstractproperty
-    def processCapabilities(self):
-        raise NotImplementedError()
-
-    @abstractproperty
-    def processParams(self):
-        raise NotImplementedError()
-
-    @abstractproperty
-    def processStatus(self):
-        raise NotImplementedError()
