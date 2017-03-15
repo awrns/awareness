@@ -39,7 +39,7 @@ class Protocol:
 
 
     @abstractmethod
-    def accessReceiveMonitor(self, connection, callbackSet):
+    def accessReceiveMonitor(self, connection):
         raise NotImplementedError()
 
 
@@ -149,7 +149,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 break
 
 
-    def accessReceiveMonitor(self, connection, callbackSet):
+    def accessReceiveMonitor(self, connection):
 
         while True:
             try:
@@ -162,24 +162,24 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     if unitType == self.BLANK:
                         pass
-# TODO Consolidate pres and datums for easier unpacking/management...
+# TODO stuff...
                     elif unitType == self.SEARCH_CAPABILITIES:
-                        callbackSet.searchCapabilities(pres, datums)
+                        pass
 
                     elif unitType == self.SEARCH_PARAMS:
-                        callbackSet.searchParams(pres, datums)
+                        pass
 
                     elif unitType == self.SEARCH_STATUS:
-                        callbackSet.searchStatus(pres, datums)
+                        pass
 
                     elif unitType == self.PROCESS_CAPABILITIES:
-                        callbackSet.processCapabilities(pres, datums)
+                        pass
 
                     elif unitType == self.PROCESS_PARAMS:
-                        callbackSet.processParams(pres, datums)
+                        pass
 
                     elif unitType == self.PROCESS_STATUS:
-                        callbackSet.processStatus(pres, datums)
+                        pass
 
 
             except socket.error:
