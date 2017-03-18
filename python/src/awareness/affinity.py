@@ -25,7 +25,7 @@ class Affinity:
 
 
     @abstractmethod
-    def run(self, inputSet, progressCallback=None):
+    def run(self, inputSet, progressFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
 
@@ -65,9 +65,9 @@ class RemoteAffinity(Affinity):
         self.profile = profile
 
 
-    def run(self, connection, inputSet, progressCallback=None):
+    def run(self, connection, inputSet, progressFrequency=0, progressCallback=None):
 
-        output = self.operator.protocol.process(connection, self.index, inputSet, progressCallback)
+        output = self.operator.protocol.process(connection, self.index, inputSet, progressFrequency, progressCallback)
 
         return output
 

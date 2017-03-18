@@ -44,6 +44,7 @@ class Operator:
         raise NotImplementedError()
 
 
+
 class LocalOperator(Operator):
 
     host = ""
@@ -82,7 +83,7 @@ class LocalOperator(Operator):
 
     def search(self, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
         # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
-        self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressCallback)
+        return self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressFrequency, progressCallback)
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
         # Hand inputSet to our indexed LocalAffinity.
@@ -97,6 +98,7 @@ class LocalOperator(Operator):
             capabilities.append(eachAffinity.profile)  # eachAbility.profile is a 2-tuple
 
         return capabilities
+
 
 
 class RemoteOperator(Operator):
@@ -145,7 +147,7 @@ class RemoteOperator(Operator):
 
 
     def search(self, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
-        self.algorithm.search(self.connection, trainingSet, testSet, progressCallback)
+        return self.protocol.search(self.connection, trainingSet, testSet, progressFrequency, progressCallback)
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
         return self.affinities[index].run(self.connection, inputSet, progressCallback)

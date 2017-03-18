@@ -132,12 +132,20 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         def handle(self, connection):
             
-            res = self.receive(connection, self.validAccessorToProvider)
-            if res is None:
-                connection.close()
-                return
+            while True:
+                try:
 
-            unitType, requestedType, pres, datums = res
+                    res = self.receive(connection, self.validAccessorToProvider)
+                    if res is None:
+                        connection.close()
+                        return
+
+                    unitType, requestedType, pres, datums = res
+
+                    
+
+                except:
+                    break
         
         connection, address = listener.accept()
 
