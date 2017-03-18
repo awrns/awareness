@@ -43,7 +43,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return datums
 
 
-    def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
+    def search(self, connection, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
         
         pass
 

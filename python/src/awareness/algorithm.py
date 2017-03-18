@@ -17,6 +17,7 @@ class Algorithm:
                propagationLimit,
                trainingSet,
                testSet,
+               progressFrequency=0,
                progressCallback=None):
 
         raise NotImplementedError()
@@ -30,6 +31,7 @@ class DefaultAlgorithm(Algorithm):
                propagationLimit,
                trainingSet,
                testSet,
+               progressFrequency=0,
                progressCallback=None):
 
         pass
