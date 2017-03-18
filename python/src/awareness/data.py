@@ -19,20 +19,34 @@ class Item:
         raise NotImplementedError()
 
 
+    @abstractmethod
+    def serialize(self):
+        raise NotImplementedError()
+
+    @abstractmethod
     def similarity(self, other):
-        pass
+        raise NotImplementedError()
+
 
 
 class Set:
     __metaclass__ = ABCMeta
+
 
     @abstractproperty
     def items(self):
         raise NotImplementedError()
 
 
-    def similarity(self):
+    @abstractmethod
+    def serialize(self):
+        raise NotImplementedError()
+
+
+    def similarity(self, other):
         pass
+
+
 
 class Assembly:
     __metaclass__ = ABCMeta

@@ -13,45 +13,45 @@ class Protocol0Constants:
 
     NOTHING =               0x00
     BLANK =                 0x01
-
-    CAPABILITIES =          0x10
-    TASK_STOP =             0x11
+    CAPABILITIES =          0x02
 
     SEARCH_TASK_START =     0x20
     SEARCH_TASK_STATUS =    0x21
+    SEARCH_TASK_STOP =      0x22
 
     PROCESS_TASK_START =    0x30
     PROCESS_TASK_STATUS =   0x31
+    PROCESS_TASK_STOP =     0x32
 
     UNIT_ERROR =            0x40
     DATA_ERROR =            0x41
 
 
     blankPreStruct =                    struct.Struct("!")
-
     capabilitiesPreStruct =             struct.Struct("!")
-    taskStopPreStruct =                 struct.Struct("!")
 
     searchTaskStartPreStruct =          struct.Struct("!")
     searchTaskStatusPreStruct =         struct.Struct("!")
+    searchTaskStopPreStruct =           struct.Struct("!")
 
     processTaskStartPreStruct =         struct.Struct("!")
     processTaskStatusPreStruct =        struct.Struct("!")
+    processTaskStopDatumStruct =          struct.Struct("!")
 
     unitErrorPreStruct =                struct.Struct("!")
     dataErrorPreStruct =                struct.Struct("!")
 
 
     blankDatumStruct =                  struct.Struct("!")
-
     capabilitiesDatumStruct =           struct.Struct("!")
-    taskStopDatumStruct =               struct.Struct("!")
 
     searchTaskStartDatumStruct =        struct.Struct("!")
     searchTaskStatusDatumStruct =       struct.Struct("!")
+    searchTaskStopDatumStruct =           struct.Struct("!")
 
     processTaskStartDatumStruct =       struct.Struct("!")
     processTaskStatusDatumStruct =      struct.Struct("!")
+    processTaskStopPreStruct =           struct.Struct("!")
 
     unitErrorDatumStruct =              struct.Struct("!")
     dataErrorDatumStruct =              struct.Struct("!")
@@ -59,7 +59,8 @@ class Protocol0Constants:
 
     unitPreStructs = {BLANK: blankPreStruct,
                       CAPABILITIES: capabilitiesPreStruct,
-                      TASK_STOP: taskStopPreStruct,
+                      SEARCH_TASK_STOP: searchTaskStopPreStruct,
+                      PROCESS_TASK_STOP: processTaskStopPreStruct,
                       SEARCH_TASK_START: searchTaskStartPreStruct,
                       SEARCH_TASK_STATUS: searchTaskStatusPreStruct,
                       PROCESS_TASK_START: processTaskStartPreStruct,
@@ -70,7 +71,8 @@ class Protocol0Constants:
 
     unitDatumStructs = {BLANK: blankDatumStruct,
                         CAPABILITIES: capabilitiesDatumStruct,
-                        TASK_STOP: taskStopDatumStruct,
+                        SEARCH_TASK_STOP: searchTaskStopDatumStruct,
+                        PROCESS_TASK_STOP: processTaskStopDatumStruct,
                         SEARCH_TASK_START: searchTaskStartDatumStruct,
                         SEARCH_TASK_STATUS: searchTaskStatusDatumStruct,
                         PROCESS_TASK_START: processTaskStartDatumStruct,
@@ -87,7 +89,8 @@ class Protocol0Constants:
 
 
     validAccessorToProvider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                               SEARCH_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                               PROCESS_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
                                SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
                                PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
 

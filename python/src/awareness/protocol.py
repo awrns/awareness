@@ -65,6 +65,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 res = progressCallback(i_data.Set(datums))
                 if not res:
+                    self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
                     return i_data.Set(datums)
 
         return i_data.Set(datums)
@@ -130,7 +131,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def provide(self, listener, operator):
 
-        def handle(self, connection):
+        def handle(self, connection, operator):
             
             while True:
                 try:
@@ -142,11 +143,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     unitType, requestedType, pres, datums = res
 
-                    
+                    if unitType == self.BLANK and requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
 
                 except:
                     break
         
         connection, address = listener.accept()
 
-        operator.backend.threadingAsync(handle, (connection))
+        operator.backend.threadingAsync(handle, (connection, operator))
