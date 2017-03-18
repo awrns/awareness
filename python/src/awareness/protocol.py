@@ -11,11 +11,7 @@ class Protocol:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def searchCapabilities(self, connection):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def processCapabilities(self, connection):
+    def capabilities(self, connection):
         raise NotImplementedError()
 
     @abstractmethod
@@ -28,17 +24,7 @@ class Protocol:
 
 
     @abstractmethod
-    def serve(self, listener, operator):
-        raise NotImplementedError()
-
-
-    @abstractmethod
-    def provideReceiveMonitor(self, connection, operator):
-        raise NotImplementedError()
-
-
-    @abstractmethod
-    def accessReceiveMonitor(self, connection):
+    def provide(self, listener, operator):
         raise NotImplementedError()
 
 
@@ -46,13 +32,10 @@ class Protocol:
 class Protocol0(Protocol, misc.Protocol0Constants):
 
 
-    def searchCapabilities(self, connection):
+    def capabilities(self, connection):
         
         pass
 
-    def processCapabilities(self, connection):
-        
-        pass
 
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
         
@@ -121,68 +104,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
 
-    def serve(self, listener, operator):
+    def provide(self, listener, operator):
+
+        def handle(self, connection):
+            pass
         
         connection, address = listener.accept()
 
-        operator.backend.threadingAsync(self.provideReceiveMonitor, (connection, operator))
-
-
-
-    def provideReceiveMonitor(self, connection, operator):
-
-        while True:
-            try:
-
-                res = self.receive(connection, self.validAccessorToProvider)
-
-                if res is not None:
-
-                    unitType, requestedType, pres, datums = res
-
-                    if unitType == self.BLANK:
-                        if requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
-                        elif requestedType == self.SEARCH_CAPABILITIES: pass  # TODO stuff.
-
-            except:
-                break
-
-
-    def accessReceiveMonitor(self, connection):
-
-        while True:
-            try:
-
-                res = self.receive(connection, self.validProviderToAccessor)
-
-                if res is not None:
-
-                    unitType, requestedType, pres, datums = res
-
-                    if unitType == self.BLANK:
-                        pass
-# TODO stuff...
-                    elif unitType == self.SEARCH_CAPABILITIES:
-                        pass
-
-                    elif unitType == self.SEARCH_PARAMS:
-                        pass
-
-                    elif unitType == self.SEARCH_STATUS:
-                        pass
-
-                    elif unitType == self.PROCESS_CAPABILITIES:
-                        pass
-
-                    elif unitType == self.PROCESS_PARAMS:
-                        pass
-
-                    elif unitType == self.PROCESS_STATUS:
-                        pass
-
-
-            except:
-                break
-
-
-
+        operator.backend.threadingAsync(handle, (connection))
+    
