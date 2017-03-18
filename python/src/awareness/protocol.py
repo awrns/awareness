@@ -47,9 +47,17 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         
         pass
 
-    def process(self, connection, index, inputSet, progressCallback=None):
+    def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
 
-        pass
+        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.serialize())
+
+        pres = None
+        while pres[0] != 1:
+            _unitType, _requestedType, _pres, _datums = self.receive(connection, self.validProviderToAccessor)
+            if (_unitType == self.PROCESS_TASK_STATUS):
+                unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
+
+        return i_data.Set(datums)
 
 
     def send(self, connection, unitType, requestedType, pres, datums):
