@@ -34,7 +34,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def capabilities(self, connection):
         
-        pass
+        self.send(connection, self.BLANK, self.CAPABILITIES, (), ())
+
+        unitType = None
+        while unitType != self.CAPABILITIES:
+            unitType, requestedType, pres, datums = self.receive(connection, self.validProviderToAccessor)
+
+        return datums
 
 
     def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
@@ -112,4 +118,3 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         connection, address = listener.accept()
 
         operator.backend.threadingAsync(handle, (connection))
-    
