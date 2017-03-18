@@ -57,6 +57,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
+                res = progressCallback(i_data.Set(datums))
+                if not res:
+                    return i_data.Set(datums)
+
         return i_data.Set(datums)
 
 
