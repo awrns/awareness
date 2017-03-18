@@ -125,7 +125,7 @@ class RemoteOperator(Operator):
         # Do a quick routine to get the Affinity details.
         if len(self.affinities) == 0:
             self.connect()
-            self.retrieveAbilities()
+            self.retrieveAffinities()
             self.disconnect()
 
     def connect(self):
@@ -136,10 +136,10 @@ class RemoteOperator(Operator):
         self.connection = None
 
     def retrieveAffinities(self):
-        acceptableData = self.protocol.getAcceptableData(self.connection)
-        for i in range(len(acceptableData)):
-            eachAcceptableData = acceptableData[i]
-            newAffinity = i_affinity.RemoteAffinity(self, i, eachAcceptableData[0], eachAcceptableData[1])
+        capabilities = self.protocol.capabilities(self.connection)
+        for i in range(len(capabilities)):
+            affinityProfile = capabilities[i]
+            newAffinity = i_affinity.RemoteAffinity(self, i, affinityProfile)
 
             self.affinities.append(newAffinity)
 

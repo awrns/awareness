@@ -53,7 +53,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         pres = None
         while pres[0] != 1:
-            _unitType, _requestedType, _pres, _datums = self.receive(connection, self.validProviderToAccessor)
+            res = self.receive(connection, self.validProviderToAccessor)
+
+            if res is None:
+                return None
+            else:
+                _unitType, _requestedType, _pres, _datums = res
+
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
@@ -125,7 +131,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     def provide(self, listener, operator):
 
         def handle(self, connection):
-            pass
+            
+            res = self.receive(connection, self.validAccessorToProvider)
+            if res is None:
+                connection.close()
+                return
+
+            unitType, requestedType, pres, datums = res
         
         connection, address = listener.accept()
 
