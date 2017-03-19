@@ -143,7 +143,15 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     unitType, requestedType, pres, datums = res
 
+                    if unitType == self.SEARCH_TASK_STOP: pass
+                    elif unitType == self.PROCESS_TASK_STOP: pass
+                    elif unitType == self.SEARCH_TASK_START: pass
+                    elif unitType == self.PROCESS_TASK_START: pass
+
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
+                    elif requestedType == self.BLANK: pass
+                    elif requestedType == self.SEARCH_TASK_STATUS: pass
+                    elif requestedType == self.PROCESS_TASK_STATUS: pass
 
                 except:
                     break
