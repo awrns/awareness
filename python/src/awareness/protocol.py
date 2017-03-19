@@ -33,13 +33,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def capabilities(self, connection):
-        
         self.send(connection, self.BLANK, self.CAPABILITIES, (), ())
-
         unitType = None
         while unitType != self.CAPABILITIES:
             unitType, requestedType, pres, datums = self.receive(connection, self.validProviderToAccessor)
-
         return datums
 
 
@@ -48,13 +45,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         pass
 
     def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
-
         self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.serialize())
-
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
-
             if res is None:
                 return None
             else:
@@ -72,7 +66,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def send(self, connection, unitType, requestedType, pres, datums):
-
         unitPreStruct = self.unitPreStructs[unitType]
         unitDatumStruct = self.unitDatumStructs[unitType]
 
@@ -82,7 +75,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         for datum in datums:
             tranDatums.append(unitDatumStruct.pack(datum))
 
-
         tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPres))
 
         connection.sendall(tranHeader)
@@ -91,7 +83,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def receive(self, connection, valid):
-
         recvHeader =  connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen)
@@ -104,14 +95,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
             return None
 
-
         try:
             unitPreStruct = self.unitPreStructs[unitType]
             unitDatumStruct = self.unitDatumStructs[unitType]
         except:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
             return None
-
 
         try:
             pres = unitPreStruct.unpack(recvData[:unitPreStruct.size])
@@ -124,10 +113,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
             return None
 
-
         return unitType, requestedType, pres, datums
-
-
+        
 
     def provide(self, listener, operator):
 
