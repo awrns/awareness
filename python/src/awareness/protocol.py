@@ -143,7 +143,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     unitType, requestedType, pres, datums = res
 
-                    if unitType == self.BLANK and requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
+                    if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
 
                 except:
                     break
