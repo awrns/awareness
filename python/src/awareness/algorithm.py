@@ -15,8 +15,7 @@ class Algorithm:
                localAbilities,
                remoteOperators,
                propagationLimit,
-               trainingSet,
-               testSet,
+               inputSet,
                progressFrequency=0,
                progressCallback=None):
 
@@ -29,8 +28,7 @@ class DefaultAlgorithm(Algorithm):
                localAbilities,
                remoteOperators,
                propagationLimit,
-               trainingSet,
-               testSet,
+               inputSet,
                progressFrequency=0,
                progressCallback=None):
 

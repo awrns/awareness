@@ -36,7 +36,7 @@ class Operator:
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
+    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -81,9 +81,9 @@ class LocalOperator(Operator):
         self.backend.threadingAsync(self.protocol.provide, (self.backend.listen(host=host,port=port), self))
 
 
-    def search(self, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
+    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
         # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self.abilities, self.remoteOperators, trainingSet, testSet, progressFrequency, progressCallback)
+        return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency, progressCallback)
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
         # Hand inputSet to our indexed LocalAffinity.
@@ -146,8 +146,8 @@ class RemoteOperator(Operator):
             self.affinities.append(newAffinity)
 
 
-    def search(self, propagationLimit, trainingSet, testSet, progressFrequency=0, progressCallback=None):
-        return self.protocol.search(self.connection, trainingSet, testSet, progressFrequency, progressCallback)
+    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
+        return self.protocol.search(self.connection, inputSet, progressFrequency, progressCallback)
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
         return self.affinities[index].run(self.connection, inputSet, progressCallback)

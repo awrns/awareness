@@ -131,15 +131,21 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     unitType, requestedType, pres, datums = res
 
-                    if unitType == self.SEARCH_TASK_STOP: pass
-                    elif unitType == self.PROCESS_TASK_STOP: pass
-                    elif unitType == self.SEARCH_TASK_START: pass
-                    elif unitType == self.PROCESS_TASK_START: pass
+                    if unitType == self.SEARCH_TASK_STOP: monitor.stopSearchTask(pres[0])
+                    elif unitType == self.PROCESS_TASK_STOP: monitor.stopProcessTask(pres[0])
+                    elif unitType == self.SEARCH_TASK_START:
+                        callback = monitor.addSearchTask(lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.serialize()))
+                        operator.search(pres[0], pres[1], pres[2], progressCallback=callback)
+                    elif unitType == self.PROCESS_TASK_START:
+                        callback = monitor.addProcessTask(lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.serialize()))
+                        operator.process(pres[0], pres[1], pres[2], progressCallback=callback)
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
                     elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
-                    elif requestedType == self.SEARCH_TASK_STATUS: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
-                    elif requestedType == self.PROCESS_TASK_STATUS: pass
+                    elif requestedType == self.SEARCH_TASK_STATUS:
+                        self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
+                    elif requestedType == self.PROCESS_TASK_STATUS:
+                        self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0])[0])
 
                 except:
                     break
