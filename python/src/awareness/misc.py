@@ -95,3 +95,24 @@ class Protocol0Constants:
                                PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
 
 
+class ProvidorTask:
+
+    progressCallback = None
+    proceed = True
+
+    def __init__(self, progressCallback):
+        self.progressCallback = progressCallback
+
+    def update(self, *args, **kwargs):
+        if self.proceed:
+            self.progressCallback(*args, **kwargs)
+            return True
+        else:
+            return False
+
+
+    def stop(self):
+        self.proceed = False
+
+
+
