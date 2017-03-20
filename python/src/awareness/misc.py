@@ -6,7 +6,7 @@ import struct
 
 class Protocol0Constants:
 
-    pduHeaderStruct = struct.Struct("!3c")
+    pduHeaderStruct = struct.Struct("!3cQ")
 
 
     VERSION_BYTE =          0xA0
