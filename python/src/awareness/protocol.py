@@ -119,6 +119,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     def provide(self, listener, operator):
 
         def handle(self, connection, operator):
+            monitor = misc.ProvidorTaskMonitor()
             
             while True:
                 try:
@@ -136,8 +137,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unitType == self.PROCESS_TASK_START: pass
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
-                    elif requestedType == self.BLANK: pass
-                    elif requestedType == self.SEARCH_TASK_STATUS: pass
+                    elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
+                    elif requestedType == self.SEARCH_TASK_STATUS: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
                     elif requestedType == self.PROCESS_TASK_STATUS: pass
 
                 except:
