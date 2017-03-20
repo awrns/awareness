@@ -100,10 +100,16 @@ class ProvidorTask:
     progressCallback = None
     proceed = True
 
+    latestArgs = None  # Intended for direct attribute access.
+    latestKwargs = None
+
     def __init__(self, progressCallback):
         self.progressCallback = progressCallback
 
     def update(self, *args, **kwargs):
+        self.latestArgs = args  # Intended for direct attribute access.
+        self.latestKwargs = kwargs  # ''
+
         if self.proceed:
             self.progressCallback(*args, **kwargs)
             return True
@@ -116,3 +122,31 @@ class ProvidorTask:
 
 
 
+class ProvidorTaskMonitor:
+
+    searchTasks = {}
+    processTasks = {}
+
+    def addSearchTask(self, magic, progressCallback):  # There's no point in having no progressCallback here
+        newTask = ProvidorTask(progressCallback)
+        self.searchTasks[magic] = newTask
+        return newTask.update  # as callable, that is.
+
+    def addProcessTask(self, magic, progressCallback):
+        newTask = ProvidorTask(progressCallback)
+        self.searchTasks[magic] = newTask
+        return newTask.update
+
+
+    def stopSearchTask(self, magic):
+        self.searchTasks[magic].stop()
+
+    def stopProcessTask(self, magic):
+        self.processTasks[magic].stop()
+
+
+    def getSearchTaskLatestArgsKwargs(self, magic):
+        return self.searchTasks[magic].latestArgs, self.searchTasks[magic].latestKwargs
+
+    def getProcessTaskLatestArgsKwargs(self, magic):
+        return self.processTasks[magic].latestArgs, self.processTasks[magic].latestKwargs
