@@ -56,9 +56,9 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 res = progressCallback(i_data.Set(datums))
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), ())
-                    return i_data.Set(datums)
+                    return i_data.Assembly(datums)
 
-        return i_data.Set(datums)
+        return i_data.Assembly(datums)
 
     def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
         self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.serialize())
