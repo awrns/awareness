@@ -20,7 +20,7 @@ class Item:
 
 
     @abstractmethod
-    def serialize(self):
+    def datumize(self):
         raise NotImplementedError()
 
     @abstractmethod
@@ -39,7 +39,7 @@ class Set:
 
 
     @abstractmethod
-    def serialize(self):
+    def datumize(self):
         raise NotImplementedError()
 
 

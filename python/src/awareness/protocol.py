@@ -41,7 +41,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (propagationLimit, progressFrequency), inputSet.serialize())
+        self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (propagationLimit, progressFrequency), inputSet.datumize())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -61,7 +61,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Assembly(datums)
 
     def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.serialize())
+        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.datumize())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -149,10 +149,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     if unitType == self.SEARCH_TASK_STOP: monitor.stopSearchTask(pres[0])
                     elif unitType == self.PROCESS_TASK_STOP: monitor.stopProcessTask(pres[0])
                     elif unitType == self.SEARCH_TASK_START:
-                        callback = monitor.addSearchTask(lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.serialize()))
+                        callback = monitor.addSearchTask(lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.datumize()))
                         i_backend.threadingAsync(operator.search, (pres[0], i_data.Set(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
                     elif unitType == self.PROCESS_TASK_START:
-                        callback = monitor.addProcessTask(lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.serialize()))
+                        callback = monitor.addProcessTask(lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.datumize()))
                         i_backend.threadingAsync(operator.process, (pres[0], i_data.Set(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
