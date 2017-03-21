@@ -10,6 +10,11 @@ import protocol as i_protocol
 class Item:
     __metaclass__ = ABCMeta
 
+    @abstractmethod
+    def __init__(self, datums):
+        raise NotImplementedError()
+
+
     @abstractproperty
     def input(self):
         raise NotImplementedError()
@@ -31,6 +36,11 @@ class Item:
 
 class Set:
     __metaclass__ = ABCMeta
+
+
+    @abstractmethod
+    def __init__(self, datums):
+        raise NotImplementedError()
 
 
     @abstractproperty
