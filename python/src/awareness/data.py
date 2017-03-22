@@ -7,49 +7,28 @@ import operator as i_operator
 import protocol as i_protocol
 
 
-class Item:
-
-    parameters = ()
-    
-    def __init__(self, parameters):
-        self.parameters = parameters
-
-
-    @classmethod
-    def fromDatums(self, datums):
-        pass
-
-
-    def toDatums(self):
-        pass
-
-    def similarity(self, other):
-        pass
-
-
-
 class Set:
 
-    inputItems = []
-    outputItems = []
+    affinity = None
 
-    def __init__(self, inputItems, outputItems):
-        self.inputItems = inputItems
-        self. outputItems = outputItems
+    input = None
+    output = None
 
-
-    @classmethod
-    def fromDatums(self, datums):
-        pass
+    def __init__(self, affinity, input, output):
+        self.affinity = affinity
+        self.input = input
+        self.output = output
 
 
     def toDatums(self):
-        pass
+        return self.input + self.output  # concat
 
 
-    def similarity(self, other):
-        pass
-
+    @classmethod
+    def fromAffinityDatums(self, affinity, datums):
+        inputs = datums[:affinity.inputs]
+        outputs = datums[affinity.inputs:affinity.outputs]
+        return Set(affinity, inputs, outputs)
 
 
 class Assembly:

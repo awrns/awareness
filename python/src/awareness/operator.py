@@ -83,11 +83,12 @@ class LocalOperator(Operator):
 
     def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
         # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency, progressCallback)
+        return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
         # Hand inputSet to our indexed LocalAffinity.
-        return self.affinities[index].run(inputSet, progressCallback)
+        return self.affinities[index].run(inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def capabilities(self):
@@ -95,7 +96,7 @@ class LocalOperator(Operator):
         capabilities = []
 
         for eachAffinity in self.affinities:
-            capabilities.append(eachAffinity.profile)  # eachAbility.profile is a 2-tuple
+            capabilities.append(eachAffinity.profile)
 
         return capabilities
 
@@ -130,8 +131,10 @@ class RemoteOperator(Operator):
             self.retrieveAffinities()
             self.disconnect()
 
+
     def connect(self):
         self.connection = self.backend.connect(self.host, port=self.port)
+
 
     def disconnect(self):
         self.connection.close()
@@ -147,10 +150,11 @@ class RemoteOperator(Operator):
 
 
     def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
-        return self.protocol.search(self.connection, inputSet, progressFrequency, progressCallback)
+        return self.protocol.search(self.connection, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+
 
     def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
-        return self.affinities[index].run(self.connection, inputSet, progressCallback)
+        return self.affinities[index].run(self.connection, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def capabilities(self):

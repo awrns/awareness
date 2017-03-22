@@ -22,11 +22,9 @@ class Protocol:
     def process(self, index, inputSet, progressCallback=None):
         raise NotImplementedError()
 
-
     @abstractmethod
     def provide(self, listener, operator):
         raise NotImplementedError()
-
 
 
 class Protocol0(Protocol, misc.Protocol0Constants):

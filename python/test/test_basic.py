@@ -2,7 +2,7 @@ import awareness
 
 
 class TestAffinity(awareness.affinity.LocalAffinity):
-    def run(self, input, progressCallback=None):
+    def run(self, input, progressFrequency=0, progressCallback=None):
         output = [None] * len(self.profile)
         output[0] = input[0] + 1
         return output
