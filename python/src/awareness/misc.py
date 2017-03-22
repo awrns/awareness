@@ -2,12 +2,8 @@ from abc import ABCMeta, abstractproperty
 
 import struct
 
-
-
 class Protocol0Constants:
-
     pduHeaderStruct = struct.Struct("!3cQ")
-
 
     VERSION_BYTE =          0xA0
 
@@ -26,7 +22,6 @@ class Protocol0Constants:
     UNIT_ERROR =            0x40
     DATA_ERROR =            0x41
 
-
     blankPreStruct =                    struct.Struct("!")
     capabilitiesPreStruct =             struct.Struct("!")
 
@@ -40,7 +35,6 @@ class Protocol0Constants:
 
     unitErrorPreStruct =                struct.Struct("!")
     dataErrorPreStruct =                struct.Struct("!")
-
 
     blankDatumStruct =                  struct.Struct("!")
     capabilitiesDatumStruct =           struct.Struct("!")
@@ -56,7 +50,6 @@ class Protocol0Constants:
     unitErrorDatumStruct =              struct.Struct("!")
     dataErrorDatumStruct =              struct.Struct("!")
 
-
     unitPreStructs = {BLANK: blankPreStruct,
                       CAPABILITIES: capabilitiesPreStruct,
                       SEARCH_TASK_STOP: searchTaskStopPreStruct,
@@ -67,7 +60,6 @@ class Protocol0Constants:
                       PROCESS_TASK_STATUS: processTaskStatusPreStruct,
                       UNIT_ERROR: unitErrorPreStruct,
                       DATA_ERROR: dataErrorPreStruct}
-
 
     unitDatumStructs = {BLANK: blankDatumStruct,
                         CAPABILITIES: capabilitiesDatumStruct,
@@ -80,13 +72,10 @@ class Protocol0Constants:
                         UNIT_ERROR: unitErrorDatumStruct,
                         DATA_ERROR: dataErrorDatumStruct}
 
-
-
     validProviderToAccessor = {BLANK: (NOTHING),
                                CAPABILITIES: (NOTHING),
                                SEARCH_TASK_STATUS: (NOTHING),
                                PROCESS_TASK_STATUS: (NOTHING)}
-
 
     validAccessorToProvider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
                                SEARCH_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
@@ -121,7 +110,6 @@ class ProvidorTask:
         self.proceed = False
 
 
-
 class ProvidorTaskMonitor:
 
     searchTasks = {}
@@ -143,7 +131,6 @@ class ProvidorTaskMonitor:
 
     def stopProcessTask(self, magic):
         self.processTasks[magic].stop()
-
 
     def getSearchTaskLatestArgsKwargs(self, magic):
         return self.searchTasks[magic].latestArgs, self.searchTasks[magic].latestKwargs
