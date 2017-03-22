@@ -9,32 +9,42 @@ import protocol as i_protocol
 
 class Item:
 
-    input = None
-    output = None
+    parameters = ()
     
-    def __init__(self, datums):
-        raise NotImplementedError()
+    def __init__(self, parameters):
+        self.parameters = parameters
 
 
-    def datumize(self):
-        raise NotImplementedError()
+    @classmethod
+    def fromDatums(self, datums):
+        pass
+
+
+    def toDatums(self):
+        pass
 
     def similarity(self, other):
-        raise NotImplementedError()
+        pass
 
 
 
 class Set:
 
-    items = []
+    inputItems = []
+    outputItems = []
+
+    def __init__(self, inputItems, outputItems):
+        self.inputItems = inputItems
+        self. outputItems = outputItems
 
 
-    def __init__(self, datums):
-        raise NotImplementedError()
+    @classmethod
+    def fromDatums(self, datums):
+        pass
 
 
-    def datumize(self):
-        raise NotImplementedError()
+    def toDatums(self):
+        pass
 
 
     def similarity(self, other):
@@ -45,5 +55,5 @@ class Set:
 class Assembly:
     
 
-    def run(self, inputSetself, inputSet, progressFrequency=0, progressCallback=None):
-        raise NotImplementedError()
+    def run(self, inputSet, progressFrequency=0, progressCallback=None):
+        pass

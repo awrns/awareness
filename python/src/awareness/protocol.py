@@ -41,7 +41,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (propagationLimit, progressFrequency), inputSet.datumize())
+        self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (propagationLimit, progressFrequency), inputSet.toDatums())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -53,7 +53,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.SEARCH_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Set(datums))
+                res = progressCallback(i_data.Set.fromDatums(datums))
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), ())
                     return i_data.Assembly(datums)
@@ -61,7 +61,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Assembly(datums)
 
     def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.datumize())
+        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.toDatums())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -73,7 +73,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Set(datums))
+                res = progressCallback(i_data.Set.fromDatums(datums))
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
                     return i_data.Set(datums)
@@ -149,11 +149,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     if unitType == self.SEARCH_TASK_STOP: monitor.stopSearchTask(pres[0])
                     elif unitType == self.PROCESS_TASK_STOP: monitor.stopProcessTask(pres[0])
                     elif unitType == self.SEARCH_TASK_START:
-                        callback = monitor.addSearchTask(lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.datumize()))
-                        i_backend.threadingAsync(operator.search, (pres[0], i_data.Set(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
+                        callback = monitor.addSearchTask(lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.toDatums()))
+                        i_backend.threadingAsync(operator.search, (pres[0], i_data.Set.fromDatums(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
                     elif unitType == self.PROCESS_TASK_START:
-                        callback = monitor.addProcessTask(lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.datumize()))
-                        i_backend.threadingAsync(operator.process, (pres[0], i_data.Set(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
+                        callback = monitor.addProcessTask(lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.toDatums()))
+                        i_backend.threadingAsync(operator.process, (pres[0], i_data.Set.fromDatums(datums)), {'progressFrequency':pres[1], 'progressCallback':callback})
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
                     elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
