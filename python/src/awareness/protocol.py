@@ -51,7 +51,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.SEARCH_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Set.fromDatums(inputSet.affinity, datums))
+                res = progressCallback(i_data.Set.fromAffinityDatums(inputSet.affinity, datums))
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), ())
                     return i_data.Assembly(datums)
