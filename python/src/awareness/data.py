@@ -8,47 +8,31 @@ import protocol as i_protocol
 
 
 class Item:
-    __metaclass__ = ABCMeta
 
-    @abstractmethod
+    input = None
+    output = None
+    
     def __init__(self, datums):
         raise NotImplementedError()
 
 
-    @abstractproperty
-    def input(self):
-        raise NotImplementedError()
-
-    @abstractproperty
-    def output(self):
-        raise NotImplementedError()
-
-
-    @abstractmethod
     def datumize(self):
         raise NotImplementedError()
 
-    @abstractmethod
     def similarity(self, other):
         raise NotImplementedError()
 
 
 
 class Set:
-    __metaclass__ = ABCMeta
+
+    items = []
 
 
-    @abstractmethod
     def __init__(self, datums):
         raise NotImplementedError()
 
 
-    @abstractproperty
-    def items(self):
-        raise NotImplementedError()
-
-
-    @abstractmethod
     def datumize(self):
         raise NotImplementedError()
 
@@ -59,6 +43,7 @@ class Set:
 
 
 class Assembly:
-    __metaclass__ = ABCMeta
+    
 
-    pass
+    def run(self, inputSetself, inputSet, progressFrequency=0, progressCallback=None):
+        raise NotImplementedError()
