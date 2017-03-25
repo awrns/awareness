@@ -58,7 +58,7 @@ class Operator:
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
+    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
 
@@ -104,9 +104,9 @@ class LocalOperator(Operator):
         return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
-    def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
+    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
         # Hand inputSet to our indexed LocalAffinity.
-        return self.affinities[index].run(inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+        return self.affinities[index].run(inputStream, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def capabilities(self):
@@ -171,8 +171,8 @@ class RemoteOperator(Operator):
         return self.protocol.search(self.connection, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
-    def process(self, index, inputSet, progressFrequency=0, progressCallback=None):
-        return self.affinities[index].run(self.connection, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
+        return self.affinities[index].run(self.connection, inputStream, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def capabilities(self):

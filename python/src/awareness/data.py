@@ -33,7 +33,7 @@ class Item:
 
     affinity = None
     application = None
-    parameters = None
+    parameters = ()
 
     def __init__(self, affinity, application, parameters):
         self.affinity = affinity
@@ -50,35 +50,71 @@ class Item:
 
 
 
-class Set:
+class Stream:
 
-    inputItem = None
-    outputItem = None
+    affinity = None
+    application = None
+    items = []
 
-    def __init__(self, inputItem, outputItem):
-        self.inputItem = inputItem
-        self.outputItem = outputItem
+    def __init__(self, affinity, application, items):
+        self.affinity = affinity
+        self.application = application
+        self.items = items
 
 
     def toDatums(self):
-        return self.inputItem.toDatums() + self.outputItem.toDatums()  # concat
+        datums = []
+        for item in self.items:
+            datums.append(item.toDatums())
+        return datums
+
+
+    def fromAffinityApplicationDatums(self, affinity, application, datums):
+        items = []
+
+        if application == ItemApplication.INPUT:
+            nParams = affinity.inputs
+        elif application == ItemApplication.OUTPUT:
+            nParams = affinity.outputs
+
+        for itemIndex in range(len(datums) / nParams):
+            startPos = itemIndex * nParams
+            endPos = (itemIndex + 1) * nParams
+            items.append(Item.fromAffinityApplicationDatums(affinity, application, datums[startPos:endPos]))
+
+        return Stream(affinity, application, items)
+
+
+
+class Set:
+
+    inputStream = None
+    outputStream = None
+
+    def __init__(self, inputStream, outputStream):
+        self.inputStream = inputStream
+        self.outputStream = outputStream
+
+
+    def toDatums(self):
+        return self.inputStream.toDatums() + self.outputStream.toDatums()  # concat
 
 
     @classmethod
-    def fromAffinityDatums(self, affinity, datums):
+    def fromAffinityCountDatums(self, affinity, count, datums):
 
-        inputs = datums[:affinity.inputs]
-        outputs = datums[affinity.inputs:affinity.outputs]
+        inputs = datums[:affinity.inputs*count]
+        outputs = datums[affinity.inputs*count:affinity.outputs*count]
 
-        inputItem = Item.fromAffinityApplicationDatums(affinity, ItemApplication.INPUT, datums)
-        outputItem = Item.fromAffinityApplicationDatums(affinity, ItemApplication.OUTPUT, datums)
+        inputStream = Stream.fromAffinityApplicationDatums(affinity, ItemApplication.INPUT, datums)
+        outputStream = Stream.fromAffinityApplicationDatums(affinity, ItemApplication.OUTPUT, datums)
 
 
-        return Set(affinity, inputItem, outputItem)
+        return Set(affinity, inputStream, outputStream)
 
 
 class Assembly:
     
 
-    def run(self, inputSet, progressFrequency=0, progressCallback=None):
+    def run(self, inputStream, progressFrequency=0, progressCallback=None):
         pass

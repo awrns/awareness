@@ -33,11 +33,11 @@ class Protocol:
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, connection, propagationLimit, trainingSet, testSet, progressCallback=None):
+    def search(self, connection, propagationLimit, inputSet, progressFrequency = 0, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputSet, progressCallback=None):
+    def process(self, index, inputStream, inputFrequency = 0, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -69,15 +69,15 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.SEARCH_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Set.fromAffinityDatums(inputSet.affinity, datums))
+                res = progressCallback(i_data.Assembly.fromDatums(datums))
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), ())
-                    return i_data.Assembly(datums)
+                    return i_data.Assembly.fromDatums(datums)
 
         return i_data.Assembly(datums)
 
-    def process(self, connection, index, inputSet, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputSet.toDatums())
+    def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
+        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputStream.toDatums())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -89,10 +89,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Set.fromAffinityDatums(inputSet.affinity, datums))
+                res = progressCallback(i_data.Stream.fromAffinityDatums(inputStream.affinity, datums))
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
-                    return i_data.Set(datums)
+                    return i_data.Stream.fromAffinityDatums(inputStream.affinity, datums)
 
         return i_data.Set(datums)
 
