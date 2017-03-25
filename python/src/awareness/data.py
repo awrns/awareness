@@ -52,14 +52,15 @@ class Item:
 
 class Stream:
 
-    affinity = None
-    application = None
+
     items = []
 
-    def __init__(self, affinity, application, items):
-        self.affinity = affinity
-        self.application = application
+    def __init__(self, items):
         self.items = items
+
+    @property
+    def affinity(self):  # Required by Protocol to form output Streams for accessor process calls
+        return self.items[0].affinity
 
 
     def toDatums(self):
@@ -82,7 +83,7 @@ class Stream:
             endPos = (itemIndex + 1) * nParams
             items.append(Item.fromAffinityApplicationDatums(affinity, application, datums[startPos:endPos]))
 
-        return Stream(affinity, application, items)
+        return Stream(items)
 
 
 
