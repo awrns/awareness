@@ -43,7 +43,7 @@ class Affinity:
 
 
     @abstractmethod
-    def run(self, inputSteram, progressFrequency=0, progressCallback=None):
+    def run(self, inputStream, progressFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
 
