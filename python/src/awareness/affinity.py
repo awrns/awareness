@@ -52,17 +52,12 @@ class LocalAffinity(Affinity):
     operator = None
     index = 0
 
-    profile = []
-
-
     def __init__(self,
                  operator,
-                 index,
-                 profile):
+                 index):  # profile is defined in children of LocalAffinity
 
         self.operator = operator
         self.index = index
-        self.profile = profile
 
 
 class RemoteAffinity(Affinity):
