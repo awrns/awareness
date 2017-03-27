@@ -24,20 +24,11 @@ import operator as i_operator
 import protocol as i_protocol
 
 
-class ItemApplication():
-    INPUT = True
-    OUTPUT = False
-
-
 class Item:
 
-    affinity = None
-    application = None
     parameters = ()
 
-    def __init__(self, affinity, application, parameters):
-        self.affinity = affinity
-        self.application = application
+    def __init__(self, parameters):
         self.parameters = parameters
 
     def toDatums(self):
@@ -45,8 +36,8 @@ class Item:
 
 
     @classmethod
-    def fromAffinityApplicationDatums(self, affinity, application, datums):
-        return Item(affinity, application, tuple(datums))
+    def fromDatums(self, datums):
+        return Item(tuple(datums))
 
 
 
@@ -58,10 +49,6 @@ class Stream:
     def __init__(self, items):
         self.items = items
 
-    @property
-    def affinity(self):  # Required by Protocol to form output Streams for accessor process calls
-        return self.items[0].affinity
-
 
     def toDatums(self):
         datums = []
@@ -70,18 +57,14 @@ class Stream:
         return datums
 
 
-    def fromAffinityApplicationDatums(self, affinity, application, datums):
+    def fromCountDatums(self, count, datums):
         items = []
+        nParams = len(datums) / count
 
-        if application == ItemApplication.INPUT:
-            nParams = affinity.inputs
-        elif application == ItemApplication.OUTPUT:
-            nParams = affinity.outputs
-
-        for itemIndex in range(len(datums) / nParams):
+        for itemIndex in count:
             startPos = itemIndex * nParams
             endPos = (itemIndex + 1) * nParams
-            items.append(Item.fromAffinityApplicationDatums(affinity, application, datums[startPos:endPos]))
+            items.append(Item.fromDatums(datums[startPos:endPos]))
 
         return Stream(items)
 
@@ -102,16 +85,16 @@ class Set:
 
 
     @classmethod
-    def fromAffinityCountDatums(self, affinity, count, datums):
+    def fromInputsOutputsCountDatums(self, nInputs, nOutputs, count, datums):
 
-        inputs = datums[:affinity.inputs*count]
-        outputs = datums[affinity.inputs*count:affinity.outputs*count]
+        inputs = datums[:nInputs*count]
+        outputs = datums[nInputs*count:nOutputs*count]
 
-        inputStream = Stream.fromAffinityApplicationDatums(affinity, ItemApplication.INPUT, datums)
-        outputStream = Stream.fromAffinityApplicationDatums(affinity, ItemApplication.OUTPUT, datums)
+        inputStream = Stream.fromDatums(outputs)
+        outputStream = Stream.fromDatums(outputs)
 
 
-        return Set(affinity, inputStream, outputStream)
+        return Set(inputStream, outputStream)
 
 
 class Assembly:
