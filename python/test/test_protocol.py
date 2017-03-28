@@ -1,7 +1,7 @@
 import awareness
 
 
-class TestAffinity(awareness.affinity.LocalAffinity):
+class TestAffinity(awareness.LocalAffinity):
 
     profile = (1,1)
 
@@ -9,5 +9,5 @@ class TestAffinity(awareness.affinity.LocalAffinity):
         return inputStream
 
 def test_accessprovide():
-    operator1 = awareness.operator.LocalOperator()
+    operator1 = awareness.LocalOperator()
     operator1.affinities.append(TestAffinity(operator1, 0))
