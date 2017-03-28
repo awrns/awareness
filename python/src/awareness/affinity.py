@@ -80,7 +80,7 @@ class RemoteAffinity(Affinity):
 
     def run(self, connection, inputStream, progressFrequency=0, progressCallback=None):
 
-        output = self.operator.protocol.process(connection, self.index, inputStream, progressFrequency, progressCallback)
+        output = self.operator.protocol.process(connection, self.index, inputStream, self.profile, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
         return output
 
