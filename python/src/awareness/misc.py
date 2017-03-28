@@ -21,7 +21,7 @@ from abc import ABCMeta, abstractproperty
 import struct
 
 class Protocol0Constants:
-    pduHeaderStruct = struct.Struct("!3cQ")
+    pduHeaderStruct = struct.Struct("!3BQ")
 
     VERSION_BYTE =          0xA0
 

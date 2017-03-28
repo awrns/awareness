@@ -101,10 +101,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         unitDatumStruct = self.unitDatumStructs[unitType]
 
         tranDatums = ''
-        tranPres = unitPreStruct.pack(pres)
+        tranPres = unitPreStruct.pack(*pres)
 
         for datum in datums:
-            tranDatums.append(unitDatumStruct.pack(datum))
+            tranDatums.append(unitDatumStruct.pack(*datum))
 
         tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPres))
 
@@ -114,7 +114,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def receive(self, connection, valid):
-        recvHeader =  connection.recv(self.pduHeaderStruct.size)
+        recvHeader = connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen)
 
@@ -183,9 +183,9 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif requestedType == self.PROCESS_TASK_STATUS:
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0])[0])
 
-                except:
-                    break
+                except Exception as e:
+                    raise e
         
-        connection, address = listener.accept()
-
-        operator.backend.threadingAsync(handle, (connection, operator))
+        while True:
+            connection, address = listener.accept()
+            operator.backend.threadingAsync(handle, args=(connection, operator))

@@ -51,9 +51,10 @@ class NativeBackend(Backend):
     def threadingAsync(self, function, args=(), kwargs={}, callback=None):
         if not callback: callback = lambda *args,**kwargs:None
 
-        def wrapWithCallback(): callback(function)
+        def wrapWithCallback(function, callback): return lambda *args, **kwargs: callback(function(*args, **kwargs))
 
-        thread = threading.Thread(target=wrapWithCallback(), args=args, kwargs=kwargs)
+        thread = threading.Thread(target=wrapWithCallback(function, callback), args=args, kwargs=kwargs)
+        thread.daemon = True
         thread.start()
 
 
