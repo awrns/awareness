@@ -55,7 +55,7 @@ class Protocol0Constants:
     dataErrorPreStruct =                struct.Struct("!")
 
     blankDatumStruct =                  struct.Struct("!")
-    capabilitiesDatumStruct =           struct.Struct("!")
+    capabilitiesDatumStruct =           struct.Struct("!2Q")
 
     searchTaskStartDatumStruct =        struct.Struct("!")
     searchTaskStatusDatumStruct =       struct.Struct("!")
