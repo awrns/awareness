@@ -55,7 +55,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             unitType, requestedType, pres, datums = self.receive(connection, self.validProviderToAccessor)
         return datums
 
-
     def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
         self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (propagationLimit, progressFrequency), inputSet.toDatums())
         pres = None
@@ -112,7 +111,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         connection.sendall(tranPres)
         connection.sendall(tranDatums)
 
-
     def receive(self, connection, valid):
         recvHeader = connection.recv(self.pduHeaderStruct.size)
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
@@ -144,16 +142,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             return None
 
         return unitType, requestedType, pres, datums
-        
 
     def provide(self, listener, operator):
 
         def handle(connection, operator):
             monitor = misc.ProvidorTaskMonitor()
-            
             while True:
                 try:
-
                     res = self.receive(connection, self.validAccessorToProvider)
                     if res is None:
                         connection.close()
@@ -185,7 +180,6 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 except Exception as e:
                     raise e
-        
         while True:
             connection, address = listener.accept()
             operator.backend.threadingAsync(handle, args=(connection, operator))
