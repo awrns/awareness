@@ -148,7 +148,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def provide(self, listener, operator):
 
-        def handle(self, connection, operator):
+        def handle(connection, operator):
             monitor = misc.ProvidorTaskMonitor()
             
             while True:
