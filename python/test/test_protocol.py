@@ -12,4 +12,4 @@ def test_accessprovide():
     operator1 = awareness.LocalOperator()
     operator1.affinities.append(TestAffinity(operator1, 0))
 
-    #operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
+    operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)

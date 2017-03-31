@@ -90,16 +90,16 @@ class Protocol0Constants:
                         UNIT_ERROR: unitErrorDatumStruct,
                         DATA_ERROR: dataErrorDatumStruct}
 
-    validProviderToAccessor = {BLANK: (NOTHING),
-                               CAPABILITIES: (NOTHING),
-                               SEARCH_TASK_STATUS: (NOTHING),
-                               PROCESS_TASK_STATUS: (NOTHING)}
+    validProviderToAccessor = {BLANK: [NOTHING],
+                               CAPABILITIES: [NOTHING],
+                               SEARCH_TASK_STATUS: [NOTHING],
+                               PROCESS_TASK_STATUS: [NOTHING]}
 
-    validAccessorToProvider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               SEARCH_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               PROCESS_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
+    validAccessorToProvider = {BLANK: [BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS],
+                               SEARCH_TASK_STOP: [NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS],
+                               PROCESS_TASK_STOP: [NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS],
+                               SEARCH_TASK_START: [NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS],
+                               PROCESS_TASK_START: [NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS]}
 
 
 class ProvidorTask:
