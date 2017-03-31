@@ -47,9 +47,9 @@ class Protocol0Constants:
     searchTaskStatusPreStruct =         struct.Struct("!")
     searchTaskStopPreStruct =           struct.Struct("!")
 
-    processTaskStartPreStruct =         struct.Struct("!")
+    processTaskStartPreStruct =         struct.Struct("!2Q")
     processTaskStatusPreStruct =        struct.Struct("!")
-    processTaskStopDatumStruct =        struct.Struct("!")
+    processTaskStopPreStruct =          struct.Struct("!")
 
     unitErrorPreStruct =                struct.Struct("!")
     dataErrorPreStruct =                struct.Struct("!")
@@ -61,9 +61,9 @@ class Protocol0Constants:
     searchTaskStatusDatumStruct =       struct.Struct("!")
     searchTaskStopDatumStruct =         struct.Struct("!")
 
-    processTaskStartDatumStruct =       struct.Struct("!")
-    processTaskStatusDatumStruct =      struct.Struct("!")
-    processTaskStopPreStruct =          struct.Struct("!")
+    processTaskStartDatumStruct =       struct.Struct("!Q")
+    processTaskStatusDatumStruct =      struct.Struct("!Q")
+    processTaskStopDatumStruct =        struct.Struct("!")
 
     unitErrorDatumStruct =              struct.Struct("!")
     dataErrorDatumStruct =              struct.Struct("!")

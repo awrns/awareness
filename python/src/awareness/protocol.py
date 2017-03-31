@@ -89,10 +89,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Stream.fromCountDatums(profile[1], datums))
+                res = progressCallback(i_data.Stream.fromCountDatums(len(datums)/profile[1], datums))
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
-                    return i_data.Stream.fromCountDatums(profile[1], datums)
+                    return i_data.Stream.fromCountDatums(len(datums)/profile[1], datums)
 
         return i_data.Set(datums)
 

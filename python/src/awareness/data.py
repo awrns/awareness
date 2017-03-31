@@ -53,7 +53,7 @@ class Stream:
     def toDatums(self):
         datums = []
         for item in self.items:
-            datums.append(item.toDatums())
+            datums += item.toDatums()
         return datums
 
 
