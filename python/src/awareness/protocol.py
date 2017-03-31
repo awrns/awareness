@@ -139,10 +139,9 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     startDataIndex = unitPreStruct.size + (i*unitDatumStruct.size)
                     dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
                     datums.append(unitDatumStruct.unpack(dataRoi))
-        except Exception as e: raise e
-#self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
-#return None
-
+        except:
+            self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
+            return None
         return unitType, requestedType, pres, datums
 
     def provide(self, listener, operator):
@@ -179,9 +178,9 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
                     elif requestedType == self.PROCESS_TASK_STATUS:
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0])[0])
-
-                except Exception as e:
-                    raise e
+                except:
+                    connection.close()
+                    return
         while True:
             connection, address = listener.accept()
             operator.backend.threadingAsync(handle, args=(connection, operator))
