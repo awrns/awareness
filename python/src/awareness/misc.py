@@ -40,8 +40,8 @@ class Protocol0Constants:
     UNIT_ERROR =            0x40
     DATA_ERROR =            0x41
 
-    blankPreStruct =                    struct.Struct("!")
-    capabilitiesPreStruct =             struct.Struct("!")
+    blankPreStruct =                    struct.Struct("!")  # intentional
+    capabilitiesPreStruct =             struct.Struct("!")  # intentional
 
     searchTaskStartPreStruct =          struct.Struct("!3Q")  # magic, propagationLimit, progressFrequency
     searchTaskStatusPreStruct =         struct.Struct("!Q")  # magic
@@ -51,22 +51,22 @@ class Protocol0Constants:
     processTaskStatusPreStruct =        struct.Struct("!Q")  # magic
     processTaskStopPreStruct =          struct.Struct("!Q")  # magic
 
-    unitErrorPreStruct =                struct.Struct("!")
-    dataErrorPreStruct =                struct.Struct("!")
+    unitErrorPreStruct =                struct.Struct("!")  # intentional
+    dataErrorPreStruct =                struct.Struct("!")  # intentional
 
     blankDatumStruct =                  struct.Struct("!")
     capabilitiesDatumStruct =           struct.Struct("!2Q")  # inputs, outputs
 
     searchTaskStartDatumStruct =        struct.Struct("!d")  # inputSet data items(s)
     searchTaskStatusDatumStruct =       struct.Struct("!")  # TODO this!
-    searchTaskStopDatumStruct =         struct.Struct("!")
+    searchTaskStopDatumStruct =         struct.Struct("!")  # intentional
 
     processTaskStartDatumStruct =       struct.Struct("!d")  # input Stream data item(s)
     processTaskStatusDatumStruct =      struct.Struct("!d")  # output Stream data item(s)
-    processTaskStopDatumStruct =        struct.Struct("!")
+    processTaskStopDatumStruct =        struct.Struct("!")  # intentional
 
-    unitErrorDatumStruct =              struct.Struct("!")
-    dataErrorDatumStruct =              struct.Struct("!")
+    unitErrorDatumStruct =              struct.Struct("!")  # intentional
+    dataErrorDatumStruct =              struct.Struct("!")  # intentional
 
     unitPreStructs = {BLANK: blankPreStruct,
                       CAPABILITIES: capabilitiesPreStruct,
