@@ -36,7 +36,7 @@ class Protocol:
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputStream, profile, inputFrequency=0, progressCallback=None):
+    def process(self, index, inputStream, inputFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -76,8 +76,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         return i_data.Assembly(datums)
 
-    def process(self, connection, index, inputStream, profile, progressFrequency=0, progressCallback=None):
-        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, progressFrequency), inputStream.toDatums())
+    def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
+        self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (index, len(inputStream.items), progressFrequency), inputStream.toDatums())
         pres = None
         while pres[0] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -89,10 +89,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unitType == self.PROCESS_TASK_STATUS):
                 unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
 
-                res = progressCallback(i_data.Stream.fromCountDatums(len(datums)/profile[1], datums))
+                res = progressCallback(i_data.Stream.fromCountDatums(pres[0], datums))
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
-                    return i_data.Stream.fromCountDatums(len(datums)/profile[1], datums)
+                    return i_data.Stream.fromCountDatums(pres[0], datums)
 
         return i_data.Set(datums)
 
@@ -162,15 +162,15 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unitType == self.SEARCH_TASK_START:
                         replyCall = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (progress), assembly.toDatums())
                         callback = monitor.addSearchTask(replyCall)
-                        searchArgs = (pres[0], i_data.Set.fromAffinityDatums(operator.affinities[pres[0]], datums))
-                        searchKwargs = {'progressFrequency':pres[1], 'progressCallback':callback}
+                        searchArgs = (pres[1], i_data.Set.fromInputsOuputsCountDatums(operator.affinities[pres[1]], datums))
+                        searchKwargs = {'progressFrequency':pres[2], 'progressCallback':callback}
                         i_backend.threadingAsync(operator.search, searchArgs, searchKwargs)
                     elif unitType == self.PROCESS_TASK_START:
                         replyCall = lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (progress), outputSet.toDatums())
                         callback = monitor.addProcessTask(replyCall)
-                        searchArgs = (pres[0], i_data.Set.fromAffinityDatums(operator.affinities[pres[0]], datums))
-                        searchKwargs = {'progressFrequency':pres[1], 'progressCallback':callback}
-                        i_backend.threadingAsync(operator.process, searchArgs, searchKwargs)
+                        processArgs = (pres[0], i_data.Set.fromAffinityDatums(operator.affinities[pres[0]], datums))
+                        processKwargs = {'progressFrequency':pres[1], 'progressCallback':callback}
+                        i_backend.threadingAsync(operator.process, processArgs, processKwargs)
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
                     elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
