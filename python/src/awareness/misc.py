@@ -43,26 +43,26 @@ class Protocol0Constants:
     blankPreStruct =                    struct.Struct("!")
     capabilitiesPreStruct =             struct.Struct("!")
 
-    searchTaskStartPreStruct =          struct.Struct("!")
-    searchTaskStatusPreStruct =         struct.Struct("!")
-    searchTaskStopPreStruct =           struct.Struct("!")
+    searchTaskStartPreStruct =          struct.Struct("!3Q")  # magic, propagationLimit, progressFrequency
+    searchTaskStatusPreStruct =         struct.Struct("!Q")  # magic
+    searchTaskStopPreStruct =           struct.Struct("!Q")  # magic
 
-    processTaskStartPreStruct =         struct.Struct("!2Q")
-    processTaskStatusPreStruct =        struct.Struct("!")
-    processTaskStopPreStruct =          struct.Struct("!")
+    processTaskStartPreStruct =         struct.Struct("!3Q")  # magic, index, progressFrequency
+    processTaskStatusPreStruct =        struct.Struct("!Q")  # magic
+    processTaskStopPreStruct =          struct.Struct("!Q")  # magic
 
     unitErrorPreStruct =                struct.Struct("!")
     dataErrorPreStruct =                struct.Struct("!")
 
     blankDatumStruct =                  struct.Struct("!")
-    capabilitiesDatumStruct =           struct.Struct("!2Q")
+    capabilitiesDatumStruct =           struct.Struct("!2Q")  # inputs, outputs
 
-    searchTaskStartDatumStruct =        struct.Struct("!")
-    searchTaskStatusDatumStruct =       struct.Struct("!")
+    searchTaskStartDatumStruct =        struct.Struct("!d")  # inputSet data items(s)
+    searchTaskStatusDatumStruct =       struct.Struct("!")  # TODO this!
     searchTaskStopDatumStruct =         struct.Struct("!")
 
-    processTaskStartDatumStruct =       struct.Struct("!Q")
-    processTaskStatusDatumStruct =      struct.Struct("!Q")
+    processTaskStartDatumStruct =       struct.Struct("!d")  # input Stream data item(s)
+    processTaskStatusDatumStruct =      struct.Struct("!d")  # output Stream data item(s)
     processTaskStopDatumStruct =        struct.Struct("!")
 
     unitErrorDatumStruct =              struct.Struct("!")
