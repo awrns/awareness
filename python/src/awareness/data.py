@@ -39,6 +39,10 @@ class Item:
     def fromDatums(self, datums):
         return Item(tuple(datums))
 
+    @classmethod
+    def count(self):
+        return len(self.parameters)
+
 
 
 class Stream:
@@ -69,6 +73,11 @@ class Stream:
         return Stream(items)
 
 
+    @classmethod
+    def count(self):
+        return len(self.items)
+
+
 
 class Set:
 
@@ -95,6 +104,11 @@ class Set:
 
 
         return Set(inputStream, outputStream)
+
+
+    @classmethod
+    def count(self):
+        return self.inputStream.count
 
 
 class Assembly:
