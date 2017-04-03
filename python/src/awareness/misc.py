@@ -21,6 +21,9 @@ from abc import ABCMeta, abstractproperty
 import struct
 
 class Protocol0Constants:
+
+    MAGIC_MAX_VALUE = 2**63 - 1
+
     pduHeaderStruct = struct.Struct("!3BQ")
 
     VERSION_BYTE =          0xA0
