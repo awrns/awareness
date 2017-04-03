@@ -36,7 +36,7 @@ class Protocol:
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputStream, inputFrequency=0, progressCallback=None):
+    def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -44,6 +44,8 @@ class Protocol:
         raise NotImplementedError()
 
 class Protocol0(Protocol, misc.Protocol0Constants):
+    lastSearchMagic = 0
+    lastProcessMagic = 0
 
     def capabilities(self, connection):
         self.send(connection, self.BLANK, self.CAPABILITIES, (), ())
@@ -57,6 +59,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return datums
 
     def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
+        magic = self.lastSearchMagic
+        self.lastSearchMagic += 1
         self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (magic, inputSet.inputStream.count, inputSet.outputStream.count, inputSet.count, propagationLimit, progressFrequency), inputSet.toDatums())
         pres = None
         while pres[1] != 1:
@@ -77,6 +81,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Assembly(datums)
 
     def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
+        magic = self.lastProcessMagic
+        self.lastProcessMagic += 1
         self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (magic, inputStream.count, index, progressFrequency), inputStream.toDatums())
         pres = None
         while pres[2] != 1:
