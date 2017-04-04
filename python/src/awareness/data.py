@@ -32,7 +32,10 @@ class Item:
         self.parameters = parameters
 
     def toDatums(self):
-        return self.parameters
+        datums = []
+        for parameter in self.parameters:
+            datums.append((parameter,))  # The parameter in a 1-tuple
+        return datums
 
 
     @classmethod
