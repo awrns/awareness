@@ -26,20 +26,20 @@ import protocol as i_protocol
 
 class Item:
 
-    parameters = ()
+    parameters = []
 
     def __init__(self, parameters):
         self.parameters = parameters
 
     def toDatums(self):
-        return list(self.parameters)
+        return self.parameters
 
 
     @classmethod
     def fromDatums(self, datums):
-        return Item(tuple(datums))
+        return Item(list(datums))
 
-    @classmethod
+    @property
     def count(self):
         return len(self.parameters)
 
@@ -73,7 +73,7 @@ class Stream:
         return Stream(items)
 
 
-    @classmethod
+    @property
     def count(self):
         return len(self.items)
 
