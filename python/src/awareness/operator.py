@@ -17,6 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import logging
 import exception
 import misc
 import affinity as i_affinity
@@ -104,15 +105,18 @@ class LocalOperator(Operator):
 
     def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
         # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
+        logging.getLogger('awareness').info("Beginning Algorithm search with propagation limit " + str(propagationLimit))
         return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
+        logging.getLogger('awareness').info("Beginning Affinity " + str(index) + " process")
         # Hand inputSet to our indexed LocalAffinity.
         return self.affinities[index].run(inputStream, progressFrequency=progressFrequency, progressCallback=progressCallback)
 
 
     def capabilities(self):
+        logging.getLogger('awareness').info("Beginning capabilities collection from " + len(self.affinities) + " affinities")
         # Building a list of tuples.
         capabilities = []
 
