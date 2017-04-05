@@ -50,7 +50,7 @@ class Backend:
 class NativeBackend(Backend):
 
 
-    def threadingAsync(self, function, args=(), kwargs={}, callback=None, daemon=True):
+    def threadingAsync(self, function, args=(), kwargs={}, callback=None, daemon=True, name=None):
         if not callback:
             callback = lambda *args,**kwargs:None
 
@@ -60,6 +60,8 @@ class NativeBackend(Backend):
 
         thread = threading.Thread(target=wrapWithCallback(function, callback), args=args, kwargs=kwargs)
         thread.daemon = daemon
+        if name:
+            thread.name = name
         thread.start()
 
 
@@ -77,7 +79,7 @@ class NativeBackend(Backend):
         return listener
 
 
-    def defaultLogger(self):
+    def setupLogger(self):
         logger = logging.getLogger('awareness')
         logger.setLevel(logging.DEBUG)
         console = logging.StreamHandler()
@@ -85,4 +87,7 @@ class NativeBackend(Backend):
         formatter = logging.Formatter('%(asctime)s | %(threadName)-20s | %(levelname)-8s | %(message)s')
         console.setFormatter(formatter)
         logger.addHandler(console)
+
+        logger.critical('Hello!')
+
         return logger
