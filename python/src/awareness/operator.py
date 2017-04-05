@@ -144,20 +144,22 @@ class RemoteOperator(Operator):
         self.backend = backend() if backend else i_backend.NativeBackend()  # Set to default if None.
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
 
+
         # Do a quick routine to get the Affinity details.
         if len(self.affinities) == 0:
-            self.connect()
-            self.retrieveAffinities()
-            self.disconnect()
+            with self:
+                self.retrieveAffinities()
 
 
-    def connect(self):
+    def __enter__(self):
         self.connection = self.backend.connect(self.host, port=self.port)
+        return self
 
 
-    def disconnect(self):
+    def __exit__(self, type, value, traceback):
         self.connection.close()
         self.connection = None
+
 
     def retrieveAffinities(self):
         capabilities = self.protocol.capabilities(self.connection)
