@@ -26,7 +26,7 @@ import protocol as i_protocol
 
 class Item:
 
-    parameters = []
+    parameters = ()
 
     def __init__(self, parameters):
         self.parameters = parameters
@@ -40,7 +40,7 @@ class Item:
 
     @classmethod
     def fromDatums(self, datums):
-        return Item(list(datums))
+        return Item(tuple(datums))
 
     @property
     def count(self):

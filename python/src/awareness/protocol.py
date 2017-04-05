@@ -62,7 +62,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         magic = self.lastSearchMagic
         self.lastSearchMagic = self.lastSearchMagic + 1 if self.lastSearchMagic < self.MAGIC_MAX_VALUE else 0
         self.send(connection, self.SEARCH_TASK_START, self.SEARCH_TASK_STATUS, (magic, inputSet.inputStream.count, inputSet.outputStream.count, inputSet.count, propagationLimit, progressFrequency), inputSet.toDatums())
-        pres = None
+        pres = (-1, -1)
         while pres[1] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
             if res is None:
@@ -82,9 +82,9 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
         magic = self.lastProcessMagic
-        self.lastSearchMagic = self.lastSearchMagic + 1 if self.lastSearchMagic < self.MAGIC_MAX_VALUE else 0
+        self.lastProcessMagic = self.lastProcessMagic + 1 if self.lastProcessMagic < self.MAGIC_MAX_VALUE else 0
         self.send(connection, self.PROCESS_TASK_START, self.PROCESS_TASK_STATUS, (magic, inputStream.count, index, progressFrequency), inputStream.toDatums())
-        pres = None
+        pres = (-1, -1, -1)
         while pres[2] != 1:
             res = self.receive(connection, self.validProviderToAccessor)
             if res is None:
@@ -120,6 +120,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def receive(self, connection, valid):
         recvHeader = connection.recv(self.pduHeaderStruct.size)
+        if len(recvHeader) < self.pduHeaderStruct.size: return None
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen) if dataLen > 0 else ''
 

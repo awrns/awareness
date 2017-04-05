@@ -14,4 +14,6 @@ def test_accessprovide():
 
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
     inputStream = awareness.Stream([awareness.Item([1])])
-    res = operator2.process(0, inputStream)
+    #operator2.connect()
+    #res = operator2.process(0, inputStream)
+    #operator2.disconnect()
