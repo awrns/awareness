@@ -105,7 +105,7 @@ class Protocol0Constants:
                                PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
 
 
-class ProvidorTask:
+class ProviderTask:
 
     progressCallback = None
     proceed = True
@@ -131,18 +131,18 @@ class ProvidorTask:
         self.proceed = False
 
 
-class ProvidorTaskMonitor:
+class ProviderTaskMonitor:
 
     searchTasks = {}
     processTasks = {}
 
     def addSearchTask(self, magic, progressCallback):  # There's no point in having no progressCallback here
-        newTask = ProvidorTask(progressCallback)
+        newTask = ProviderTask(progressCallback)
         self.searchTasks[magic] = newTask
         return newTask.update  # as callable, that is.
 
     def addProcessTask(self, magic, progressCallback):
-        newTask = ProvidorTask(progressCallback)
+        newTask = ProviderTask(progressCallback)
         self.searchTasks[magic] = newTask
         return newTask.update
 

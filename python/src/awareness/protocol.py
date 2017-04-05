@@ -17,6 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import logging
 import exception
 import misc
 import affinity as i_affinity
@@ -121,23 +122,19 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
     def receive(self, connection, valid):
         recvHeader = connection.recv(self.pduHeaderStruct.size)
-        if len(recvHeader) < self.pduHeaderStruct.size: return None
+        if len(recvHeader) < self.pduHeaderStruct.size: raise exception.ConnectionEnded("Received header was not of the required length")
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
         recvData = connection.recv(dataLen) if dataLen > 0 else ''
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
-            return None
+            raise exception.UnitError("Received version did match the known version")
         if unitType not in valid or requestedType not in valid[unitType]:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
-            return None
+            raise exception.UnitError("Received unit type or requested type was not valid in context")
 
-        try:
-            unitPreStruct = self.unitPreStructs[unitType]
-            unitDatumStruct = self.unitDatumStructs[unitType]
-        except:
-            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
-            return None
+        unitPreStruct = self.unitPreStructs[unitType]
+        unitDatumStruct = self.unitDatumStructs[unitType]
 
         try:
             pres = unitPreStruct.unpack(recvData[:unitPreStruct.size])
@@ -149,19 +146,18 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     datums.append(unitDatumStruct.unpack(dataRoi))
         except:
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
-            return None
+            raise exception.DataError("Received preambles and/or datums were unparseable in context")
+
         return unitType, requestedType, pres, datums
 
-    def provide(self, listener, operator, logger=None):
+    def provide(self, listener, operator):
 
         def handle(connection, operator):
-            monitor = misc.ProvidorTaskMonitor()
+            logging.getLogger('awareness').info('Interacting with accesser..')
+            monitor = misc.ProviderTaskMonitor()
             while True:
                 try:
                     res = self.receive(connection, self.validAccessorToProvider)
-                    if res is None:
-                        connection.close()
-                        return
 
                     unitType, requestedType, pres, datums = res
 
@@ -186,9 +182,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
                     elif requestedType == self.PROCESS_TASK_STATUS:
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0])[0])
-                except:
+
+                except Exception as e:
+                    logging.getLogger('awareness').info('Finished interaction, exiting: ' + type(e).__name__)
                     connection.close()
                     return
+
         while True:
             connection, address = listener.accept()
+            logging.getLogger('awareness').info('Accepted connection from ' + address[0] + ', spawning handler')
             operator.backend.threadingAsync(handle, args=(connection, operator), name='Handle-'+address[0])
