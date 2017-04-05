@@ -20,6 +20,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import exception
 import multiprocessing
 import threading
+import logging
 import socket
 import misc
 import affinity as i_affinity
@@ -74,3 +75,14 @@ class NativeBackend(Backend):
         listener.listen(backlog)
 
         return listener
+
+
+    def defaultLogger(self):
+        logger = logging.getLogger('awareness')
+        logger.setLevel(logging.DEBUG)
+        console = logging.StreamHandler()
+        console.setLevel(logging.ERROR)
+        formatter = logging.Formatter('%(asctime)s | %(threadName)-20s | %(levelname)-8s | %(message)s')
+        console.setFormatter(formatter)
+        logger.addHandler(console)
+        return logger

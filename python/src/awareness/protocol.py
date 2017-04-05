@@ -152,7 +152,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             return None
         return unitType, requestedType, pres, datums
 
-    def provide(self, listener, operator):
+    def provide(self, listener, operator, logger=None):
 
         def handle(connection, operator):
             monitor = misc.ProvidorTaskMonitor()
