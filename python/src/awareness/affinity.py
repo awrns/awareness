@@ -17,6 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import exception
 import misc
 import algorithm as i_algorithm
 import backend as i_backend
