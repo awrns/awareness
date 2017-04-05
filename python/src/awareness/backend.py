@@ -88,6 +88,4 @@ class NativeBackend(Backend):
         console.setFormatter(formatter)
         logger.addHandler(console)
 
-        logger.critical('Hello!')
-
         return logger
