@@ -153,8 +153,8 @@ class ProviderTaskMonitor:
     def stopProcessTask(self, magic):
         self.processTasks[magic].stop()
 
-    def getSearchTaskLatestArgsKwargs(self, magic):
-        return self.searchTasks[magic].latestArgs, self.searchTasks[magic].latestKwargs
+    def getSearchTaskLatestArgs(self, magic):
+        return self.searchTasks[magic].latestArgs
 
-    def getProcessTaskLatestArgsKwargs(self, magic):
-        return self.processTasks[magic].latestArgs, self.processTasks[magic].latestKwargs
+    def getProcessTaskLatestArgs(self, magic):
+        return self.processTasks[magic].latestArgs

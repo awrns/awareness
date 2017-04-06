@@ -170,7 +170,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         searchKwargs = {'progressFrequency':pres[5], 'progressCallback':callback}
                         operator.backend.threadingAsync(operator.search, searchArgs, searchKwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
                     elif unitType == self.PROCESS_TASK_START:
-                        replyCall = lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], outputSet.count, progress), outputSet.toDatums())
+                        replyCall = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.toDatums())
                         callback = monitor.addProcessTask(pres[0], replyCall)
                         processArgs = (pres[2], i_data.Stream.fromCountDatums(pres[1], datums))
                         processKwargs = {'progressFrequency':pres[3], 'progressCallback':callback}
@@ -178,10 +178,18 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
                     elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
+
                     elif requestedType == self.SEARCH_TASK_STATUS:
-                        self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0]).toDatums())
+                        res = monitor.getSearchTaskLatestArgs(pres[0])
+                        datums = res[1].toDatums() if res else []
+                        progress = res[0] if res else 0
+                        self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), datums)
                     elif requestedType == self.PROCESS_TASK_STATUS:
-                        self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0]).toDatums())
+                        res = monitor.getProcessTaskLatestArgs(pres[0])
+                        count = res[1].count if res else 0
+                        datums = res[1].toDatums() if res else []
+                        progress = res[0] if res else 0
+                        self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, progress), datums)
 
                 except exception.ProvisionException as e:
                     logging.getLogger('awareness').info('Finished interaction, exiting: ' + type(e).__name__)
