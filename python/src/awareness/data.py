@@ -67,7 +67,7 @@ class Stream:
     @classmethod
     def fromCountDatums(self, count, datums):
         items = []
-        nParams = len(datums) / count
+        nParams = len(datums) / count if count != 0 else 0
 
         for itemIndex in range(count):
             startPos = itemIndex * nParams
