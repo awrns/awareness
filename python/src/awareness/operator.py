@@ -97,7 +97,7 @@ class LocalOperator(Operator):
         self.assemblies = assemblies
         self.remoteOperators = remoteOperators
 
-        self.backend.setupLogger()
+        # self.backend.setupLogger()
 
         # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
         self.backend.threadingAsync(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='Provide-' + str(port))

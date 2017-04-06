@@ -50,7 +50,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     lastProcessMagic = 0
 
     def capabilities(self, connection):
-        self.send(connection, self.BLANK, self.CAPABILITIES, (), ())
+        self.send(connection, self.BLANK, self.CAPABILITIES, (), [])
         unitType = None
         while unitType != self.CAPABILITIES:
             res = self.receive(connection, self.validProviderToAccessor)
@@ -77,7 +77,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 res = progressCallback(i_data.Assembly.fromDatums(datums))
                 if not res:
-                    self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), ())
+                    self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
                     return i_data.Assembly.fromDatums(datums)
 
         return i_data.Assembly(datums)
@@ -99,7 +99,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 res = progressCallback(i_data.Stream.fromCountDatums(pres[1], datums))
                 if not res:
-                    self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), ())
+                    self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), [])
                     return i_data.Stream.fromCountDatums(pres[1], datums)
 
         return i_data.Set(datums)
@@ -127,10 +127,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         recvData = connection.recv(dataLen) if dataLen > 0 else ''
 
         if version != self.VERSION_BYTE:
-            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received version did match the known version")
         if unitType not in valid or requestedType not in valid[unitType]:
-            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), ())
+            self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received unit type or requested type was not valid in context")
 
         unitPreStruct = self.unitPreStructs[unitType]
@@ -145,7 +145,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
                     datums.append(unitDatumStruct.unpack(dataRoi))
         except:
-            self.send(connection, self.DATA_ERROR, self.NOTHING, (), ())
+            self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
             raise exception.DataError("Received preambles and/or datums were unparseable in context")
 
         return unitType, requestedType, pres, datums
@@ -177,13 +177,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         i_backend.threadingAsync(operator.process, processArgs, processKwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
-                    elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), ())
+                    elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
                     elif requestedType == self.SEARCH_TASK_STATUS:
-                        self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0])[0])
+                        self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (), monitor.getSearchTaskLatestArgsKwargs(pres[0]).toDatums())
                     elif requestedType == self.PROCESS_TASK_STATUS:
-                        self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0])[0])
+                        self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (), monitor.getProcessTaskLatestArgsKwargs(pres[0]).toDatums())
 
-                except Exception as e:
+                except exception.ProvisionException as e:
                     logging.getLogger('awareness').info('Finished interaction, exiting: ' + type(e).__name__)
                     connection.close()
                     return
