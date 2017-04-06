@@ -143,7 +143,7 @@ class ProviderTaskMonitor:
 
     def addProcessTask(self, magic, progressCallback):
         newTask = ProviderTask(progressCallback)
-        self.searchTasks[magic] = newTask
+        self.processTasks[magic] = newTask
         return newTask.update
 
 

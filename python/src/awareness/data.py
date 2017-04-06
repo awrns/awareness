@@ -64,12 +64,12 @@ class Stream:
             datums += item.toDatums()
         return datums
 
-
+    @classmethod
     def fromCountDatums(self, count, datums):
         items = []
         nParams = len(datums) / count
 
-        for itemIndex in count:
+        for itemIndex in range(count):
             startPos = itemIndex * nParams
             endPos = (itemIndex + 1) * nParams
             items.append(Item.fromDatums(datums[startPos:endPos]))

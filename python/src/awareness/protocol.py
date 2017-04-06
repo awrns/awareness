@@ -168,13 +168,13 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         callback = monitor.addSearchTask(pres[0], replyCall)
                         searchArgs = (pres[4], i_data.Set.fromInputsOuputsCountDatums(pres[1], pres[2], pres[3], datums))
                         searchKwargs = {'progressFrequency':pres[5], 'progressCallback':callback}
-                        i_backend.threadingAsync(operator.search, searchArgs, searchKwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
+                        operator.backend.threadingAsync(operator.search, searchArgs, searchKwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
                     elif unitType == self.PROCESS_TASK_START:
                         replyCall = lambda progress, outputSet: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], outputSet.count, progress), outputSet.toDatums())
                         callback = monitor.addProcessTask(pres[0], replyCall)
                         processArgs = (pres[2], i_data.Stream.fromCountDatums(pres[1], datums))
                         processKwargs = {'progressFrequency':pres[3], 'progressCallback':callback}
-                        i_backend.threadingAsync(operator.process, processArgs, processKwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
+                        operator.backend.threadingAsync(operator.process, processArgs, processKwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]))
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
                     elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
