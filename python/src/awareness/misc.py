@@ -43,33 +43,33 @@ class Protocol0Constants:
     UNIT_ERROR =            0x40
     DATA_ERROR =            0x41
 
-    blankPreStruct =                    struct.Struct("!")	# intentional
-    capabilitiesPreStruct =             struct.Struct("!")	# intentional
+    blankPreStruct =                    struct.Struct("!")	    # intentional
+    capabilitiesPreStruct =             struct.Struct("!")	    # intentional
 
     searchTaskStartPreStruct =          struct.Struct("!6Q")	# magic, inputs, outputs, count, propagationLimit, progressFrequency
     searchTaskStatusPreStruct =         struct.Struct("!Qf")	# magic, TODO any others, progress
-    searchTaskStopPreStruct =           struct.Struct("!Q")	# magic
+    searchTaskStopPreStruct =           struct.Struct("!Q")	    # magic
 
     processTaskStartPreStruct =         struct.Struct("!4Q")	# magic, count, index, progressFrequency
     processTaskStatusPreStruct =        struct.Struct("!2Qf")	# magic, count, progress
-    processTaskStopPreStruct =          struct.Struct("!Q")	# magic
+    processTaskStopPreStruct =          struct.Struct("!Q")	    # magic
 
-    unitErrorPreStruct =                struct.Struct("!")	# intentional
-    dataErrorPreStruct =                struct.Struct("!")	# intentional
+    unitErrorPreStruct =                struct.Struct("!")      # intentional
+    dataErrorPreStruct =                struct.Struct("!")      # intentional
 
     blankDatumStruct =                  struct.Struct("!")
-    capabilitiesDatumStruct =           struct.Struct("!2Q")	# inputs, outputs
+    capabilitiesDatumStruct =           struct.Struct("!2Q")    # inputs, outputs
 
-    searchTaskStartDatumStruct =        struct.Struct("!d")	# inputSet data items(s)
-    searchTaskStatusDatumStruct =       struct.Struct("!")	# TODO this!
-    searchTaskStopDatumStruct =         struct.Struct("!")	# intentional
+    searchTaskStartDatumStruct =        struct.Struct("!d")	    # inputSet data items(s)
+    searchTaskStatusDatumStruct =       struct.Struct("!")	    # TODO this!
+    searchTaskStopDatumStruct =         struct.Struct("!")	    # intentional
 
-    processTaskStartDatumStruct =       struct.Struct("!d")	# input Stream data item(s)
-    processTaskStatusDatumStruct =      struct.Struct("!d")	# output Stream data item(s)
+    processTaskStartDatumStruct =       struct.Struct("!d")	    # input Stream data item(s)
+    processTaskStatusDatumStruct =      struct.Struct("!d")	    # output Stream data item(s)
     processTaskStopDatumStruct =        struct.Struct("!")  	# intentional
 
-    unitErrorDatumStruct =              struct.Struct("!")	# intentional
-    dataErrorDatumStruct =              struct.Struct("!")	# intentional
+    unitErrorDatumStruct =              struct.Struct("!")	    # intentional
+    dataErrorDatumStruct =              struct.Struct("!")	    # intentional
 
     unitPreStructs = {BLANK: blankPreStruct,
                       CAPABILITIES: capabilitiesPreStruct,

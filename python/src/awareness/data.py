@@ -35,7 +35,7 @@ class Item:
     def toDatums(self):
         datums = []
         for parameter in self.parameters:
-            datums.append((parameter,))  # The parameter in a 1-tuple
+            datums.append((float(parameter),))  # The parameter in a 1-tuple
         return datums
 
 
