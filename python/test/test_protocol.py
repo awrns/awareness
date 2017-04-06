@@ -13,7 +13,7 @@ def test_accessprovide():
     operator1.affinities.append(TestAffinity(operator1, 0))
 
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
-    inputStream = awareness.Stream([awareness.Item([1])])
+    inputStream = awareness.Stream([awareness.Item((1.0,))])
     with operator2:
         res = operator2.process(0, inputStream)
 

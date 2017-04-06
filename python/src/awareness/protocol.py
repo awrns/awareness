@@ -168,14 +168,14 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         callback = monitor.addSearchTask(pres[0], replyCall)
                         searchArgs = (pres[4], i_data.Set.fromInputsOuputsCountDatums(pres[1], pres[2], pres[3], datums))
                         searchKwargs = {'progressFrequency':pres[5], 'progressCallback':callback}
-                        termCallback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1), assembly.toDatums())
+                        termCallback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.toDatums())
                         operator.backend.threadingAsync(operator.search, searchArgs, searchKwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=termCallback)
                     elif unitType == self.PROCESS_TASK_START:
                         replyCall = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.toDatums())
                         callback = monitor.addProcessTask(pres[0], replyCall)
                         processArgs = (pres[2], i_data.Stream.fromCountDatums(pres[1], datums))
                         processKwargs = {'progressFrequency':pres[3], 'progressCallback':callback}
-                        termCallback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, 1), stream.toDatums())
+                        termCallback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, 1.0), stream.toDatums())
                         operator.backend.threadingAsync(operator.process, processArgs, processKwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=termCallback)
 
                     if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
