@@ -41,7 +41,10 @@ class Item:
 
     @classmethod
     def fromDatums(self, datums):
-        return Item(tuple(datums))
+        parameters = []
+        for datum in datums:
+            parameters.append(datum[0])  # First (only) tuple item
+        return Item(tuple(parameters))
 
     @property
     def count(self):

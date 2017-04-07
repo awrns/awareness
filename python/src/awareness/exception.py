@@ -10,8 +10,11 @@ class UnitError(ProvisionException):
 class DataError(ProvisionException):
     pass
 
+class ReceptionError(ProvisionException):
+    pass
 
 
 
-class ConnectionEnded(ProvisionException):
+
+class ConnectionException(Exception):
     pass
