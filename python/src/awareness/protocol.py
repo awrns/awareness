@@ -17,6 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import threading
 import socket
 import logging
 import exception
@@ -49,6 +50,7 @@ class Protocol:
 class Protocol0(Protocol, misc.Protocol0Constants):
     lastSearchMagic = 0
     lastProcessMagic = 0
+    connectionLock = threading.Lock()
 
     def capabilities(self, connection):
         self.send(connection, self.BLANK, self.CAPABILITIES, (), [])
@@ -117,9 +119,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPres))
 
-        connection.sendall(tranHeader)
-        connection.sendall(tranPres)
-        connection.sendall(tranDatums)
+        with self.connectionLock:
+            connection.sendall(tranHeader)
+            connection.sendall(tranPres)
+            connection.sendall(tranDatums)
 
     def receive(self, connection, valid):
         recvHeader = connection.recv(self.pduHeaderStruct.size)
