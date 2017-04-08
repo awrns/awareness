@@ -125,14 +125,15 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             connection.sendall(tranDatums)
 
     def receive(self, connection, valid):
-        recvHeader = connection.recv(self.pduHeaderStruct.size)
-        if len(recvHeader) < self.pduHeaderStruct.size: raise exception.ReceptionError("Received header was not of the required length")
+        recvHeader = ''
+        while len(recvHeader) < self.pduHeaderStruct.size: recvHeader += connection.recv(self.pduHeaderStruct.size - len(recvHeader))  # This subtraction precents overfilling
         version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
-        recvData = connection.recv(dataLen) if dataLen > 0 else ''
+        recvData = ''
+        while len(recvData) < dataLen: recvData += connection.recv(dataLen - len(recvData))  # Same 'goal-subtraction' routine
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
-            raise exception.UnitError("Received version did match the known version")
+            raise exception.UnitError("Received version did not match the known version")
         if unitType not in valid or requestedType not in valid[unitType]:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received unit type or requested type was not valid in context")

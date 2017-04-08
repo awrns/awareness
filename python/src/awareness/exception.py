@@ -10,10 +10,6 @@ class UnitError(ProvisionException):
 class DataError(ProvisionException):
     pass
 
-class ReceptionError(ProvisionException):
-    pass
-
-
 
 
 class ConnectionException(Exception):
