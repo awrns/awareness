@@ -113,7 +113,7 @@ class Set:
         return Set(inputStream, outputStream)
 
 
-    @classmethod
+    @property
     def count(self):
         return self.inputStream.count
 
@@ -121,24 +121,30 @@ class Set:
 class Assembly:
 
     affinities = []
+    paths = []
 
-    connections = []
+    def __init__(self, affinities, paths):
 
-    def __init__(self, affinities, connections):
         self.affinities = affinities
-        self.connections = connections
+        self.paths = paths
 
 
     def toDatums(self):
         pass
 
     @classmethod
-    def fromAffinitiesConnectionsDatums(self, nAffinities, nConnections, datums):
+    def fromCountDatums(self, count, datums):
+        pass
+        
 
-        affinities = datums[:nAffinities]
-        connections = datums[nAffinities:nAffinities + nConnections]
+    @property
+    def count(self):
+        return len(self.slices)
 
 
+    @property
+    def affinities(self):
+        pass
     
 
     def run(self, inputStream, progressFrequency=0, progressCallback=None):
