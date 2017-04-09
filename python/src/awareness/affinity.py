@@ -66,7 +66,7 @@ class RemoteAffinity(Affinity):
     operator = None
     index = 0
 
-    profile = []
+    profile = ()
 
 
     def __init__(self,

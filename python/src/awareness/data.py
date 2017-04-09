@@ -119,6 +119,26 @@ class Set:
 
 
 class Assembly:
+
+    affinities = []
+
+    connections = []
+
+    def __init__(self, affinities, connections):
+        self.affinities = affinities
+        self.connections = connections
+
+
+    def toDatums(self):
+        pass
+
+    @classmethod
+    def fromAffinitiesConnectionsDatums(self, nAffinities, nConnections, datums):
+
+        affinities = datums[:nAffinities]
+        connections = datums[nAffinities:nAffinities + nConnections]
+
+
     
 
     def run(self, inputStream, progressFrequency=0, progressCallback=None):
