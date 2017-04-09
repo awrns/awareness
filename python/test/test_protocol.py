@@ -5,15 +5,15 @@ class TestAffinity(awareness.LocalAffinity):
 
     profile = (1,1)
 
-    def run(self, inputStream, progressFrequency=0, progressCallback=None):
-        return inputStream
+    def run(self, input_stream, progress_frequency=0, progress_callback=None):
+        return input_stream
 
 def test_accessprovide():
     operator1 = awareness.LocalOperator()
     operator1.affinities.append(TestAffinity(operator1, 0))
 
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
-    inputStream = awareness.Stream([awareness.Item((1.0,))])
+    input_stream = awareness.Stream([awareness.Item((1.0,))])
     with operator2:
-        res = operator2.process(0, inputStream)
+        res = operator2.process(0, input_stream)
 

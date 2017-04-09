@@ -24,7 +24,7 @@ class Protocol0Constants:
 
     MAGIC_MAX_VALUE = 2**63 - 1
 
-    pduHeaderStruct = struct.Struct("!3BQ")
+    pdu_header_struct = struct.Struct("!3BQ")
 
     VERSION_BYTE =          0xA0
 
@@ -43,85 +43,85 @@ class Protocol0Constants:
     UNIT_ERROR =            0x40
     DATA_ERROR =            0x41
 
-    blankPreStruct =                    struct.Struct("!")	    # intentional
-    capabilitiesPreStruct =             struct.Struct("!")	    # intentional
+    blank_pre_struct =                      struct.Struct("!")	    # intentional
+    capabilities_pre_struct =               struct.Struct("!")	    # intentional
 
-    searchTaskStartPreStruct =          struct.Struct("!6Q")	# magic, inputs, outputs, count, propagationLimit, progressFrequency
-    searchTaskStatusPreStruct =         struct.Struct("!Qf")	# magic, TODO any others, progress
-    searchTaskStopPreStruct =           struct.Struct("!Q")	    # magic
+    search_task_start_pre_struct =          struct.Struct("!6Q")	# magic, inputs, outputs, count, propagationLimit, progressFrequency
+    search_task_status_pre_struct =         struct.Struct("!Qf")	# magic, TODO any others, progress
+    search_task_stop_pre_struct =           struct.Struct("!Q")	    # magic
 
-    processTaskStartPreStruct =         struct.Struct("!4Q")	# magic, count, index, progressFrequency
-    processTaskStatusPreStruct =        struct.Struct("!2Qf")	# magic, count, progress
-    processTaskStopPreStruct =          struct.Struct("!Q")	    # magic
+    process_task_start_pre_struct =          struct.Struct("!4Q")	# magic, count, index, progressFrequency
+    process_task_status_pre_struct =        struct.Struct("!2Qf")	# magic, count, progress
+    process_task_stop_pre_struct =          struct.Struct("!Q")	    # magic
 
-    unitErrorPreStruct =                struct.Struct("!")      # intentional
-    dataErrorPreStruct =                struct.Struct("!")      # intentional
+    unit_error_pre_struct =                 struct.Struct("!")      # intentional
+    data_error_pre_struct =                 struct.Struct("!")      # intentional
 
-    blankDatumStruct =                  struct.Struct("!")
-    capabilitiesDatumStruct =           struct.Struct("!2Q")    # inputs, outputs
+    blank_datum_struct =                    struct.Struct("!")
+    capabilities_datum_struct =             struct.Struct("!2Q")    # inputs, outputs
 
-    searchTaskStartDatumStruct =        struct.Struct("!d")	    # inputSet data items(s)
-    searchTaskStatusDatumStruct =       struct.Struct("!")	    # TODO this!
-    searchTaskStopDatumStruct =         struct.Struct("!")	    # intentional
+    search_task_start_datum_struct =        struct.Struct("!d")	    # inputSet data items(s)
+    search_task_status_datum_struct =       struct.Struct("!")	    # TODO this!
+    search_task_stop_datum_struct =         struct.Struct("!")	    # intentional
 
-    processTaskStartDatumStruct =       struct.Struct("!d")	    # input Stream data item(s)
-    processTaskStatusDatumStruct =      struct.Struct("!d")	    # output Stream data item(s)
-    processTaskStopDatumStruct =        struct.Struct("!")  	# intentional
+    process_task_start_datum_struct =       struct.Struct("!d")	    # input Stream data item(s)
+    process_task_status_datum_struct =      struct.Struct("!d")	    # output Stream data item(s)
+    process_task_stop_datum_struct =        struct.Struct("!")  	# intentional
 
-    unitErrorDatumStruct =              struct.Struct("!")	    # intentional
-    dataErrorDatumStruct =              struct.Struct("!")	    # intentional
+    unit_error_datum_struct =               struct.Struct("!")	    # intentional
+    data_error_datum_struct =               struct.Struct("!")	    # intentional
 
-    unitPreStructs = {BLANK: blankPreStruct,
-                      CAPABILITIES: capabilitiesPreStruct,
-                      SEARCH_TASK_STOP: searchTaskStopPreStruct,
-                      PROCESS_TASK_STOP: processTaskStopPreStruct,
-                      SEARCH_TASK_START: searchTaskStartPreStruct,
-                      SEARCH_TASK_STATUS: searchTaskStatusPreStruct,
-                      PROCESS_TASK_START: processTaskStartPreStruct,
-                      PROCESS_TASK_STATUS: processTaskStatusPreStruct,
-                      UNIT_ERROR: unitErrorPreStruct,
-                      DATA_ERROR: dataErrorPreStruct}
+    unit_pre_structs = {BLANK: blank_pre_struct,
+                        CAPABILITIES: capabilities_pre_struct,
+                        SEARCH_TASK_STOP: search_task_stop_pre_struct,
+                        PROCESS_TASK_STOP: process_task_stop_pre_struct,
+                        SEARCH_TASK_START: search_task_start_pre_struct,
+                        SEARCH_TASK_STATUS: search_task_status_pre_struct,
+                        PROCESS_TASK_START: process_task_start_pre_struct,
+                        PROCESS_TASK_STATUS: process_task_status_pre_struct,
+                        UNIT_ERROR: unit_error_pre_struct,
+                        DATA_ERROR: data_error_pre_struct}
 
-    unitDatumStructs = {BLANK: blankDatumStruct,
-                        CAPABILITIES: capabilitiesDatumStruct,
-                        SEARCH_TASK_STOP: searchTaskStopDatumStruct,
-                        PROCESS_TASK_STOP: processTaskStopDatumStruct,
-                        SEARCH_TASK_START: searchTaskStartDatumStruct,
-                        SEARCH_TASK_STATUS: searchTaskStatusDatumStruct,
-                        PROCESS_TASK_START: processTaskStartDatumStruct,
-                        PROCESS_TASK_STATUS: processTaskStatusDatumStruct,
-                        UNIT_ERROR: unitErrorDatumStruct,
-                        DATA_ERROR: dataErrorDatumStruct}
+    unit_datum_structs = {BLANK: blank_datum_struct,
+                          CAPABILITIES: capabilities_datum_struct,
+                          SEARCH_TASK_STOP: search_task_stop_datum_struct,
+                          PROCESS_TASK_STOP: process_task_stop_datum_struct,
+                          SEARCH_TASK_START: search_task_start_datum_struct,
+                          SEARCH_TASK_STATUS: search_task_status_datum_struct,
+                          PROCESS_TASK_START: process_task_start_datum_struct,
+                          PROCESS_TASK_STATUS: process_task_status_datum_struct,
+                          UNIT_ERROR: unit_error_datum_struct,
+                          DATA_ERROR: data_error_datum_struct}
 
-    validProviderToAccessor = {BLANK: (NOTHING,),
-                               CAPABILITIES: (NOTHING,),
-                               SEARCH_TASK_STATUS: (NOTHING,),
-                               PROCESS_TASK_STATUS: (NOTHING,)}
+    valid_provider_to_accessor = {BLANK: (NOTHING,),
+                                  CAPABILITIES: (NOTHING,),
+                                  SEARCH_TASK_STATUS: (NOTHING,),
+                                  PROCESS_TASK_STATUS: (NOTHING,)}
 
-    validAccessorToProvider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               SEARCH_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               PROCESS_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                               PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
+    valid_accessor_to_provider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                                  SEARCH_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                                  PROCESS_TASK_STOP: (NOTHING, BLANK, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                                  SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
+                                  PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
 
 
 class ProviderTask:
 
-    progressCallback = None
+    progress_callback = None
     proceed = True
 
-    latestArgs = None  # Intended for direct attribute access.
-    latestKwargs = None
+    latest_args = None  # Intended for direct attribute access.
+    latest_kwargs = None
 
-    def __init__(self, progressCallback):
-        self.progressCallback = progressCallback
+    def __init__(self, progress_callback):
+        self.progress_callback = progress_callback
 
     def update(self, *args, **kwargs):
-        self.latestArgs = args  # Intended for direct attribute access.
-        self.latestKwargs = kwargs  # ''
+        self.latest_args = args  # Intended for direct attribute access.
+        self.latest_kwargs = kwargs  # ''
 
         if self.proceed:
-            self.progressCallback(*args, **kwargs)
+            self.progress_callback(*args, **kwargs)
             return True
         else:
             return False
@@ -133,28 +133,28 @@ class ProviderTask:
 
 class ProviderTaskMonitor:
 
-    searchTasks = {}
-    processTasks = {}
+    search_yasks = {}
+    process_tasks = {}
 
-    def addSearchTask(self, magic, progressCallback):  # There's no point in having no progressCallback here
-        newTask = ProviderTask(progressCallback)
-        self.searchTasks[magic] = newTask
-        return newTask.update  # as callable, that is.
+    def add_search_task(self, magic, progress_callback):  # There's no point in having no progress_callback here
+        new_task = ProviderTask(progress_callback)
+        self.search_tasks[magic] = new_task
+        return new_task.update  # as callable, that is.
 
-    def addProcessTask(self, magic, progressCallback):
-        newTask = ProviderTask(progressCallback)
-        self.processTasks[magic] = newTask
-        return newTask.update
+    def add_process_task(self, magic, progress_callback):
+        new_task = ProviderTask(progress_callback)
+        self.process_tasks[magic] = new_task
+        return new_task.update
 
 
-    def stopSearchTask(self, magic):
-        self.searchTasks[magic].stop()
+    def stop_search_task(self, magic):
+        self.search_tasks[magic].stop()
 
-    def stopProcessTask(self, magic):
-        self.processTasks[magic].stop()
+    def stop_process_task(self, magic):
+        self.process_tasks[magic].stop()
 
-    def getSearchTaskLatestArgs(self, magic):
-        return self.searchTasks[magic].latestArgs
+    def get_search_task_latest_args(self, magic):
+        return self.search_tasks[magic].latest_args
 
-    def getProcessTaskLatestArgs(self, magic):
-        return self.processTasks[magic].latestArgs
+    def get_process_task_latest_args(self, magic):
+        return self.process_tasks[magic].latest_args

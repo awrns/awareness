@@ -32,3 +32,4 @@ from affinity import RemoteAffinity as RemoteAffinity
 from data import Item as Item
 from data import Stream as Stream
 from data import Set as Set
+from data import Assembly as Assembly

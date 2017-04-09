@@ -56,11 +56,11 @@ class Operator:
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
+    def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
+    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
 
@@ -75,7 +75,7 @@ class LocalOperator(Operator):
 
     algorithm = None
     assemblies = []  # List of i_assembly.Assembly.
-    remoteOperators = []  # List of RemoteOperator.
+    remote_operators = []  # List of RemoteOperator.
 
 
     def __init__(self,
@@ -86,7 +86,7 @@ class LocalOperator(Operator):
                  protocol = None,
                  algorithm = None,
                  assemblies = [],
-                 remoteOperators = []):
+                 remote_operators = []):
 
         self.host = host
         self.port = port
@@ -95,24 +95,24 @@ class LocalOperator(Operator):
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
         self.assemblies = assemblies
-        self.remoteOperators = remoteOperators
+        self.remote_operators = remote_operators
 
         # self.backend.setupLogger()
 
         # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
-        self.backend.threadingAsync(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='Provide-' + str(port))
+        self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='Provide-' + str(port))
 
 
-    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
+    def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
 
         # Search both the LocalAffinities here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self.abilities, self.remoteOperators, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+        return self.algorithm.search(self.abilities, self.remote_operators, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
-    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
+    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
 
         # Hand inputSet to our indexed LocalAffinity.
-        return self.affinities[index].run(inputStream, progressFrequency=progressFrequency, progressCallback=progressCallback)
+        return self.affinities[index].run(input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def capabilities(self):
@@ -120,8 +120,8 @@ class LocalOperator(Operator):
         # Building a list of tuples.
         capabilities = []
 
-        for eachAffinity in self.affinities:
-            capabilities.append(eachAffinity.profile)
+        for each_affinity in self.affinities:
+            capabilities.append(each_affinity.profile)
 
         return capabilities
 
@@ -154,7 +154,7 @@ class RemoteOperator(Operator):
         # Do a quick routine to get the Affinity details.
         if len(self.affinities) == 0:
             with self:
-                self.retrieveAffinities()
+                self.retrieve_affinities()
 
 
     def __enter__(self):
@@ -167,30 +167,30 @@ class RemoteOperator(Operator):
         self.connection = None
 
 
-    def retrieveAffinities(self):
+    def retrieve_affinities(self):
         capabilities = self.protocol.capabilities(self.connection)
         for i in range(len(capabilities)):
-            affinityProfile = capabilities[i]
-            newAffinity = i_affinity.RemoteAffinity(self, i, affinityProfile)
+            affinity_profile = capabilities[i]
+            new_affinity = i_affinity.RemoteAffinity(self, i, affinity_profile)
 
-            self.affinities.append(newAffinity)
-
-
-    def search(self, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
-
-        return self.protocol.search(self.connection, inputSet, progressFrequency=progressFrequency, progressCallback=progressCallback)
+            self.affinities.append(new_affinity)
 
 
-    def process(self, index, inputStream, progressFrequency=0, progressCallback=None):
+    def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
 
-        return self.affinities[index].run(self.connection, inputStream, progressFrequency=progressFrequency, progressCallback=progressCallback)
+        return self.protocol.search(self.connection, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
+
+
+    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
+
+        return self.affinities[index].run(self.connection, input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def capabilities(self):
 
         capabilities = []
 
-        for eachAffinity in self.affinities:
-            capabilities.append(eachAffinity.profile)
+        for each_affinity in self.affinities:
+            capabilities.append(each_affinity.profile)
 
         return capabilities

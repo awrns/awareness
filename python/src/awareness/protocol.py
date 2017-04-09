@@ -36,11 +36,11 @@ class Protocol:
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
+    def search(self, connection, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
+    def process(self, connection, index, input_stream, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -48,112 +48,112 @@ class Protocol:
         raise NotImplementedError()
 
 class Protocol0(Protocol, misc.Protocol0Constants):
-    lastSearchMagic = 0
-    lastProcessMagic = 0
-    connectionLock = threading.Lock()
+    last_search_magic = 0
+    last_process_magic = 0
+    connection_lock = threading.Lock()
 
     def capabilities(self, connection):
         self.send(connection, self.BLANK, self.CAPABILITIES, (), [])
-        unitType = None
-        while unitType != self.CAPABILITIES:
-            res = self.receive(connection, self.validProviderToAccessor)
+        unit_type = None
+        while unit_type != self.CAPABILITIES:
+            res = self.receive(connection, self.valid_provider_to_accessor)
             if res is None:
                 return None
             else:
-                unitType, requestedType, pres, datums = res
+                unit_type, requested_type, pres, datums = res
         return datums
 
-    def search(self, connection, propagationLimit, inputSet, progressFrequency=0, progressCallback=None):
-        magic = self.lastSearchMagic
-        self.lastSearchMagic = self.lastSearchMagic + 1 if self.lastSearchMagic < self.MAGIC_MAX_VALUE else 0
-        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, inputSet.inputStream.count, inputSet.outputStream.count, inputSet.count, propagationLimit, progressFrequency), inputSet.toDatums())
+    def search(self, connection, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
+        magic = self.last_search_magic
+        self.last_search_magic = self.last_search_magic + 1 if self.last_search_magic < self.MAGIC_MAX_VALUE else 0
+        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, input_set.input_stream.count, input_set.output_stream.count, input_set.count, propagation_limit, progress_frequency), input_set.to_datums())
         pres = (-1, -1)
         while pres[1] != 1:
-            res = self.receive(connection, self.validProviderToAccessor)
+            res = self.receive(connection, self.valid_provider_to_accessor)
             if res is None:
                 return None
             else:
-                _unitType, _requestedType, _pres, _datums = res
+                _unit_type, _requested_type, _pres, _datums = res
 
-            if (_unitType == self.SEARCH_TASK_STATUS and _pres[0] == magic):
-                unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
+            if (_unit_type == self.SEARCH_TASK_STATUS and _pres[0] == magic):
+                unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
 
-                res = progressCallback(i_data.Assembly.fromDatums(datums)) if progressCallback else True
+                res = progress_callback(i_data.Assembly.from_datums(datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Assembly.fromDatums(datums)
+                    return i_data.Assembly.from_datums(datums)
 
         return i_data.Assembly(datums)
 
-    def process(self, connection, index, inputStream, progressFrequency=0, progressCallback=None):
-        magic = self.lastProcessMagic
-        self.lastProcessMagic = self.lastProcessMagic + 1 if self.lastProcessMagic < self.MAGIC_MAX_VALUE else 0
-        self.send(connection, self.PROCESS_TASK_START, self.NOTHING, (magic, inputStream.count, index, progressFrequency), inputStream.toDatums())
+    def process(self, connection, index, input_stream, progress_frequency=0, progress_callback=None):
+        magic = self.last_process_magic
+        self.last_process_magic = self.last_process_magic + 1 if self.last_process_magic < self.MAGIC_MAX_VALUE else 0
+        self.send(connection, self.PROCESS_TASK_START, self.NOTHING, (magic, input_stream.count, index, progress_frequency), input_stream.to_datums())
         pres = (-1, -1, -1)
         while pres[2] != 1:
-            res = self.receive(connection, self.validProviderToAccessor)
+            res = self.receive(connection, self.valid_provider_to_accessor)
             if res is None:
                 return None
             else:
-                _unitType, _requestedType, _pres, _datums = res
+                _unit_type, _requested_type, _pres, _datums = res
 
-            if (_unitType == self.PROCESS_TASK_STATUS and _pres[0] == magic):
-                unitType, requestedType, pres, datums = _unitType, _requestedType, _pres, _datums
+            if (_unit_type == self.PROCESS_TASK_STATUS and _pres[0] == magic):
+                unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
 
-                res = progressCallback(i_data.Stream.fromCountDatums(pres[1], datums)) if progressCallback else True
+                res = progress_callback(i_data.Stream.from_count_datums(pres[1], datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Stream.fromCountDatums(pres[1], datums)
+                    return i_data.Stream.from_count_datums(pres[1], datums)
 
         return i_data.Stream(datums)
 
-    def send(self, connection, unitType, requestedType, pres, datums):
-        unitPreStruct = self.unitPreStructs[unitType]
-        unitDatumStruct = self.unitDatumStructs[unitType]
+    def send(self, connection, unit_type, requested_type, pres, datums):
+        unit_pre_struct = self.unit_pre_structs[unit_type]
+        unit_datum_struct = self.unit_datum_structs[unit_type]
 
-        tranDatums = ''
-        tranPres = unitPreStruct.pack(*pres)
+        tran_datums = ''
+        tran_pres = unit_pre_struct.pack(*pres)
 
         for datum in datums:
-            tranDatums += unitDatumStruct.pack(*datum)
+            tran_datums += unit_datum_struct.pack(*datum)
 
-        tranHeader = self.pduHeaderStruct.pack(self.VERSION_BYTE, unitType, requestedType, len(tranDatums)+len(tranPres))
+        tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
 
-        with self.connectionLock:
-            connection.sendall(tranHeader)
-            connection.sendall(tranPres)
-            connection.sendall(tranDatums)
+        with self.connection_lock:
+            connection.sendall(tran_header)
+            connection.sendall(tran_pres)
+            connection.sendall(tran_datums)
 
     def receive(self, connection, valid):
-        recvHeader = ''
-        while len(recvHeader) < self.pduHeaderStruct.size: recvHeader += connection.recv(self.pduHeaderStruct.size - len(recvHeader))  # This subtraction precents overfilling
-        version, unitType, requestedType, dataLen = self.pduHeaderStruct.unpack(recvHeader)
-        recvData = ''
-        while len(recvData) < dataLen: recvData += connection.recv(dataLen - len(recvData))  # Same 'goal-subtraction' routine
+        recv_header = ''
+        while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction precents overfilling
+        version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
+        recv_data = ''
+        while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received version did not match the known version")
-        if unitType not in valid or requestedType not in valid[unitType]:
+        if unit_type not in valid or requested_type not in valid[unit_type]:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received unit type or requested type was not valid in context")
 
-        unitPreStruct = self.unitPreStructs[unitType]
-        unitDatumStruct = self.unitDatumStructs[unitType]
+        unit_pre_struct = self.unit_pre_structs[unit_type]
+        unit_datum_struct = self.unit_datum_structs[unit_type]
 
         try:
-            pres = unitPreStruct.unpack(recvData[:unitPreStruct.size])
+            pres = unit_pre_struct.unpack(recv_data[:unit_pre_struct.size])
             datums = []
-            if unitDatumStruct.size > 0:
-                for i in range(len(recvData[unitPreStruct.size:]) / unitDatumStruct.size):
-                    startDataIndex = unitPreStruct.size + (i*unitDatumStruct.size)
-                    dataRoi = recvData[startDataIndex:startDataIndex + unitDatumStruct.size]
-                    datums.append(unitDatumStruct.unpack(dataRoi))
+            if unit_datum_struct.size > 0:
+                for i in range(len(recv_data[unit_pre_struct.size:]) / unit_datum_struct.size):
+                    start_data_index = unit_pre_struct.size + (i*unit_datum_struct.size)
+                    data_roi = recv_data[start_data_index:start_data_index + unit_datum_struct.size]
+                    datums.append(unit_datum_struct.unpack(data_roi))
         except:
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
             raise exception.DataError("Received preambles and/or datums were unparseable in context")
 
-        return unitType, requestedType, pres, datums
+        return unit_type, requested_type, pres, datums
 
     def provide(self, listener, operator):
 
@@ -162,39 +162,39 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             monitor = misc.ProviderTaskMonitor()
             while True:
                 try:
-                    res = self.receive(connection, self.validAccessorToProvider)
+                    res = self.receive(connection, self.valid_accessor_to_provider)
 
-                    unitType, requestedType, pres, datums = res
+                    unit_type, requested_type, pres, datums = res
 
-                    if unitType == self.SEARCH_TASK_STOP: monitor.stopSearchTask(pres[0])
-                    elif unitType == self.PROCESS_TASK_STOP: monitor.stopProcessTask(pres[0])
-                    elif unitType == self.SEARCH_TASK_START:
-                        replyCall = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), assembly.toDatums())
-                        callback = monitor.addSearchTask(pres[0], replyCall)
-                        searchArgs = (pres[4], i_data.Set.fromInputsOuputsCountDatums(pres[1], pres[2], pres[3], datums))
-                        searchKwargs = {'progressFrequency':pres[5], 'progressCallback':callback}
-                        termCallback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.toDatums())
-                        operator.backend.threadingAsync(operator.search, searchArgs, searchKwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=termCallback)
-                    elif unitType == self.PROCESS_TASK_START:
-                        replyCall = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.toDatums())
-                        callback = monitor.addProcessTask(pres[0], replyCall)
-                        processArgs = (pres[2], i_data.Stream.fromCountDatums(pres[1], datums))
-                        processKwargs = {'progressFrequency':pres[3], 'progressCallback':callback}
-                        termCallback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, 1.0), stream.toDatums())
-                        operator.backend.threadingAsync(operator.process, processArgs, processKwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=termCallback)
+                    if unit_type == self.SEARCH_TASK_STOP: monitor.stop_search_task(pres[0])
+                    elif unit_type == self.PROCESS_TASK_STOP: monitor.stop_process_task(pres[0])
+                    elif unit_type == self.SEARCH_TASK_START:
+                        reply_call = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), assembly.to_datums())
+                        callback = monitor.add_search_task(pres[0], reply_call)
+                        search_args = (pres[4], i_data.Set.from_inputs_ouputs_count_datums(pres[1], pres[2], pres[3], datums))
+                        search_kwargs = {'progress_frequency':pres[5], 'progress_callback':callback}
+                        term_callback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.to_datums())
+                        operator.backend.threading_async(operator.search, search_args, search_kwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=term_callback)
+                    elif unit_type == self.PROCESS_TASK_START:
+                        reply_call = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.to_datums())
+                        callback = monitor.add_process_task(pres[0], reply_call)
+                        process_args = (pres[2], i_data.Stream.from_count_datums(pres[1], datums))
+                        process_kwargs = {'progress_frequency':pres[3], 'progress_callback':callback}
+                        term_callback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, 1.0), stream.to_datums())
+                        operator.backend.threading_async(operator.process, process_args, process_kwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=term_callback)
 
-                    if requestedType == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
-                    elif requestedType == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
+                    if requested_type == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
+                    elif requested_type == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
 
-                    elif requestedType == self.SEARCH_TASK_STATUS:
-                        res = monitor.getSearchTaskLatestArgs(pres[0])
+                    elif requested_type == self.SEARCH_TASK_STATUS:
+                        res = monitor.get_search_task_latest_args(pres[0])
                         datums = res[1].toDatums() if res else []
                         progress = res[0] if res else 0
                         self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), datums)
-                    elif requestedType == self.PROCESS_TASK_STATUS:
-                        res = monitor.getProcessTaskLatestArgs(pres[0])
+                    elif requested_type == self.PROCESS_TASK_STATUS:
+                        res = monitor.get_process_task_latest_args(pres[0])
                         count = res[1].count if res else 0
-                        datums = res[1].toDatums() if res else []
+                        datums = res[1].to_datums() if res else []
                         progress = res[0] if res else 0
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, progress), datums)
 
@@ -206,4 +206,4 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         while True:
             connection, address = listener.accept()
             logging.getLogger('awareness').info('Accepted connection from ' + address[0] + ', spawning handler')
-            operator.backend.threadingAsync(handle, args=(connection, operator), name='Handle-'+address[0])
+            operator.backend.threading_async(handle, args=(connection, operator), name='Handle-'+address[0])

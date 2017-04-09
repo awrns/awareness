@@ -32,7 +32,7 @@ class Item:
     def __init__(self, parameters):
         self.parameters = parameters
 
-    def toDatums(self):
+    def to_datums(self):
         datums = []
         for parameter in self.parameters:
             datums.append((float(parameter),))  # The parameter in a 1-tuple
@@ -40,7 +40,7 @@ class Item:
 
 
     @classmethod
-    def fromDatums(self, datums):
+    def from_datums(self, datums):
         parameters = []
         for datum in datums:
             parameters.append(datum[0])  # First (only) tuple item
@@ -61,21 +61,21 @@ class Stream:
         self.items = items
 
 
-    def toDatums(self):
+    def to_datums(self):
         datums = []
         for item in self.items:
-            datums += item.toDatums()
+            datums += item.to_datums()
         return datums
 
     @classmethod
-    def fromCountDatums(self, count, datums):
+    def from_count_datums(self, count, datums):
         items = []
-        nParams = len(datums) / count if count != 0 else 0
+        n_params = len(datums) / count if count != 0 else 0
 
-        for itemIndex in range(count):
-            startPos = itemIndex * nParams
-            endPos = (itemIndex + 1) * nParams
-            items.append(Item.fromDatums(datums[startPos:endPos]))
+        for item_index in range(count):
+            start_pos = item_index * n_params
+            end_pos = (item_index + 1) * n_params
+            items.append(Item.from_datums(datums[start_pos:end_pos]))
 
         return Stream(items)
 
@@ -88,34 +88,34 @@ class Stream:
 
 class Set:
 
-    inputStream = None
-    outputStream = None
+    input_stream = None
+    output_stream = None
 
-    def __init__(self, inputStream, outputStream):
-        self.inputStream = inputStream
-        self.outputStream = outputStream
+    def __init__(self, input_stream, output_stream):
+        self.input_stream = input_stream
+        self.output_stream = output_stream
 
 
-    def toDatums(self):
-        return self.inputStream.toDatums() + self.outputStream.toDatums()  # concat
+    def to_datums(self):
+        return self.input_stream.to_datums() + self.output_stream.to_datums()  # concat
 
 
     @classmethod
-    def fromInputsOutputsCountDatums(self, nInputs, nOutputs, count, datums):
+    def from_inputs_outputs_count_datums(self, n_inputs, n_outputs, count, datums):
 
-        inputs = datums[:nInputs*count]
-        outputs = datums[nInputs*count:nOutputs*count]
+        inputs = datums[:n_inputs*count]
+        outputs = datums[n_inputs*count:n_outputs*count]
 
-        inputStream = Stream.fromDatums(outputs)
-        outputStream = Stream.fromDatums(outputs)
+        input_stream = Stream.from_datums(outputs)
+        output_stream = Stream.from_datums(outputs)
 
 
-        return Set(inputStream, outputStream)
+        return Set(input_stream, output_stream)
 
 
     @property
     def count(self):
-        return self.inputStream.count
+        return self.input_stream.count
 
 
 class Assembly:
@@ -129,11 +129,11 @@ class Assembly:
         self.paths = paths
 
 
-    def toDatums(self):
+    def to_datums(self):
         pass
 
     @classmethod
-    def fromCountDatums(self, count, datums):
+    def from_count_datums(self, count, datums):
         pass
         
 
@@ -147,5 +147,5 @@ class Assembly:
         pass
     
 
-    def run(self, inputStream, progressFrequency=0, progressCallback=None):
+    def run(self, input_stream, progress_frequency=0, progress_callback=None):
         pass

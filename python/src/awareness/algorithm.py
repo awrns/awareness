@@ -31,12 +31,12 @@ class Algorithm:
 
     @abstractmethod
     def search(self,
-               localAbilities,
-               remoteOperators,
-               propagationLimit,
-               inputSet,
-               progressFrequency=0,
-               progressCallback=None):
+               local_abilities,
+               remote_operators,
+               propagation_limit,
+               input_set,
+               progress_frequency=0,
+               progress_callback=None):
 
         raise NotImplementedError()
 
@@ -44,11 +44,11 @@ class Algorithm:
 class DefaultAlgorithm(Algorithm):
 
     def search(self,
-               localAbilities,
-               remoteOperators,
-               propagationLimit,
-               inputSet,
-               progressFrequency=0,
-               progressCallback=None):
+               local_abilities,
+               remote_operators,
+               propagation_limit,
+               input_set,
+               progress_frequency=0,
+               progress_callback=None):
 
         pass

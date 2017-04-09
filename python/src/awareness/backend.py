@@ -34,7 +34,7 @@ class Backend:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def threadingAsync(self, function, args=(), kwargs={}, callback=None):
+    def threading_async(self, function, args=(), kwargs={}, callback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -50,15 +50,15 @@ class Backend:
 class NativeBackend(Backend):
 
 
-    def threadingAsync(self, function, args=(), kwargs={}, callback=None, daemon=True, name=None):
+    def threading_async(self, function, args=(), kwargs={}, callback=None, daemon=True, name=None):
         if not callback:
             callback = lambda *args,**kwargs:None
 
-        def wrapWithCallback(function, callback):
+        def wrap_with_callback(function, callback):
             returnvalue = lambda *args, **kwargs: callback(function(*args, **kwargs))
             return returnvalue
 
-        thread = threading.Thread(target=wrapWithCallback(function, callback), args=args, kwargs=kwargs)
+        thread = threading.Thread(target=wrap_with_callback(function, callback), args=args, kwargs=kwargs)
         thread.daemon = daemon
         if name:
             thread.name = name
@@ -79,7 +79,7 @@ class NativeBackend(Backend):
         return listener
 
 
-    def setupLogger(self):
+    def setup_logger(self):
         logger = logging.getLogger('awareness')
         logger.setLevel(logging.DEBUG)
         console = logging.StreamHandler()
