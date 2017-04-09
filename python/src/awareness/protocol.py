@@ -83,7 +83,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
                     return i_data.Program.from_datums(datums)
 
-        return i_data.Program(datums)
+        return i_data.Program.from_datums(datums)
 
     def process(self, connection, index, input_stream, progress_frequency=0, progress_callback=None):
         magic = self.last_process_magic
@@ -105,7 +105,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), [])
                     return i_data.Stream.from_count_datums(pres[1], datums)
 
-        return i_data.Stream(datums)
+        return i_data.Stream.from_count_datums(pres[1], datums)
 
     def send(self, connection, unit_type, requested_type, pres, datums):
         unit_pre_struct = self.unit_pre_structs[unit_type]

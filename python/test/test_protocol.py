@@ -17,3 +17,5 @@ def test_accessprovide():
     with operator2:
         res = operator2.process(0, input_stream)
 
+    assert res.items[0].parameters[0] == 1.0
+
