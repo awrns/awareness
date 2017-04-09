@@ -118,15 +118,13 @@ class Set:
         return self.input_stream.count
 
 
-class Assembly:
+class Program:
 
-    affinities = []
-    paths = []
+    slices = []
 
-    def __init__(self, affinities, paths):
+    def __init__(self, slices):
 
-        self.affinities = affinities
-        self.paths = paths
+        self.slices = slices
 
 
     def to_datums(self):

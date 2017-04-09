@@ -78,12 +78,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unit_type == self.SEARCH_TASK_STATUS and _pres[0] == magic):
                 unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
 
-                res = progress_callback(i_data.Assembly.from_datums(datums)) if progress_callback else True
+                res = progress_callback(i_data.Program.from_datums(datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Assembly.from_datums(datums)
+                    return i_data.Program.from_datums(datums)
 
-        return i_data.Assembly(datums)
+        return i_data.Program(datums)
 
     def process(self, connection, index, input_stream, progress_frequency=0, progress_callback=None):
         magic = self.last_process_magic
@@ -169,11 +169,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     if unit_type == self.SEARCH_TASK_STOP: monitor.stop_search_task(pres[0])
                     elif unit_type == self.PROCESS_TASK_STOP: monitor.stop_process_task(pres[0])
                     elif unit_type == self.SEARCH_TASK_START:
-                        reply_call = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), assembly.to_datums())
+                        reply_call = lambda progress, program: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), program.to_datums())
                         callback = monitor.add_search_task(pres[0], reply_call)
                         search_args = (pres[4], i_data.Set.from_inputs_ouputs_count_datums(pres[1], pres[2], pres[3], datums))
                         search_kwargs = {'progress_frequency':pres[5], 'progress_callback':callback}
-                        term_callback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.to_datums())
+                        term_callback = lambda program: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), program.to_datums())
                         operator.backend.threading_async(operator.search, search_args, search_kwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=term_callback)
                     elif unit_type == self.PROCESS_TASK_START:
                         reply_call = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.to_datums())

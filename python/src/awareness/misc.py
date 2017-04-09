@@ -47,7 +47,7 @@ class Protocol0Constants:
     capabilities_pre_struct =               struct.Struct("!")	    # intentional
 
     search_task_start_pre_struct =          struct.Struct("!6Q")	# magic, inputs, outputs, count, propagationLimit, progressFrequency
-    search_task_status_pre_struct =         struct.Struct("!Qf")	# magic, TODO any others, progress
+    search_task_status_pre_struct =         struct.Struct("!Qf")	# magic, progress
     search_task_stop_pre_struct =           struct.Struct("!Q")	    # magic
 
     process_task_start_pre_struct =          struct.Struct("!4Q")	# magic, count, index, progressFrequency
@@ -61,7 +61,7 @@ class Protocol0Constants:
     capabilities_datum_struct =             struct.Struct("!2Q")    # inputs, outputs
 
     search_task_start_datum_struct =        struct.Struct("!d")	    # inputSet data items(s)
-    search_task_status_datum_struct =       struct.Struct("!")	    # TODO this!
+    search_task_status_datum_struct =       struct.Struct("!c")	    # program character
     search_task_stop_datum_struct =         struct.Struct("!")	    # intentional
 
     process_task_start_datum_struct =       struct.Struct("!d")	    # input Stream data item(s)
