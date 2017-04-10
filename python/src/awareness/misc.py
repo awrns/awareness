@@ -46,12 +46,12 @@ class Protocol0Constants:
     blank_pre_struct =                      struct.Struct("!")	    # intentional
     capabilities_pre_struct =               struct.Struct("!")	    # intentional
 
-    search_task_start_pre_struct =          struct.Struct("!6Q")	# magic, inputs, outputs, count, propagationLimit, progressFrequency
-    search_task_status_pre_struct =         struct.Struct("!Qf")	# magic, progress
+    search_task_start_pre_struct =          struct.Struct("!6Q")    # magic, inputs, outputs, count, propagation_limit, progress_frequency
+    search_task_status_pre_struct =         struct.Struct("!Qf")    # magic, progress
     search_task_stop_pre_struct =           struct.Struct("!Q")	    # magic
 
-    process_task_start_pre_struct =          struct.Struct("!4Q")	# magic, count, index, progressFrequency
-    process_task_status_pre_struct =        struct.Struct("!2Qf")	# magic, count, progress
+    process_task_start_pre_struct =         struct.Struct("!4Q")    # magic, count, index, progress_frequency
+    process_task_status_pre_struct =        struct.Struct("!2Qf")   # magic, count, progress
     process_task_stop_pre_struct =          struct.Struct("!Q")	    # magic
 
     unit_error_pre_struct =                 struct.Struct("!")      # intentional
@@ -60,13 +60,13 @@ class Protocol0Constants:
     blank_datum_struct =                    struct.Struct("!")
     capabilities_datum_struct =             struct.Struct("!2Q")    # inputs, outputs
 
-    search_task_start_datum_struct =        struct.Struct("!d")	    # inputSet data items(s)
-    search_task_status_datum_struct =       struct.Struct("!c")	    # program character
+    search_task_start_datum_struct =        struct.Struct("!d")	    # input_set data items(s)
+    search_task_status_datum_struct =       struct.Struct("!64sH")  # host, port, slice, 
     search_task_stop_datum_struct =         struct.Struct("!")	    # intentional
 
     process_task_start_datum_struct =       struct.Struct("!d")	    # input Stream data item(s)
     process_task_status_datum_struct =      struct.Struct("!d")	    # output Stream data item(s)
-    process_task_stop_datum_struct =        struct.Struct("!")  	# intentional
+    process_task_stop_datum_struct =        struct.Struct("!")      # intentional
 
     unit_error_datum_struct =               struct.Struct("!")	    # intentional
     data_error_datum_struct =               struct.Struct("!")	    # intentional
