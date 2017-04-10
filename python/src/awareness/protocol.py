@@ -78,12 +78,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unit_type == self.SEARCH_TASK_STATUS and _pres[0] == magic):
                 unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
 
-                res = progress_callback(i_data.Program.from_datums(datums)) if progress_callback else True
+                res = progress_callback(i_data.Assembly.from_datums(datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Program.from_datums(datums)
+                    return i_data.Assembly.from_datums(datums)
 
-        return i_data.Program.from_datums(datums)
+        return i_data.Assembly.from_datums(datums)
 
     def process(self, connection, index, input_stream, progress_frequency=0, progress_callback=None):
         magic = self.last_process_magic

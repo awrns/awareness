@@ -118,7 +118,7 @@ class Set:
         return self.input_stream.count
 
 
-class Program:
+class Assembly:
 
     slices = []
 
