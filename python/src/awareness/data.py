@@ -120,7 +120,7 @@ class Set:
 
 class Assembly:
 
-    # List of tuples (host, port, slice, offset, remap)
+    # List of tuples (addr4, addr6, port, slice, offset)
     operations = []
 
     def __init__(self, operations):

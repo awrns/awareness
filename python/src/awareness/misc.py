@@ -61,14 +61,14 @@ class Protocol0Constants:
     capabilities_datum_struct =             struct.Struct("!2Q")     		# inputs, outputs
 
     search_task_start_datum_struct =        struct.Struct("!d")	      	 	# input_set data items(s)
-    search_task_status_datum_struct =       struct.Struct("!64sH2Q1024s") 	# host, port, slice, offset, remap
+    search_task_status_datum_struct =       struct.Struct("!4B16BH2Q")  	# addr4, addr6, port, slice, offset
     search_task_stop_datum_struct =         struct.Struct("!")	     		# intentional
 
     process_task_start_datum_struct =       struct.Struct("!d")	    		# input Stream data item(s)
     process_task_status_datum_struct =      struct.Struct("!d")	    		# output Stream data item(s)
     process_task_stop_datum_struct =        struct.Struct("!")      		# intentional
 
-    unit_error_datum_struct =               struct.Struct("!")	   		# intentional
+    unit_error_datum_struct =               struct.Struct("!")	   		    # intentional
     data_error_datum_struct =               struct.Struct("!")	    		# intentional
 
     unit_pre_structs = {BLANK: blank_pre_struct,
