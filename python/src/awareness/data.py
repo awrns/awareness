@@ -120,30 +120,22 @@ class Set:
 
 class Assembly:
 
-    slices = []
+    # List of tuples (host, port, slice, offset, remap)
+    operations = []
 
-    def __init__(self, slices):
+    def __init__(self, operations):
 
-        self.slices = slices
+        self.operations = operations
 
 
     def to_datums(self):
-        pass
+        return self.operations
 
     @classmethod
-    def from_count_datums(self, count, datums):
-        pass
-        
+    def from_datums(self, datums):
 
-    @property
-    def count(self):
-        return len(self.slices)
+        return Assembly(datums)
 
-
-    @property
-    def affinities(self):
-        pass
-    
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
         pass
