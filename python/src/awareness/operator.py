@@ -152,9 +152,9 @@ class RemoteOperator(Operator):
 
 
         # Do a quick routine to get the Affinity details.
-        if len(self.affinities) == 0:
-            with self:
-                self.retrieve_affinities()
+        #if len(self.affinities) == 0:
+        #    with self:
+        #        self.retrieve_affinities()
 
 
     def __enter__(self):

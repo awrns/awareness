@@ -120,7 +120,7 @@ class Set:
 
 class Assembly:
 
-    # List of tuples (addr4, addr6, port, index, inputs, outputs, slice, offset)
+    # List of tuples (addr, port, index, slice, offset)
     operations = []
 
     def __init__(self, operations):
@@ -138,4 +138,16 @@ class Assembly:
 
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
-        pass
+        
+        max_slice = -1
+        for operation in self.operations:
+            if operation[4] > max_slice: max_slice = operation[4]
+
+
+        data_status = input_stream  # Pump pipeline on first iteration
+
+        for slice in range(max_slice):
+            pass
+            #with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
+            #    operator.retrieve_affinities()
+            #    result = operator.process(operation[3], result)

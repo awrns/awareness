@@ -15,6 +15,7 @@ def test_accessprovide():
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
     input_stream = awareness.Stream([awareness.Item((1.0,))])
     with operator2:
+        operator2.retrieve_affinities()
         res = operator2.process(0, input_stream)
 
     assert res.items[0].parameters[0] == 1.0
