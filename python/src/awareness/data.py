@@ -148,6 +148,6 @@ class Assembly:
 
         for slice in range(max_slice):
             pass
-            #with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
+            #with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
             #    operator.retrieve_affinities()
             #    result = operator.process(operation[3], result)
