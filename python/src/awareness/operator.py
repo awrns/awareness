@@ -121,7 +121,7 @@ class LocalOperator(Operator):
         capabilities = []
 
         for each_affinity in self.affinities:
-            capabilities.append(each_affinity.profile)
+            capabilities.append((each_affinity.inputs, each_affinity.outputs))  # in 2-tuple
 
         return capabilities
 
@@ -171,7 +171,7 @@ class RemoteOperator(Operator):
         capabilities = self.protocol.capabilities(self.connection)
         for i in range(len(capabilities)):
             affinity_profile = capabilities[i]
-            new_affinity = i_affinity.RemoteAffinity(self, i, affinity_profile)
+            new_affinity = i_affinity.RemoteAffinity(self, i, *affinity_profile)  # unpack inputs and outputs from 2-tuple
 
             self.affinities.append(new_affinity)
 
@@ -191,6 +191,6 @@ class RemoteOperator(Operator):
         capabilities = []
 
         for each_affinity in self.affinities:
-            capabilities.append(each_affinity.profile)
+            capabilities.append((each_affinity.inputs, each_affinity.outputs))  # in 2-tuple
 
         return capabilities

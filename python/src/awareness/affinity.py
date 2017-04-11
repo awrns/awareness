@@ -39,7 +39,12 @@ class Affinity:
 
 
     @abstractproperty
-    def profile(self):
+    def inputs(self):
+        raise NotImplementedError()
+
+
+    @abstractproperty
+    def outputs(self):
         raise NotImplementedError()
 
 
@@ -66,17 +71,20 @@ class RemoteAffinity(Affinity):
     operator = None
     index = 0
 
-    profile = ()
+    inputs = -1
+    outputs = -1
 
 
     def __init__(self,
                  operator,
                  index,
-                 profile):
+                 inputs,
+                 outputs):
 
         self.operator = operator
         self.index = index
-        self.profile = profile
+        self.inputs = inputs
+        self.outputs = outputs
 
 
     def run(self, connection, input_stream, progress_frequency=0, progress_callback=None):

@@ -120,7 +120,7 @@ class Set:
 
 class Assembly:
 
-    # List of tuples (addr, port, index, slice, offset)
+    # List of tuples (addr, port, index, slice, in_offset, out_offset)
     operations = []
 
     def __init__(self, operations):
@@ -141,13 +141,28 @@ class Assembly:
         
         max_slice = -1
         for operation in self.operations:
-            if operation[4] > max_slice: max_slice = operation[4]
+            if operation[3] > max_slice: max_slice = operation[3]
 
 
-        data_status = input_stream  # Pump pipeline on first iteration
+        stream_state = input_stream  # Pump pipeline on first iteration
 
-        for slice in range(max_slice):
-            pass
-            #with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
-            #    operator.retrieve_affinities()
-            #    result = operator.process(operation[3], result)
+        for slice_idx in range(max_slice):
+
+            slice_operations = []
+            for operation in self.operations:
+                if operation[3] == slice_idx:
+                    slice_operations.append(operation)
+
+            for slice_operation in slice_operations:
+                with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
+                    operator.retrieve_affinities()
+
+                    data_in_start_idx = slice_operation[4]  # in_offset
+                    data_in_end_idx = slice_operation[4] + operator.affinities[slice_operation[3]].inputs  # plus number of inputs
+                    data_section = Stream(stream_state.items[data_in_start_idx:data_in_end_idx])
+
+                    result = operator.process(slice_operation[3], data_section)
+
+                    data_out_start_idx = slice_operation[5]  # out_offset
+                    data_out_end_idx = slice_operation[5] + operator.affinities[slice_operation[3]].outputs  # plus number of outputs
+                    stream_state.items[data_out_start_idx:data_out_end_idx] = result.items  # stream_state will then be used above to construct a new Stream for the next operation

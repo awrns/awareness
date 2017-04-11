@@ -3,7 +3,8 @@ import awareness
 
 class TestAffinity(awareness.LocalAffinity):
 
-    profile = (1,1)
+    inputs = 1
+    outputs = 1
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
         return input_stream
