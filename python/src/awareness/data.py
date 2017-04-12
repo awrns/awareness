@@ -150,7 +150,7 @@ class Assembly:
 
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
-        
+
         max_slice = -1
         for operation in self.operations:
             if operation[3] > max_slice: max_slice = operation[3]
@@ -171,10 +171,11 @@ class Assembly:
 
                     data_in_start_idx = slice_operation[4]  # in_offset
                     data_in_end_idx = slice_operation[4] + operator.affinities[slice_operation[3]].inputs  # plus number of inputs
-                    data_section = Stream(stream_state.items[data_in_start_idx:data_in_end_idx])
+
+                    data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
 
                     result = operator.process(slice_operation[3], data_section)
 
                     data_out_start_idx = slice_operation[5]  # out_offset
                     data_out_end_idx = slice_operation[5] + operator.affinities[slice_operation[3]].outputs  # plus number of outputs
-                    stream_state.items[data_out_start_idx:data_out_end_idx] = result.items  # stream_state will then be used above to construct a new Stream for the next operation
+                    stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
