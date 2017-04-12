@@ -67,6 +67,18 @@ class Stream:
             datums += item.to_datums()
         return datums
 
+    def extract(self, start_parameter, end_parameter):
+        output = Stream([])
+        for item in self.items:
+            output.items.append(Item(item.parameters[start_parameter:end_parameter]))
+
+        return output
+
+    def inject(self, other_stream, start_parameter, end_parameter):
+        for i in range(self.items):
+            self.items[i].parameters[start_parameter:end_parameter] = other_stream.items[i].parameters
+
+
     @classmethod
     def from_count_datums(self, count, datums):
         items = []
