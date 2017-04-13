@@ -179,3 +179,6 @@ class Assembly:
                     data_out_start_idx = slice_operation[5]  # out_offset
                     data_out_end_idx = slice_operation[5] + operator.affinities[slice_operation[3]].outputs  # plus number of outputs
                     stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
+
+
+        return stream_state
