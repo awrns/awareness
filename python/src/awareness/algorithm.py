@@ -57,18 +57,34 @@ class DefaultAlgorithm(Algorithm):
                progress_callback=None):
 
 
-        last_cost = -1
-        cost = -1
+        last_cost = float('inf')
+        cost = float('inf')
 
         current_assembly = None
+        current_stream = input_set.input_stream
 
         while cost <= last_cost:
             
-            suggested_assemblies = []
+            lowest_cost = float('inf')
+            lowest_assembly = None
 
-            for operator in remote_operators:
-                res = operator.search(propagation_limit, input_set)
-                suggested_assemblies.append(res)
+            # TODO call search_internal
+
+            if propagation_limit > 0:
+                for operator in remote_operators:
+                    res = operator.search(propagation_limit-1, input_set)
+                    this_cost = self.cost(res.run(current_stream), input_set.output_stream)
+                    if this_cost < lowest_cost:
+                        lowest_cost = this_cost
+                        lowest_assembly = res
+
+            current_stream = lowest_assembly.run(current_stream)
+            current_assembly.operations.extend(lowest_assembly.operations)
+
+            last_cost = cost
+            cost = lowest_cost
+            
+
 
 
     def search_internal(self,
@@ -82,7 +98,7 @@ class DefaultAlgorithm(Algorithm):
         cost = float('inf')
 
         current_assembly = i_data.Assembly([])
-        current_stream = input_set[0]
+        current_stream = input_set.input_stream
 
         while cost <= last_cost:
 
@@ -93,7 +109,7 @@ class DefaultAlgorithm(Algorithm):
 
             for affinity in local_operator.affinities:
                 res = affinity.run(current_stream) # TODO TODO splicing and in/out offsets
-                this_cost = self.cost(res, input_set[1])
+                this_cost = self.cost(res, input_set.output_stream)
                 if this_cost < lowest_cost:
                     lowest_cost = this_cost
                     lowest_affinity = affinity
@@ -105,6 +121,9 @@ class DefaultAlgorithm(Algorithm):
 
             last_cost = cost
             cost = lowest_cost
+
+
+        return current_assembly
 
 
 
