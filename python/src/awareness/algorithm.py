@@ -31,7 +31,7 @@ class Algorithm:
 
     @abstractmethod
     def search(self,
-               local_abilities,
+               local_affinities,
                remote_operators,
                propagation_limit,
                input_set,
@@ -41,14 +41,36 @@ class Algorithm:
         raise NotImplementedError()
 
 
+    @abstractmethod
+    def cost(self, stream1, stream2):
+        raise NotImplementedError()
+
+
 class DefaultAlgorithm(Algorithm):
 
     def search(self,
-               local_abilities,
+               local_affinities,
                remote_operators,
                propagation_limit,
                input_set,
                progress_frequency=0,
                progress_callback=None):
 
-        pass
+        affinities = []
+
+        affinities += local_affinities
+        if propagation_limit > 0:
+            for operator in remote_operators:
+                affinities += operator.affinities
+
+        propagation_limit -= 1
+
+
+        last_cost = -1
+        cost = -1
+
+        while cost <= last_cost:
+            pass
+
+
+    def cost(self): pass
