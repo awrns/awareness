@@ -17,6 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import copy
 import exception
 import misc
 import affinity as i_affinity
@@ -116,29 +117,31 @@ class DefaultAlgorithm(Algorithm):
 
             lowest_cost = float('inf')
             lowest_affinity = None
-            in_offset = 0
-            out_offset = 0
+            lowest_in_offset = 0
+            lowest_out_offset = 0
 
             for affinity in local_operator.affinities:
 
                 for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs):
                     for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs):
 
-                        res = affinity.run(current_stream.extract(test_in_offset, test_in_offset + affinity.inputs))
+                        res = affinity.run(current_stream.extract(test_in_offset, test_out_offset + affinity.inputs))
 
-                        full_outs = current_stream
+                        full_outs = copy.deepcopy(current_stream)
                         full_outs.inject(res, test_out_offset, test_out_offset + affinity.outputs)
 
                         this_cost = self.cost(full_outs, input_set.output_stream)
                         if this_cost < lowest_cost:
                             lowest_cost = this_cost
                             lowest_affinity = affinity
-                            in_offset = test_in_offset
-                            out_offset = test_out_offset
+                            lowest_in_offset = test_in_offset
+                            lowest_out_offset = test_out_offset
 
 
-            current_stream = lowest_affinity.run(current_stream)
-            append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, in_offset, out_offset)
+            res = lowest_affinity.run(current_stream.extract(lowest_in_offset, lowest_out_offset + affinity.inputs))
+            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_affinity.outputs)
+            
+            append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
             last_assembly = current_assembly
             current_assembly.operations.append(append_tuple)
 
