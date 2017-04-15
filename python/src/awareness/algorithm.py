@@ -60,22 +60,27 @@ class DefaultAlgorithm(Algorithm):
                progress_callback=None):
 
 
+        # Overall cost tracking for termination detection.
         last_cost = float('inf')
         cost = float('inf')
 
+        # Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
         current_assembly = i_data.Assembly([])
 
+        # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         current_stream = input_set.input_stream
 
-        while cost <= last_cost:
+        while cost <= last_cost: # TODO use a more sophisticated stopping mechanism...
             
+            # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
             lowest_assembly = None
 
+            # Prime with the results of our own local capabilities.
             lowest_assembly, lowest_cost = self.search_internal(local_operator, input_set)
 
-
+            # if it is necessary to recursively search other Operators on the network:
             if propagation_limit > 0:
                 for operator in remote_operators:
                     res = operator.search(propagation_limit-1, input_set)
@@ -84,15 +89,24 @@ class DefaultAlgorithm(Algorithm):
                         lowest_cost = this_cost
                         lowest_assembly = res
 
+            else:
+                # In the case that we are only searching locally, there's no sense in calling search_internal again.
+                # Return its result, which is the best we'll get.
+                return lowest_assembly
 
+
+            # Update known state of the data stream, and of the Assembly that has formed
             current_stream = lowest_assembly.run(current_stream)
             last_assembly = current_assembly
             current_assembly.operations.extend(lowest_assembly.operations)
 
+            # Update known state of the cost
             last_cost = cost
             cost = lowest_cost
 
 
+        # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
+        # since cost decreased on the last iteration. Use the 'last' (previous) iteration as the best result.
         return last_assembly
             
 
@@ -105,16 +119,20 @@ class DefaultAlgorithm(Algorithm):
                         progress_callback=None):
 
 
+        # Overall cost tracking for termination detection.
         last_cost = float('inf')
         cost = float('inf')
 
+        #Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
         current_assembly = i_data.Assembly([])
 
+        # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         current_stream = input_set.input_stream
 
-        while cost <= last_cost:
+        while cost <= last_cost: # TODO use a more sophisticated stopping mechanism...
 
+            # Best results produced by any LocalAffinity so far.
             lowest_cost = float('inf')
             lowest_affinity = None
             lowest_in_offset = 0
@@ -122,34 +140,49 @@ class DefaultAlgorithm(Algorithm):
 
             for affinity in local_operator.affinities:
 
+                # Large nested iterative search over all possible configurations.
+                # Note that the expression   len(current_stream.items[0].parameters) - affinity.inputs
+                # evaluates to the number of offsets which are possible for the given affinity.inputs count and stream parameters count.
+
                 for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs):
                     for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs):
 
+                        # Extract the subset of the current_stream data that this Affinity will try to process.
                         res = affinity.run(current_stream.extract(test_in_offset, test_out_offset + affinity.inputs))
 
+                        # Create a 'model' stream in which to inject the result of the affinity's processing at the correct offset.
                         full_outs = copy.deepcopy(current_stream)
                         full_outs.inject(res, test_out_offset, test_out_offset + affinity.outputs)
 
+                        # Evaluate the results.
                         this_cost = self.cost(full_outs, input_set.output_stream)
                         if this_cost < lowest_cost:
+                            # Update the best solution.
                             lowest_cost = this_cost
                             lowest_affinity = affinity
                             lowest_in_offset = test_in_offset
                             lowest_out_offset = test_out_offset
 
+            # Analogous to the offset processing in the above loop - update current_stream by first
+            # extracting the section of it that has proved to be the best by the above loop
+            # and processing it by the LocalAffinity that has been the most promising.
+            # Finally, inject its results at the best known ouput offset over the same current data stream.
 
             res = lowest_affinity.run(current_stream.extract(lowest_in_offset, lowest_out_offset + affinity.inputs))
             current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_affinity.outputs)
-            
+
+            # Add information about this new Affinity to the Assembly we're creating.
             append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
             last_assembly = current_assembly
             current_assembly.operations.append(append_tuple)
 
+            # Update costs.
             last_cost = cost
             cost = lowest_cost
 
 
-
+        # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
+        # since cost decreased on the last iteration. Use the 'last' (previous) iteration as the best result.
         return last_assembly, last_cost
 
 
