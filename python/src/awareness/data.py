@@ -132,7 +132,7 @@ class Set:
 
 class Assembly:
 
-    # List of tuples (addr, port, index, slice, in_offset, out_offset)
+    # List of tuples (addr, port, index, in_offset, out_offset)
     operations = []
 
     def __init__(self, operations):
@@ -151,34 +151,24 @@ class Assembly:
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
 
-        max_slice = -1
-        for operation in self.operations:
-            if operation[3] > max_slice: max_slice = operation[3]
-
 
         stream_state = input_stream  # Pump pipeline on first iteration
 
-        for slice_idx in range(max_slice):
+        for operation in self.operations:
 
-            slice_operations = []
-            for operation in self.operations:
-                if operation[3] == slice_idx:
-                    slice_operations.append(operation)
+            with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
+                operator.retrieve_affinities()
 
-            for slice_operation in slice_operations:
-                with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
-                    operator.retrieve_affinities()
+                data_in_start_idx = operation[3]  # in_offset
+                data_in_end_idx = operation[3] + operator.affinities[operation[2]].inputs  # plus number of inputs
 
-                    data_in_start_idx = slice_operation[4]  # in_offset
-                    data_in_end_idx = slice_operation[4] + operator.affinities[slice_operation[3]].inputs  # plus number of inputs
+                data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
 
-                    data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
+                result = operator.process(operation[2], data_section)
 
-                    result = operator.process(slice_operation[3], data_section)
-
-                    data_out_start_idx = slice_operation[5]  # out_offset
-                    data_out_end_idx = slice_operation[5] + operator.affinities[slice_operation[3]].outputs  # plus number of outputs
-                    stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
+                data_out_start_idx = operation[4]  # out_offset
+                data_out_end_idx = operation[4] + operator.affinities[operation[2]].outputs  # plus number of outputs
+                stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
 
 
         return stream_state

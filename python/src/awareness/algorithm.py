@@ -31,7 +31,7 @@ class Algorithm:
 
     @abstractmethod
     def search(self,
-               local_affinities,
+               local_operator,
                remote_operators,
                propagation_limit,
                input_set,
@@ -49,28 +49,63 @@ class Algorithm:
 class DefaultAlgorithm(Algorithm):
 
     def search(self,
-               local_affinities,
+               local_operator,
                remote_operators,
                propagation_limit,
                input_set,
                progress_frequency=0,
                progress_callback=None):
 
-        affinities = []
-
-        affinities += local_affinities
-        if propagation_limit > 0:
-            for operator in remote_operators:
-                affinities += operator.affinities
-
-        propagation_limit -= 1
-
 
         last_cost = -1
         cost = -1
 
+        current_assembly = None
+
         while cost <= last_cost:
-            pass
+            
+            suggested_assemblies = []
+
+            for operator in remote_operators:
+                res = operator.search(propagation_limit, input_set)
+                suggested_assemblies.append(res)
 
 
-    def cost(self): pass
+    def search_internal(self,
+                        local_operator,
+                        input_set,
+                        progress_frequency=0,
+                        progress_callback=None):
+
+
+        last_cost = float('inf')
+        cost = float('inf')
+
+        current_assembly = i_data.Assembly([])
+        current_stream = input_set[0]
+
+        while cost <= last_cost:
+
+            lowest_cost = float('inf')
+            lowest_affinity = None
+            in_offset = 0
+            out_offset = 0  # TODO set these in the below search loop
+
+            for affinity in local_operator.affinities:
+                res = affinity.run(current_stream) # TODO TODO splicing and in/out offsets
+                this_cost = self.cost(res, input_set[1])
+                if this_cost < lowest_cost:
+                    lowest_cost = this_cost
+                    lowest_affinity = affinity
+
+            current_stream = lowest_affinity.run(current_stream)
+            append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, in_offset, out_offset)
+            current_assembly.operations.append()
+
+
+            last_cost = cost
+            cost = lowest_cost
+
+
+
+    def cost(self, stream1, stream2): pass
