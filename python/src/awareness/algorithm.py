@@ -46,6 +46,8 @@ class Algorithm:
         raise NotImplementedError()
 
 
+
+
 class DefaultAlgorithm(Algorithm):
 
     def search(self,
@@ -81,6 +83,7 @@ class DefaultAlgorithm(Algorithm):
                         lowest_cost = this_cost
                         lowest_assembly = res
 
+
             current_stream = lowest_assembly.run(current_stream)
             last_assembly = current_assembly
             current_assembly.operations.extend(lowest_assembly.operations)
@@ -114,25 +117,38 @@ class DefaultAlgorithm(Algorithm):
             lowest_cost = float('inf')
             lowest_affinity = None
             in_offset = 0
-            out_offset = 0  # TODO set these in the below search loop
+            out_offset = 0
 
             for affinity in local_operator.affinities:
-                res = affinity.run(current_stream) # TODO TODO splicing and in/out offsets
-                this_cost = self.cost(res, input_set.output_stream)
-                if this_cost < lowest_cost:
-                    lowest_cost = this_cost
-                    lowest_affinity = affinity
+
+                for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs):
+                    for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs):
+
+                        res = affinity.run(current_stream.extract(test_in_offset, test_in_offset + affinity.inputs))
+
+                        full_outs = current_stream
+                        full_outs.inject(res, test_out_offset, test_out_offset + affinity.outputs)
+
+                        this_cost = self.cost(full_outs, input_set.output_stream)
+                        if this_cost < lowest_cost:
+                            lowest_cost = this_cost
+                            lowest_affinity = affinity
+                            in_offset = test_in_offset
+                            out_offset = test_out_offset
+
 
             current_stream = lowest_affinity.run(current_stream)
             append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, in_offset, out_offset)
             last_assembly = current_assembly
-            current_assembly.operations.append()
+            current_assembly.operations.append(append_tuple)
 
             last_cost = cost
             cost = lowest_cost
 
 
+
         return last_assembly, last_cost
+
 
 
 
