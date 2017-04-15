@@ -60,7 +60,9 @@ class DefaultAlgorithm(Algorithm):
         last_cost = float('inf')
         cost = float('inf')
 
-        current_assembly = None
+        last_assembly = i_data.Assembly([])
+        current_assembly = i_data.Assembly([])
+
         current_stream = input_set.input_stream
 
         while cost <= last_cost:
@@ -68,7 +70,8 @@ class DefaultAlgorithm(Algorithm):
             lowest_cost = float('inf')
             lowest_assembly = None
 
-            # TODO call search_internal
+            lowest_assembly, lowest_cost = self.search_internal(local_operator, input_set)
+
 
             if propagation_limit > 0:
                 for operator in remote_operators:
@@ -79,10 +82,14 @@ class DefaultAlgorithm(Algorithm):
                         lowest_assembly = res
 
             current_stream = lowest_assembly.run(current_stream)
+            last_assembly = current_assembly
             current_assembly.operations.extend(lowest_assembly.operations)
 
             last_cost = cost
             cost = lowest_cost
+
+
+        return last_assembly
             
 
 
@@ -97,7 +104,9 @@ class DefaultAlgorithm(Algorithm):
         last_cost = float('inf')
         cost = float('inf')
 
+        last_assembly = i_data.Assembly([])
         current_assembly = i_data.Assembly([])
+
         current_stream = input_set.input_stream
 
         while cost <= last_cost:
@@ -116,14 +125,14 @@ class DefaultAlgorithm(Algorithm):
 
             current_stream = lowest_affinity.run(current_stream)
             append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, in_offset, out_offset)
+            last_assembly = current_assembly
             current_assembly.operations.append()
-
 
             last_cost = cost
             cost = lowest_cost
 
 
-        return current_assembly
+        return last_assembly, last_cost
 
 
 
