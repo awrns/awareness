@@ -9,18 +9,29 @@ class TestAffinity(awareness.LocalAffinity):
         return input_stream
 
 
+class TestAffinity2(awareness.LocalAffinity):
+
+    inputs = 1
+    outputs = 1
+
+    def run(self, input_stream, progress_frequency=0, progress_callback=None):
+        return awareness.Stream([awareness.Item((345,))] * len(input_stream.items))
+
+
+
 def algorithm():
-    operator1 = awareness.LocalOperator()
+    operator1 = awareness.LocalOperator(port=1602)
     operator1.affinities.append(TestAffinity(operator1, 0))
 
-    operator2 = awareness.LocalOperator(port=1601)
-    operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1'))
+    operator2 = awareness.LocalOperator(port=1603)
+    operator2.affinities.append(TestAffinity2(operator2, 0))
+    operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1', port=1602))
 
 
-    set = awareness.Set(awareness.Stream([]), awareness.Stream([]))
-    set.input_stream.items.append(awareness.Item((1,)))
+    input_set = awareness.Set(awareness.Stream([]), awareness.Stream([]))
+    input_set.input_stream.items.append(awareness.Item((1,)))
+    input_set.output_stream.items.append(awareness.Item((1,)))
 
-
-    with operator2:
-        print operator2.search
+    
+    print operator2.search(1, input_set)
 

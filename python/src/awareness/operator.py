@@ -106,7 +106,7 @@ class LocalOperator(Operator):
     def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
 
         # Search both the affinities here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self, self.remote_operators, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.algorithm.search(self, self.remote_operators, propagation_limit, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
@@ -178,7 +178,7 @@ class RemoteOperator(Operator):
 
     def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
 
-        return self.protocol.search(self.connection, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.protocol.search(self.connection, propagation_limit, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):

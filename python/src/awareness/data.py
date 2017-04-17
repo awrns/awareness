@@ -75,7 +75,7 @@ class Stream:
         return output
 
     def inject(self, other_stream, start_parameter, end_parameter):
-        for i in range(self.items):
+        for i in range(len(self.items)):
             self.items[i].parameters[start_parameter:end_parameter] = other_stream.items[i].parameters
 
 

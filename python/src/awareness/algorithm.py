@@ -144,8 +144,8 @@ class DefaultAlgorithm(Algorithm):
                 # Note that the expression   len(current_stream.items[0].parameters) - affinity.inputs
                 # evaluates to the number of offsets which are possible for the given affinity.inputs count and stream parameters count.
 
-                for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs):
-                    for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs):
+                for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs + 1):
+                    for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs + 1):
 
                         # Extract the subset of the current_stream data that this Affinity will try to process.
                         res = affinity.run(current_stream.extract(test_in_offset, test_out_offset + affinity.inputs))
@@ -188,4 +188,18 @@ class DefaultAlgorithm(Algorithm):
 
 
 
-    def cost(self, stream1, stream2): pass
+    def cost(self, stream1, stream2):
+
+        total = 0
+        count = 0
+
+        for item1, item2 in stream1, stream2:
+            for param1, param2 in item1.parameters, item2.parameters:
+                total += (abs(param1-param2))**2
+                count += 1
+
+        mean = total/count
+
+        return mean
+
+
