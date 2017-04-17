@@ -30,7 +30,7 @@ class Item:
     parameters = ()
 
     def __init__(self, parameters):
-        self.parameters = parameters
+        self.parameters = tuple(parameters)
 
     def to_datums(self):
         datums = []
@@ -58,7 +58,7 @@ class Stream:
     items = []
 
     def __init__(self, items):
-        self.items = items
+        self.items = list(items)
 
 
     def to_datums(self):
@@ -137,7 +137,7 @@ class Assembly:
 
     def __init__(self, operations):
 
-        self.operations = operations
+        self.operations = list(operations)
 
 
     def to_datums(self):
