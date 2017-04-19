@@ -66,7 +66,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     def search(self, connection, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
         magic = self.last_search_magic
         self.last_search_magic = self.last_search_magic + 1 if self.last_search_magic < self.MAGIC_MAX_VALUE else 0
-        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, input_set.input_stream.count, input_set.output_stream.count, input_set.count, propagation_limit, progress_frequency), input_set.to_datums())
+        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, input_set.n_inputs, input_set.n_outputs, input_set.count, propagation_limit, progress_frequency), input_set.to_datums())
         pres = (-1, -1)
         while pres[1] != 1:
             res = self.receive(connection, self.valid_provider_to_accessor)

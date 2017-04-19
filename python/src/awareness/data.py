@@ -118,7 +118,7 @@ class Set:
     def from_inputs_outputs_count_datums(self, n_inputs, n_outputs, count, datums):
 
         inputs = datums[:n_inputs*count]
-        outputs = datums[n_inputs*count:n_outputs*count]
+        outputs = datums[n_inputs*count:(n_inputs*count) + n_outputs*count]
 
         input_stream = Stream.from_count_datums(count, inputs)
         output_stream = Stream.from_count_datums(count, outputs)
@@ -130,6 +130,14 @@ class Set:
     @property
     def count(self):
         return self.input_stream.count
+
+    @property
+    def n_inputs(self):
+        return self.input_stream.items[0].count
+
+    @property
+    def n_outputs(self):
+        return self.output_stream.items[0].count
 
 
 class Assembly:
