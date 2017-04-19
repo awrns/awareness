@@ -133,7 +133,7 @@ class ProviderTask:
 
 class ProviderTaskMonitor:
 
-    search_yasks = {}
+    search_tasks = {}
     process_tasks = {}
 
     def add_search_task(self, magic, progress_callback):  # There's no point in having no progress_callback here

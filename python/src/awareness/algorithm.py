@@ -62,7 +62,7 @@ class DefaultAlgorithm(Algorithm):
 
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
-        cost = float('inf')
+        cost = -1
 
         # Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
@@ -71,7 +71,7 @@ class DefaultAlgorithm(Algorithm):
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         current_stream = input_set.input_stream
 
-        while cost <= last_cost: # TODO use a more sophisticated stopping mechanism...
+        while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
             
             # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
@@ -83,7 +83,8 @@ class DefaultAlgorithm(Algorithm):
             # if it is necessary to recursively search other Operators on the network:
             if propagation_limit > 0:
                 for operator in remote_operators:
-                    res = operator.search(propagation_limit-1, input_set)
+                    with operator:
+                        res = operator.search(propagation_limit-1, input_set)
                     this_cost = self.cost(res.run(current_stream), input_set.output_stream)
                     if this_cost < lowest_cost:
                         lowest_cost = this_cost
@@ -121,7 +122,7 @@ class DefaultAlgorithm(Algorithm):
 
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
-        cost = float('inf')
+        cost = -1
 
         #Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
@@ -130,7 +131,7 @@ class DefaultAlgorithm(Algorithm):
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         current_stream = input_set.input_stream
 
-        while cost <= last_cost: # TODO use a more sophisticated stopping mechanism...
+        while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
 
             # Best results produced by any LocalAffinity so far.
             lowest_cost = float('inf')
@@ -193,8 +194,8 @@ class DefaultAlgorithm(Algorithm):
         total = 0
         count = 0
 
-        for item1, item2 in stream1, stream2:
-            for param1, param2 in item1.parameters, item2.parameters:
+        for item1, item2 in zip(stream1.items, stream2.items):
+            for param1, param2 in zip(item1.parameters, item2.parameters):
                 total += (abs(param1-param2))**2
                 count += 1
 

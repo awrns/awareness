@@ -76,7 +76,9 @@ class Stream:
 
     def inject(self, other_stream, start_parameter, end_parameter):
         for i in range(len(self.items)):
-            self.items[i].parameters[start_parameter:end_parameter] = other_stream.items[i].parameters
+            parameter_list = list(self.items[i].parameters)
+            parameter_list[start_parameter:end_parameter] = other_stream.items[i].parameters
+            self.items[i].parameters = tuple(parameter_list)
 
 
     @classmethod
@@ -118,8 +120,8 @@ class Set:
         inputs = datums[:n_inputs*count]
         outputs = datums[n_inputs*count:n_outputs*count]
 
-        input_stream = Stream.from_datums(outputs)
-        output_stream = Stream.from_datums(outputs)
+        input_stream = Stream.from_count_datums(count, inputs)
+        output_stream = Stream.from_count_datums(count, outputs)
 
 
         return Set(input_stream, output_stream)
