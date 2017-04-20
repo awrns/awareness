@@ -68,6 +68,7 @@ class Operator:
 class LocalOperator(Operator):
 
     host = ""
+    public_host = ""
     port = -1
     affinities = []
     backend = None
@@ -79,6 +80,7 @@ class LocalOperator(Operator):
 
 
     def __init__(self,
+                 public_host,
                  host="",
                  port=1600,
                  affinities = [],
@@ -88,6 +90,7 @@ class LocalOperator(Operator):
                  assemblies = [],
                  remote_operators = []):
 
+        self.public_host = public_host
         self.host = host
         self.port = port
         self.affinities = affinities

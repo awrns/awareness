@@ -19,11 +19,11 @@ class TestAffinity2(awareness.LocalAffinity):
 
 
 
-def algorithm():
-    operator1 = awareness.LocalOperator(port=1602)
+def test_algorithm():
+    operator1 = awareness.LocalOperator('127.0.0.1', port=1602)
     operator1.affinities.append(TestAffinity(operator1, 0))
 
-    operator2 = awareness.LocalOperator(port=1603)
+    operator2 = awareness.LocalOperator('127.0.0.1', port=1603)
     operator2.affinities.append(TestAffinity2(operator2, 0))
     operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1', port=1602))
 

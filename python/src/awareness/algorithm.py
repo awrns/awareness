@@ -173,7 +173,7 @@ class DefaultAlgorithm(Algorithm):
             current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_affinity.outputs)
 
             # Add information about this new Affinity to the Assembly we're creating.
-            append_tuple = (local_operator.host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
+            append_tuple = (local_operator.public_host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
             last_assembly = current_assembly
             current_assembly.operations.append(append_tuple)
 
