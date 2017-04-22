@@ -69,7 +69,8 @@ class DefaultAlgorithm(Algorithm):
         current_assembly = i_data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
-        current_stream = input_set.input_stream
+        current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, len(input_set.output_stream.items[0].parameters))
+        current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
 
         while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
             
@@ -129,7 +130,8 @@ class DefaultAlgorithm(Algorithm):
         current_assembly = i_data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
-        current_stream = input_set.input_stream
+        current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, len(input_set.output_stream.items[0].parameters))
+        current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
 
         while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
 

@@ -98,6 +98,13 @@ class Stream:
     def count(self):
         return len(self.items)
 
+    @classmethod
+    def blankFromCountParameters(self, count, parameters):
+        items = []
+        for i in range(count):
+            items.append(Item((0,) * parameters))
+        return Stream(items)
+
 
 
 class Set:
