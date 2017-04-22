@@ -77,7 +77,7 @@ class Stream:
     def inject(self, other_stream, start_parameter, end_parameter):
         for i in range(len(self.items)):
             parameter_list = list(self.items[i].parameters)
-            parameter_list[start_parameter:end_parameter] = other_stream.items[i].parameters
+            parameter_list[start_parameter:end_parameter + 1] = list(other_stream.items[i].parameters)
             self.items[i].parameters = tuple(parameter_list)
 
 
