@@ -33,5 +33,7 @@ def test_algorithm():
     input_set.output_stream.items.append(awareness.Item((1,)))
 
     
-    print operator2.search(1, input_set)
+    res = operator2.search(1, input_set)
+
+    print res.operations
 
