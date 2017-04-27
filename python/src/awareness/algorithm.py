@@ -87,7 +87,8 @@ class DefaultAlgorithm(Algorithm):
                 for operator in remote_operators:
                     with operator:
                         res = operator.search(propagation_limit-1, input_set)
-                    this_cost = self.cost(res.run(current_stream), input_set.output_stream)
+                        full_outs = res.run(current_stream)
+                    this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
                     if this_cost < lowest_cost:
                         lowest_cost = this_cost
                         lowest_assembly = res
@@ -160,7 +161,7 @@ class DefaultAlgorithm(Algorithm):
                         full_outs.inject(res, test_out_offset, test_out_offset + affinity.outputs)
 
                         # Evaluate the results.
-                        this_cost = self.cost(full_outs, input_set.output_stream)
+                        this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
                         if this_cost < lowest_cost:
                             # Update the best solution.
                             lowest_cost = this_cost
