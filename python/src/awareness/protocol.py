@@ -120,9 +120,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
 
         with self.connection_lock:
-            connection.sendall(tran_header)
-            connection.sendall(tran_pres)
-            connection.sendall(tran_datums)
+            connection.sendall(tran_header + tran_pres + tran_datums)
+
 
     def receive(self, connection, valid):
         recv_header = ''
