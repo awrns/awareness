@@ -29,23 +29,23 @@ import protocol as i_protocol
 class Affinity:
     __metaclass__ = ABCMeta
 
-    @abstractproperty
-    def operator(self):
-        raise NotImplementedError()
+    def getoperator(self): raise NotImplementedError()
+    def setoperator(self, value): raise NotImplementedError()
+    operator = abstractproperty(getoperator, setoperator)
 
-    @abstractproperty
-    def index(self):
-        raise NotImplementedError()
-
-
-    @abstractproperty
-    def inputs(self):
-        raise NotImplementedError()
+    def getindex(self): raise NotImplementedError()
+    def setindex(self, value): raise NotImplementedError()
+    index = abstractproperty(getindex, setindex)
 
 
-    @abstractproperty
-    def outputs(self):
-        raise NotImplementedError()
+    def getinputs(self): raise NotImplementedError()
+    def setinputs(self, values): raise NotImplementedError()
+    inputs = abstractproperty(getindex, setindex)
+
+
+    def getoutputs(self): raise NotImplementedError()
+    def setoutputs(self, value): raise NotImplementedError()
+    outputs = abstractproperty(getoutputs, setoutputs)
 
 
     @abstractmethod

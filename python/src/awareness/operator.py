@@ -30,25 +30,25 @@ import protocol as i_protocol
 class Operator:
     __metaclass__ = ABCMeta
 
-    @abstractproperty
-    def host(self):
-        raise NotImplementedError()
+    def gethost(self): raise NotImplementedError()
+    def sethost(self, value): raise NotImplementedError()
+    host = abstractproperty(gethost, sethost)
 
-    @abstractproperty
-    def port(self):
-        raise NotImplementedError()
+    def getport(self): raise NotImplementedError()
+    def setport(self, value): raise NotImplementedError()
+    port = abstractproperty(getport, setport)
 
-    @abstractproperty
-    def affinities(self):  # List of LocalAffinity.
-        raise NotImplementedError()
+    def getaffinities(self): raise NotImplementedError()
+    def setaffinities(self, value): raise NotImplementedError()
+    affinities = abstractproperty(getaffinities, setaffinities)
 
-    @abstractproperty
-    def backend(self):  # Any derivation from i_backend.Backend.
-        raise NotImplementedError()
+    def getbackend(self): raise NotImplementedError()
+    def setbackend(self, value): raise NotImplementedError()
+    backend = abstractproperty(getbackend, setbackend)
 
-    @abstractproperty
-    def protocol(self):  # Any derivation from i_protocol.Protocol.
-        raise NotImplementedError()
+    def setprotocol(self): raise NotImplementedError()
+    def getprotocol(self, value): raise NotImplementedError()
+    protocol = abstractproperty(getprotocol, setprotocol)
 
 
     @abstractmethod
