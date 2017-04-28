@@ -11,7 +11,7 @@ class TestAffinity(awareness.LocalAffinity):
 
 def test_accessprovide():
     operator1 = awareness.LocalOperator('127.0.0.1')
-    operator1.affinities.append(TestAffinity(operator1, 0))
+    operator1.affinities = [TestAffinity(operator1, 0)]
 
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
     input_stream = awareness.Stream([awareness.Item((1.0,))])
