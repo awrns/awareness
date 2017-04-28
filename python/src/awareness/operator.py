@@ -75,7 +75,7 @@ class LocalOperator(Operator):
     protocol = None
 
     algorithm = None
-    assemblies = []  # List of i_assembly.Assembly.
+
     remote_operators = []  # List of RemoteOperator.
 
 
