@@ -103,7 +103,7 @@ class LocalOperator(Operator):
         # self.backend.setupLogger()
 
         # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
-        self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='Provide-' + str(port))
+        self.provider = self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='Provide-' + str(port))
 
 
     def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):

@@ -64,6 +64,8 @@ class NativeBackend(Backend):
             thread.name = name
         thread.start()
 
+        return thread
+
 
     def connect(self, host, port=1600):
         return socket.create_connection((host, port))
