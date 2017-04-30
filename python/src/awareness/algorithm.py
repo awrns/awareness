@@ -62,7 +62,8 @@ class DefaultAlgorithm(Algorithm):
 
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
-        cost = -1
+        cost = float('inf')
+        first = True
 
         # Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
@@ -73,20 +74,21 @@ class DefaultAlgorithm(Algorithm):
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
 
-        while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
-            
+        while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
+            first = False
+            print 'main cost', cost, 'last cost', last_cost
             # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
             lowest_assembly = None
 
             # Prime with the results of our own local capabilities.
-            lowest_assembly, lowest_cost = self.search_internal(local_operator, input_set)
+            lowest_assembly, lowest_cost = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
 
             # if it is necessary to recursively search other Operators on the network:
             if propagation_limit > 0:
                 for operator in remote_operators:
                     with operator:
-                        res = operator.search(propagation_limit-1, input_set)
+                        res = operator.search(propagation_limit-1, i_data.Set(current_stream, input_set.output_stream))
                         full_outs = res.run(current_stream)
                     this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
                     if this_cost < lowest_cost:
@@ -125,7 +127,8 @@ class DefaultAlgorithm(Algorithm):
 
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
-        cost = -1
+        cost = float('inf')
+        first = True
 
         #Overall assembly state tracking.
         last_assembly = i_data.Assembly([])
@@ -136,8 +139,9 @@ class DefaultAlgorithm(Algorithm):
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
 
-        while cost < last_cost: # TODO use a more sophisticated stopping mechanism...
-
+        while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
+            first = False
+            print 'int cost', cost, 'last cost', last_cost
             # Best results produced by any LocalAffinity so far.
             lowest_cost = float('inf')
             lowest_affinity = None
