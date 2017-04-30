@@ -76,7 +76,7 @@ class DefaultAlgorithm(Algorithm):
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
-            print 'main cost', cost, 'last cost', last_cost
+
             # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
             lowest_assembly = i_data.Assembly([])
@@ -104,7 +104,7 @@ class DefaultAlgorithm(Algorithm):
             # Update known state of the data stream, and of the Assembly that has formed
             current_stream = lowest_assembly.run(current_stream)
             
-            last_assembly = current_assembly
+            last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.extend(lowest_assembly.operations)
 
             # Update known state of the cost
@@ -142,7 +142,7 @@ class DefaultAlgorithm(Algorithm):
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
-            print 'int cost', cost, 'last cost', last_cost
+
             # Best results produced by any LocalAffinity so far.
             lowest_cost = float('inf')
             lowest_affinity = None
@@ -184,7 +184,7 @@ class DefaultAlgorithm(Algorithm):
 
             # Add information about this new Affinity to the Assembly we're creating.
             append_tuple = (local_operator.public_host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
-            last_assembly = current_assembly
+            last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
 
             # Update costs.

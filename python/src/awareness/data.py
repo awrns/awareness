@@ -154,7 +154,7 @@ class Assembly:
 
     def __init__(self, operations):
 
-        self.operations = list(operations)
+        self.operations = operations
 
 
     def to_datums(self):
@@ -163,7 +163,13 @@ class Assembly:
     @classmethod
     def from_datums(self, datums):
 
-        return Assembly(datums)
+        operations = []
+        for datum in datums:
+            listdatum = list(datum)
+            listdatum[0] = listdatum[0].rstrip('\0')
+            operations.append(tuple(listdatum))
+
+        return Assembly(operations)
 
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
@@ -173,7 +179,7 @@ class Assembly:
 
         for operation in self.operations:
 
-            with i_operator.RemoteOperator(operation[0].rstrip('\0'), port=operation[1]) as operator:
+            with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
                 operator.retrieve_affinities()
 
                 data_in_start_idx = operation[3]  # in_offset
