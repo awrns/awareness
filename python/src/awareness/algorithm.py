@@ -79,7 +79,7 @@ class DefaultAlgorithm(Algorithm):
             print 'main cost', cost, 'last cost', last_cost
             # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
-            lowest_assembly = None
+            lowest_assembly = i_data.Assembly([])
 
             # Prime with the results of our own local capabilities.
             lowest_assembly, lowest_cost = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
@@ -103,6 +103,7 @@ class DefaultAlgorithm(Algorithm):
 
             # Update known state of the data stream, and of the Assembly that has formed
             current_stream = lowest_assembly.run(current_stream)
+            
             last_assembly = current_assembly
             current_assembly.operations.extend(lowest_assembly.operations)
 
