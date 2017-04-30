@@ -174,6 +174,9 @@ class DefaultAlgorithm(Algorithm):
                             lowest_in_offset = test_in_offset
                             lowest_out_offset = test_out_offset
 
+            if lowest_affinity is None:
+                return i_data.Assembly([]), float('inf')
+
             # Analogous to the offset processing in the above loop - update current_stream by first
             # extracting the section of it that has proved to be the best by the above loop
             # and processing it by the LocalAffinity that has been the most promising.
