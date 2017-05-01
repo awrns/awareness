@@ -81,11 +81,12 @@ class NativeBackend(Backend):
         return listener
 
 
+    @classmethod
     def setup_logger(self):
         logger = logging.getLogger('awareness')
         logger.setLevel(logging.DEBUG)
         console = logging.StreamHandler()
-        console.setLevel(logging.ERROR)
+        console.setLevel(logging.INFO)
         formatter = logging.Formatter('%(asctime)s | %(threadName)-20s | %(levelname)-8s | %(message)s')
         console.setFormatter(formatter)
         logger.addHandler(console)

@@ -1,6 +1,9 @@
 
 import awareness as a
 
+a.backend.NativeBackend.setup_logger()
+
+
 node0 = a.RemoteOperator('node0.local')
 
 

@@ -108,6 +108,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Stream.from_count_datums(pres[1], datums)
 
     def send(self, connection, unit_type, requested_type, pres, datums):
+        logging.getLogger('awareness').info('Sending type '+str(unit_type)+' requesting '+str(requested_type))
+
         unit_pre_struct = self.unit_pre_structs[unit_type]
         unit_datum_struct = self.unit_datum_structs[unit_type]
 
@@ -152,12 +154,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
             raise exception.DataError("Received preambles and/or datums were unparseable in context")
 
+        logging.getLogger('awareness').info('Received type '+str(unit_type)+' requesting '+str(requested_type))
         return unit_type, requested_type, pres, datums
 
     def provide(self, listener, operator):
 
         def handle(connection, operator):
-            logging.getLogger('awareness').info('Interacting with accesser..')
             monitor = misc.ProviderTaskMonitor()
             while True:
                 try:
@@ -165,16 +167,23 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                     unit_type, requested_type, pres, datums = res
 
-                    if unit_type == self.SEARCH_TASK_STOP: monitor.stop_search_task(pres[0])
-                    elif unit_type == self.PROCESS_TASK_STOP: monitor.stop_process_task(pres[0])
+                    if unit_type == self.SEARCH_TASK_STOP: monitor.stop_search_task(pres[0]); logging.getLogger('awareness').info('Enacting SEARCH_TASK_STOP')
+
+                    elif unit_type == self.PROCESS_TASK_STOP: monitor.stop_process_task(pres[0]); logging.getLogger('awareness').info('Enacting PROCESS_TASK_STOP')
+
                     elif unit_type == self.SEARCH_TASK_START:
+                        logging.getLogger('awareness').info('Enacting SEARCH_TASK_START')
+
                         reply_call = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], assembly), assembly.to_datums())
                         callback = monitor.add_search_task(pres[0], reply_call)
                         search_args = (pres[4], i_data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums))
                         search_kwargs = {'progress_frequency':pres[5], 'progress_callback':callback}
                         term_callback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.to_datums())
                         operator.backend.threading_async(operator.search, search_args, search_kwargs, name='Search-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=term_callback)
+                    
                     elif unit_type == self.PROCESS_TASK_START:
+                        logging.getLogger('awareness').info('Enacting PROCESS_TASK_START')
+
                         reply_call = lambda progress, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, progress), stream.to_datums())
                         callback = monitor.add_process_task(pres[0], reply_call)
                         process_args = (pres[2], i_data.Stream.from_count_datums(pres[1], datums))
@@ -182,15 +191,20 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         term_callback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, 1.0), stream.to_datums())
                         operator.backend.threading_async(operator.process, process_args, process_kwargs, name='Process-' + str(connection.getsockname()[0]) + '-' + str(pres[0]), callback=term_callback)
 
-                    if requested_type == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities())
-                    elif requested_type == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), [])
+                    if requested_type == self.CAPABILITIES: self.send(connection, self.CAPABILITIES, self.NOTHING, (), operator.capabilities()); logging.getLogger('awareness').info('Fulfilling CAPABILITIES')
+                    elif requested_type == self.BLANK: self.send(connection, self.BLANK, self.NOTHING, (), []); logging.getLogger('awareness').info('Fulfilling BLANK')
 
                     elif requested_type == self.SEARCH_TASK_STATUS:
+                        logging.getLogger('awareness').info('Fulfilling SEARCH_TASK_STATUS')
+
                         res = monitor.get_search_task_latest_args(pres[0])
                         datums = res[1].toDatums() if res else []
                         progress = res[0] if res else 0
                         self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], progress), datums)
+
                     elif requested_type == self.PROCESS_TASK_STATUS:
+                        logging.getLogger('awareness').info('Fulfilling PROCESS_TASK_STATUS')
+                        
                         res = monitor.get_process_task_latest_args(pres[0])
                         count = res[1].count if res else 0
                         datums = res[1].to_datums() if res else []
@@ -198,11 +212,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, progress), datums)
 
                 except (exception.ProvisionException, exception.ConnectionException, socket.error) as e:  # Use of ConnectionException for custom backends
-                    logging.getLogger('awareness').info('Finished interaction, exiting: ' + type(e).__name__)
                     connection.close()
                     return
 
         while True:
             connection, address = listener.accept()
-            logging.getLogger('awareness').info('Accepted connection from ' + address[0] + ', spawning handler')
+            logging.getLogger('awareness').info('Accepted connection from ' + address[0])
             operator.backend.threading_async(handle, args=(connection, operator), name='Handle-'+address[0])

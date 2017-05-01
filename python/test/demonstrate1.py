@@ -1,10 +1,13 @@
 
-import awareness
+import awareness as a
 
-thisnode = awareness.LocalOperator('node1.local')
+a.backend.NativeBackend.setup_logger()
+
+
+thisnode = a.LocalOperator('node1.local')
 #thisnode = awareness.LocalOperator('127.0.0.1', port=1601)
 
-class TestAffinity1(awareness.LocalAffinity):
+class TestAffinity1(a.LocalAffinity):
 
     inputs = 1
     outputs = 1
