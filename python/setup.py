@@ -6,7 +6,7 @@ setup(
     include_package_data=True,
 
     name='awareness-operator',
-    version='0.9.16',
+    version='0.9.18',
     description='A Python implementation of the Awareness operator, a new way to think about data transfer and processing on the Internet.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
