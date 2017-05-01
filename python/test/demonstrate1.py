@@ -1,8 +1,8 @@
 
 import awareness
 
-#thisnode = awareness.LocalOperator('node1.local')
-thisnode = awareness.LocalOperator('127.0.0.1', port=1601)
+thisnode = awareness.LocalOperator('node1.local')
+#thisnode = awareness.LocalOperator('127.0.0.1', port=1601)
 
 class TestAffinity1(awareness.LocalAffinity):
 
