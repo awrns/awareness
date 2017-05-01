@@ -1,7 +1,7 @@
 
 import awareness as a
 
-node0 = a.RemoteOperator('127.0.0.1', port=1600)
+node0 = a.RemoteOperator('node0.local')
 
 
 input_stream = a.Stream([a.Item((1,))])
