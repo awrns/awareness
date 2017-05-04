@@ -106,7 +106,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Stream.from_count_datums(pres[1], datums)
 
     def send(self, connection, unit_type, requested_type, pres, datums):
-        logging.getLogger('awareness').info('Sending type '+str(unit_type)+' requesting '+str(requested_type))
+        logging.getLogger('awareness').info('Sending type '+str(unit_type)+' requesting '+str(requested_type)+' to '+str(connection.getsockname()[0]))
 
         unit_pre_struct = self.unit_pre_structs[unit_type]
         unit_datum_struct = self.unit_datum_structs[unit_type]
@@ -151,7 +151,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
             raise exception.DataError("Received preambles and/or datums were unparseable in context")
 
-        logging.getLogger('awareness').info('Received type '+str(unit_type)+' requesting '+str(requested_type))
+        logging.getLogger('awareness').info('Received type '+str(unit_type)+' requesting '+str(requested_type)+' from '+str(connection.getsockname()[0]))
         return unit_type, requested_type, pres, datums
 
     def provide(self, listener, operator):
