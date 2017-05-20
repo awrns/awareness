@@ -26,8 +26,8 @@ import misc
 
 from operator import LocalOperator as LocalOperator
 from operator import RemoteOperator as RemoteOperator
-from affinity import LocalAffinity as LocalAffinity
-from affinity import RemoteAffinity as RemoteAffinity
+from component import LocalComponent as LocalComponent
+from component import RemoteComponent as RemoteComponent
 
 from data import Item as Item
 from data import Stream as Stream

@@ -1,6 +1,6 @@
 import awareness
 
-class TestAffinity(awareness.LocalAffinity):
+class TestComponent(awareness.LocalComponent):
 
     inputs = 1
     outputs = 1
@@ -9,7 +9,7 @@ class TestAffinity(awareness.LocalAffinity):
         return input_stream
 
 
-class TestAffinity2(awareness.LocalAffinity):
+class TestComponent2(awareness.LocalComponent):
 
     inputs = 1
     outputs = 1
@@ -21,10 +21,10 @@ class TestAffinity2(awareness.LocalAffinity):
 
 def test_algorithm():
     operator1 = awareness.LocalOperator('127.0.0.1', port=1602)
-    operator1.affinities = [TestAffinity(operator1, 0)]
+    operator1.components = [TestComponent(operator1, 0)]
 
     operator2 = awareness.LocalOperator('127.0.0.1', port=1603)
-    operator2.affinities = [TestAffinity2(operator2, 0)]
+    operator2.components = [TestComponent(operator2, 0)]
     operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1', port=1602))
 
 

@@ -23,7 +23,7 @@ import threading
 import logging
 import socket
 import misc
-import affinity as i_affinity
+import component as i_component
 import algorithm as i_algorithm
 import data as i_data
 import operator as i_operator

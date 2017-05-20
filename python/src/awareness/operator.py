@@ -20,7 +20,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import logging
 import exception
 import misc
-import affinity as i_affinity
+import component as i_component
 import algorithm as i_algorithm
 import backend as i_backend
 import data as i_data
@@ -38,9 +38,9 @@ class Operator:
     def setport(self, value): raise NotImplementedError()
     port = abstractproperty(getport, setport)
 
-    def getaffinities(self): raise NotImplementedError()
-    def setaffinities(self, value): raise NotImplementedError()
-    affinities = abstractproperty(getaffinities, setaffinities)
+    def getcomponents(self): raise NotImplementedError()
+    def setcomponents(self, value): raise NotImplementedError()
+    components = abstractproperty(getcomponents, setcomponents)
 
     def getbackend(self): raise NotImplementedError()
     def setbackend(self, value): raise NotImplementedError()
@@ -70,7 +70,7 @@ class LocalOperator(Operator):
     host = ""
     public_host = ""
     port = -1
-    affinities = []
+    components = []
     backend = None
     protocol = None
 
@@ -83,7 +83,7 @@ class LocalOperator(Operator):
                  public_host,
                  host="",
                  port=1600,
-                 affinities = [],
+                 components = [],
                  backend = None,
                  protocol = None,
                  algorithm = None,
@@ -93,7 +93,7 @@ class LocalOperator(Operator):
         self.public_host = public_host
         self.host = host
         self.port = port
-        self.affinities = affinities
+        self.components = components
         self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
@@ -108,14 +108,14 @@ class LocalOperator(Operator):
 
     def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
 
-        # Search both the affinities here and the RemoteAbilities that the RemoteOperators make available.
+        # Search both the components here and the RemoteAbilities that the RemoteOperators make available.
         return self.algorithm.search(self, self.remote_operators, propagation_limit, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
 
-        # Hand inputSet to our indexed LocalAffinity.
-        return self.affinities[index].run(input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        # Hand inputSet to our indexed LocalComponent.
+        return self.components[index].run(input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def capabilities(self):
@@ -123,8 +123,8 @@ class LocalOperator(Operator):
         # Building a list of tuples.
         capabilities = []
 
-        for each_affinity in self.affinities:
-            capabilities.append((each_affinity.inputs, each_affinity.outputs))  # in 2-tuple
+        for each_component in self.components:
+            capabilities.append((each_component.inputs, each_component.outputs))  # in 2-tuple
 
         return capabilities
 
@@ -134,7 +134,7 @@ class RemoteOperator(Operator):
 
     host = ""
     port = -1
-    affinities = []
+    components = []
     backend = None
     protocol = None
 
@@ -143,21 +143,21 @@ class RemoteOperator(Operator):
     def __init__(self,
                  host,
                  port = 1600,
-                 affinities = [],
+                 components = [],
                  backend = None,
                  protocol = None):
 
         self.host = host
         self.port = port
-        self.affinities = affinities
+        self.components = components
         self.backend = backend() if backend else i_backend.NativeBackend()  # Set to default if None.
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
 
 
-        # Do a quick routine to get the Affinity details.
-        #if len(self.affinities) == 0:
+        # Do a quick routine to get the Component details.
+        #if len(self.components) == 0:
         #    with self:
-        #        self.retrieve_affinities()
+        #        self.retrieve_components()
 
 
     def __enter__(self):
@@ -170,13 +170,13 @@ class RemoteOperator(Operator):
         self.connection = None
 
 
-    def retrieve_affinities(self):
+    def retrieve_components(self):
         capabilities = self.protocol.capabilities(self.connection)
         for i in range(len(capabilities)):
-            affinity_profile = capabilities[i]
-            new_affinity = i_affinity.RemoteAffinity(self, i, *affinity_profile)  # unpack inputs and outputs from 2-tuple
+            component_profile = capabilities[i]
+            new_component = i_component.RemoteComponent(self, i, *component_profile)  # unpack inputs and outputs from 2-tuple
 
-            self.affinities.append(new_affinity)
+            self.components.append(new_component)
 
 
     def search(self, propagation_limit, input_set, progress_frequency=0, progress_callback=None):
@@ -186,14 +186,14 @@ class RemoteOperator(Operator):
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
 
-        return self.affinities[index].run(self.connection, input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.components[index].run(self.connection, input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def capabilities(self):
 
         capabilities = []
 
-        for each_affinity in self.affinities:
-            capabilities.append((each_affinity.inputs, each_affinity.outputs))  # in 2-tuple
+        for each_component in self.components:
+            capabilities.append((each_component.inputs, each_component.outputs))  # in 2-tuple
 
         return capabilities

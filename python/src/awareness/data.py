@@ -18,7 +18,7 @@
 
 import exception
 import misc
-import affinity as i_affinity
+import component as i_component
 import algorithm as i_algorithm
 import backend as i_backend
 import operator as i_operator
@@ -180,17 +180,17 @@ class Assembly:
         for operation in self.operations:
 
             with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
-                operator.retrieve_affinities()
+                operator.retrieve_components()
 
                 data_in_start_idx = operation[3]  # in_offset
-                data_in_end_idx = operation[3] + operator.affinities[operation[2]].inputs  # plus number of inputs
+                data_in_end_idx = operation[3] + operator.components[operation[2]].inputs  # plus number of inputs
 
                 data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
 
                 result = operator.process(operation[2], data_section)
 
                 data_out_start_idx = operation[4]  # out_offset
-                data_out_end_idx = operation[4] + operator.affinities[operation[2]].outputs  # plus number of outputs
+                data_out_end_idx = operation[4] + operator.components[operation[2]].outputs  # plus number of outputs
                 stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
 
 

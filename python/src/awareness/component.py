@@ -26,7 +26,7 @@ import operator as i_operator
 import protocol as i_protocol
 
 
-class Affinity:
+class Component:
     __metaclass__ = ABCMeta
 
     def getoperator(self): raise NotImplementedError()
@@ -53,20 +53,20 @@ class Affinity:
         raise NotImplementedError()
 
 
-class LocalAffinity(Affinity):
+class LocalComponent(Component):
 
     operator = None
     index = 0
 
     def __init__(self,
                  operator,
-                 index):  # profile is defined in children of LocalAffinity
+                 index):  # profile is defined in children of LocalComponent
 
         self.operator = operator
         self.index = index
 
 
-class RemoteAffinity(Affinity):
+class RemoteComponent(Component):
 
     operator = None
     index = 0

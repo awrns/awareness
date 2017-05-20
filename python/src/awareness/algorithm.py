@@ -20,7 +20,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import copy
 import exception
 import misc
-import affinity as i_affinity
+import component as i_component
 import backend as i_backend
 import data as i_data
 import operator as i_operator
@@ -143,50 +143,50 @@ class DefaultAlgorithm(Algorithm):
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
 
-            # Best results produced by any LocalAffinity so far.
+            # Best results produced by any LocalComponent so far.
             lowest_cost = float('inf')
-            lowest_affinity = None
+            lowest_component = None
             lowest_in_offset = 0
             lowest_out_offset = 0
 
-            for affinity in local_operator.affinities:
+            for component in local_operator.components:
 
                 # Large nested iterative search over all possible configurations.
-                # Note that the expression   len(current_stream.items[0].parameters) - affinity.inputs
-                # evaluates to the number of offsets which are possible for the given affinity.inputs count and stream parameters count.
+                # Note that the expression   len(current_stream.items[0].parameters) - component.inputs
+                # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
-                for test_in_offset in range(len(current_stream.items[0].parameters) - affinity.inputs + 1):
-                    for test_out_offset in range(len(current_stream.items[0].parameters) - affinity.outputs + 1):
+                for test_in_offset in range(len(current_stream.items[0].parameters) - component.inputs + 1):
+                    for test_out_offset in range(len(current_stream.items[0].parameters) - component.outputs + 1):
 
-                        # Extract the subset of the current_stream data that this Affinity will try to process.
-                        res = affinity.run(current_stream.extract(test_in_offset, test_out_offset + affinity.inputs))
+                        # Extract the subset of the current_stream data that this Component will try to process.
+                        res = component.run(current_stream.extract(test_in_offset, test_out_offset + component.inputs))
 
-                        # Create a 'model' stream in which to inject the result of the affinity's processing at the correct offset.
+                        # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
                         full_outs = copy.deepcopy(current_stream)
-                        full_outs.inject(res, test_out_offset, test_out_offset + affinity.outputs)
+                        full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
                         this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
                         if this_cost < lowest_cost:
                             # Update the best solution.
                             lowest_cost = this_cost
-                            lowest_affinity = affinity
+                            lowest_component = component
                             lowest_in_offset = test_in_offset
                             lowest_out_offset = test_out_offset
 
-            if lowest_affinity is None:
+            if lowest_component is None:
                 return i_data.Assembly([]), float('inf')
 
             # Analogous to the offset processing in the above loop - update current_stream by first
             # extracting the section of it that has proved to be the best by the above loop
-            # and processing it by the LocalAffinity that has been the most promising.
+            # and processing it by the LocalComponent that has been the most promising.
             # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            res = lowest_affinity.run(current_stream.extract(lowest_in_offset, lowest_out_offset + affinity.inputs))
-            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_affinity.outputs)
+            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + component.inputs))
+            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
 
-            # Add information about this new Affinity to the Assembly we're creating.
-            append_tuple = (local_operator.public_host, local_operator.port, lowest_affinity.index, lowest_in_offset, lowest_out_offset)
+            # Add information about this new component to the Assembly we're creating.
+            append_tuple = (local_operator.public_host, local_operator.port, lowest_component.index, lowest_in_offset, lowest_out_offset)
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
 
