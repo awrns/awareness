@@ -16,7 +16,7 @@
 #
 
 
-import affinity
+import component
 import algorithm
 import backend
 import data
