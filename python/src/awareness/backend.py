@@ -38,6 +38,10 @@ class Backend:
         raise NotImplementedError()
 
     @abstractmethod
+    def processing_async(self, function, args=(), kwargs={}, callback=None):
+        raise NotImplementedError()
+
+    @abstractmethod
     def connect(self, host, port=1600):
         raise NotImplementedError()
 
@@ -65,6 +69,10 @@ class NativeBackend(Backend):
         thread.start()
 
         return thread
+
+
+    def processing_async(self, function, args=(), kwargs={}, callback=None, daemon=True, name=None):
+        pass
 
 
     def connect(self, host, port=1600):
