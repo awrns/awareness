@@ -34,7 +34,7 @@ class Algorithm:
     def search(self,
                local_operator,
                remote_operators,
-               propagation_limit,
+               recursion_limit,
                input_set,
                progress_frequency=0,
                progress_callback=None):
@@ -54,7 +54,7 @@ class DefaultAlgorithm(Algorithm):
     def search(self,
                local_operator,
                remote_operators,
-               propagation_limit,
+               recursion_limit,
                input_set,
                progress_frequency=0,
                progress_callback=None):
@@ -85,10 +85,10 @@ class DefaultAlgorithm(Algorithm):
             lowest_assembly, lowest_cost = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
 
             # if it is necessary to recursively search other Operators on the network:
-            if propagation_limit > 0:
+            if recursion_limit > 0:
                 for operator in remote_operators:
                     with operator:
-                        res = operator.search(propagation_limit-1, i_data.Set(current_stream, input_set.output_stream))
+                        res = operator.search(recursion_limit-1, i_data.Set(current_stream, input_set.output_stream))
                         full_outs = res.run(current_stream)
                     this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
                     if this_cost < lowest_cost:
