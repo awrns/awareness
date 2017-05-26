@@ -156,10 +156,12 @@ class DefaultAlgorithm(Algorithm):
                 # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
                 for test_in_offset in range(len(current_stream.items[0].parameters) - component.inputs + 1):
-                    for test_out_offset in range(len(current_stream.items[0].parameters) - component.outputs + 1):
 
-                        # Extract the subset of the current_stream data that this Component will try to process.
-                        res = component.run(current_stream.extract(test_in_offset, test_out_offset + component.inputs))
+                    # Extract the subset of the current_stream data that this Component will try to process.
+                    res = component.run(current_stream.extract(test_in_offset, test_in_offset + component.inputs))
+
+
+                    for test_out_offset in range(len(current_stream.items[0].parameters) - component.outputs + 1):
 
                         # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
                         full_outs = copy.deepcopy(current_stream)
@@ -173,6 +175,7 @@ class DefaultAlgorithm(Algorithm):
                             lowest_component = component
                             lowest_in_offset = test_in_offset
                             lowest_out_offset = test_out_offset
+
 
             if lowest_component is None:
                 return i_data.Assembly([]), float('inf')
