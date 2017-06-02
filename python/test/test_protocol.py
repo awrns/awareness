@@ -14,7 +14,7 @@ def test_accessprovide():
     operator1.components = [TestComponent(operator1, 0)]
 
     operator2 = awareness.RemoteOperator('127.0.0.1', port=1600)
-    input_stream = awareness.Stream([awareness.Item((1.0,))])
+    input_stream = awareness.Stream([[1.0]])
     with operator2:
         operator2.retrieve_components()
         res = operator2.process(0, input_stream)

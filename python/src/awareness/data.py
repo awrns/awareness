@@ -39,7 +39,7 @@ class Stream:
 
     def to_datums(self):
 
-        return self.items.flatten()
+        return self.items
 
 
     def extract(self, start_parameter, end_parameter):
