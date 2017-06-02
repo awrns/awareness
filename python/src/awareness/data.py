@@ -23,32 +23,8 @@ import algorithm as i_algorithm
 import backend as i_backend
 import operator as i_operator
 import protocol as i_protocol
+import numpy
 
-
-class Item:
-
-    parameters = ()
-
-    def __init__(self, parameters):
-        self.parameters = tuple(parameters)
-
-    def to_datums(self):
-        datums = []
-        for parameter in self.parameters:
-            datums.append((float(parameter),))  # The parameter in a 1-tuple
-        return datums
-
-
-    @classmethod
-    def from_datums(self, datums):
-        parameters = []
-        for datum in datums:
-            parameters.append(datum[0])  # First (only) tuple item
-        return Item(tuple(parameters))
-
-    @property
-    def count(self):
-        return len(self.parameters)
 
 
 
@@ -58,52 +34,59 @@ class Stream:
     items = []
 
     def __init__(self, items):
-        self.items = list(items)
+        self.items = numpy.asarray(items, dtype=numpy.uint8)
 
 
     def to_datums(self):
-        datums = []
-        for item in self.items:
-            datums += item.to_datums()
-        return datums
+
+        return self.items.flatten()
+
 
     def extract(self, start_parameter, end_parameter):
-        output = Stream([])
-        for item in self.items:
-            output.items.append(Item(item.parameters[start_parameter:end_parameter]))
 
-        return output
+        return self.items[:, start_parameter:end_parameter]
+
 
     def inject(self, other_stream, start_parameter, end_parameter):
-        for i in range(len(self.items)):
-            parameter_list = list(self.items[i].parameters)
-            parameter_list[start_parameter:end_parameter + 1] = list(other_stream.items[i].parameters)
-            self.items[i].parameters = tuple(parameter_list)
+
+        self.items[:, start_parameter:end_parameter + 1] = other_stream.items
+
+
+    @classmethod
+    def cost(self, arr1, arr2):
+
+        arr = numpy.bitwise_xor(arr1.items, arr2.items)
+        arr = numpy.unpackbits(arr)
+        mean = numpy.mean(arr)
+
+        return mean
 
 
     @classmethod
     def from_count_datums(self, count, datums):
-        items = []
-        n_params = len(datums) / count if count != 0 else 0
 
-        for item_index in range(count):
-            start_pos = item_index * n_params
-            end_pos = (item_index + 1) * n_params
-            items.append(Item.from_datums(datums[start_pos:end_pos]))
-
-        return Stream(items)
+        arr = numpy.asarray(datums, dtype=numpy.uint8)
+        arr.reshape((count, -1))
+        return Stream(arr)
 
 
     @property
     def count(self):
-        return len(self.items)
+
+        return self.items.shape[0]
+
+
+    @property
+    def parameters(self):
+
+        return self.items.shape[1]
+
 
     @classmethod
     def blankFromCountParameters(self, count, parameters):
-        items = []
-        for i in range(count):
-            items.append(Item((0,) * parameters))
-        return Stream(items)
+        
+        arr = numpy.zeros((count, parameters), dtype=numpy.uint8)
+        return Stream(arr)
 
 
 
@@ -139,12 +122,13 @@ class Set:
         return self.input_stream.count
 
     @property
-    def n_inputs(self):
-        return self.input_stream.items[0].count
+    def inputs(self):
+        return self.input_stream.parameters
 
     @property
-    def n_outputs(self):
-        return self.output_stream.items[0].count
+    def outputs(self):
+        return self.output_stream.parameters
+
 
 
 class Assembly:

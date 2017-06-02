@@ -19,5 +19,5 @@ def test_accessprovide():
         operator2.retrieve_components()
         res = operator2.process(0, input_stream)
 
-    assert res.items[0].parameters[0] == 1.0
+    assert res.items[0][0] == 1.0
 

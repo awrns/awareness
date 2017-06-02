@@ -42,12 +42,6 @@ class Algorithm:
         raise NotImplementedError()
 
 
-    @abstractmethod
-    def cost(self, stream1, stream2):
-        raise NotImplementedError()
-
-
-
 
 class DefaultAlgorithm(Algorithm):
 
@@ -70,9 +64,9 @@ class DefaultAlgorithm(Algorithm):
         current_assembly = i_data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
-        max_param_len = max(len(input_set.output_stream.items[0].parameters), len(input_set.input_stream.items[0].parameters))
+        max_param_len = max(input_set.outputs, input_set.inputs)
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
-        current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
+        current_stream.inject(input_set.input_stream, 0, input_set.input_stream.parameters)
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
@@ -90,7 +84,7 @@ class DefaultAlgorithm(Algorithm):
                     with operator:
                         res = operator.search(recursion_limit-1, i_data.Set(current_stream, input_set.output_stream))
                         full_outs = res.run(current_stream)
-                    this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
+                    this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
                     if this_cost < lowest_cost:
                         lowest_cost = this_cost
                         lowest_assembly = res
@@ -136,9 +130,9 @@ class DefaultAlgorithm(Algorithm):
         current_assembly = i_data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
-        max_param_len = max(len(input_set.output_stream.items[0].parameters), len(input_set.input_stream.items[0].parameters))
+        max_param_len = max(input_set.outputs, input_set.inputs)
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
-        current_stream.inject(input_set.input_stream, 0, len(input_set.input_stream.items[0].parameters))
+        current_stream.inject(input_set.input_stream, 0, input_set.inputs)
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
@@ -152,23 +146,23 @@ class DefaultAlgorithm(Algorithm):
             for component in local_operator.components:
 
                 # Large nested iterative search over all possible configurations.
-                # Note that the expression   len(current_stream.items[0].parameters) - component.inputs
+                # Note that the expression   current_stream.parameters - component.inputs
                 # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
-                for test_in_offset in range(len(current_stream.items[0].parameters) - component.inputs + 1):
+                for test_in_offset in range(current_stream.parameters - component.inputs + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
                     res = component.run(current_stream.extract(test_in_offset, test_in_offset + component.inputs))
 
 
-                    for test_out_offset in range(len(current_stream.items[0].parameters) - component.outputs + 1):
+                    for test_out_offset in range(current_stream.parameters - component.outputs + 1):
 
                         # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
                         full_outs = copy.deepcopy(current_stream)
                         full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
-                        this_cost = self.cost(full_outs.extract(0, len(input_set.output_stream.items[0].parameters)), input_set.output_stream)
+                        this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
                         if this_cost < lowest_cost:
                             # Update the best solution.
                             lowest_cost = this_cost
@@ -201,22 +195,3 @@ class DefaultAlgorithm(Algorithm):
         # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
         # since cost decreased on the last iteration. Use the 'last' (previous) iteration as the best result.
         return last_assembly, last_cost
-
-
-
-
-    def cost(self, stream1, stream2):
-
-        total = 0
-        count = 0
-
-        for item1, item2 in zip(stream1.items, stream2.items):
-            for param1, param2 in zip(item1.parameters, item2.parameters):
-                total += (abs(param1-param2))**2
-                count += 1
-
-        mean = total/count
-
-        return mean
-
-
