@@ -29,7 +29,6 @@ from operator import RemoteOperator as RemoteOperator
 from component import LocalComponent as LocalComponent
 from component import RemoteComponent as RemoteComponent
 
-from data import Item as Item
 from data import Stream as Stream
 from data import Set as Set
 from data import Assembly as Assembly
