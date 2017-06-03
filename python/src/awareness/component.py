@@ -29,18 +29,10 @@ import protocol as i_protocol
 class Component:
     __metaclass__ = ABCMeta
 
-    def getoperator(self): raise NotImplementedError()
-    def setoperator(self, value): raise NotImplementedError()
-    operator = abstractproperty(getoperator, setoperator)
-
-    def getindex(self): raise NotImplementedError()
-    def setindex(self, value): raise NotImplementedError()
-    index = abstractproperty(getindex, setindex)
-
 
     def getinputs(self): raise NotImplementedError()
     def setinputs(self, values): raise NotImplementedError()
-    inputs = abstractproperty(getindex, setindex)
+    inputs = abstractproperty(getinputs, setinputs)
 
 
     def getoutputs(self): raise NotImplementedError()
@@ -53,17 +45,14 @@ class Component:
         raise NotImplementedError()
 
 
+
 class LocalComponent(Component):
 
-    operator = None
-    index = 0
 
-    def __init__(self,
-                 operator,
-                 index):  # profile is defined in children of LocalComponent
+    def __init__(self):
 
-        self.operator = operator
-        self.index = index
+        pass
+
 
 
 class RemoteComponent(Component):

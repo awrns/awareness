@@ -189,7 +189,7 @@ class DefaultAlgorithm(Algorithm):
             current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
 
             # Add information about this new component to the Assembly we're creating.
-            append_tuple = (local_operator.public_host, local_operator.port, lowest_component.index, lowest_in_offset, lowest_out_offset)
+            append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
 
