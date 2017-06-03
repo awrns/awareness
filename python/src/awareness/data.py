@@ -25,6 +25,8 @@ import operator as i_operator
 import protocol as i_protocol
 import numpy
 
+import warnings
+warnings.filterwarnings("ignore")
 
 
 
