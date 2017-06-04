@@ -106,22 +106,20 @@ class Set:
 
 
     def to_datums(self):
-        return self.input_stream.to_datums() + self.output_stream.to_datums()  # concat
+
+        return numpy.concatenate((self.input_stream.to_datums(), self.output_stream.to_datums()))
 
 
 
     @classmethod
     def from_inputs_outputs_count_datums(self, n_inputs, n_outputs, count, datums):
 
-        arr = numpy.asarray(datums, dtype=numpy.uint8)
-        arr = arr.flatten()
-        arr = arr.reshape((count, -1))
+        
+        input_arr = datums[:n_inputs*count]
+        output_arr = datums[n_inputs*count:(n_inputs*count) + n_outputs*count]
 
-        input_arr = arr[:n_inputs*count]
-        output_arr = arr[n_inputs*count:(n_inputs*count) + n_outputs*count]
-
-        input_stream = Stream(input_arr)
-        output_stream = Stream(output_arr)
+        input_stream = Stream.from_count_datums(count, input_arr)
+        output_stream = Stream.from_count_datums(count, output_arr)
 
 
         return Set(input_stream, output_stream)

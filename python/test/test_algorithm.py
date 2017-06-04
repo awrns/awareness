@@ -15,7 +15,7 @@ class TestComponent2(awareness.LocalComponent):
     outputs = 1
 
     def run(self, input_stream, progress_frequency=0, progress_callback=None):
-        return awareness.Stream([awareness.Item((100,))] * len(input_stream.items))
+        return awareness.Stream([[254] * input_stream.count])
 
 
 
@@ -24,7 +24,7 @@ def test_algorithm():
     operator1.components = [TestComponent()]
 
     operator2 = awareness.LocalOperator('127.0.0.1', port=1603)
-    operator2.components = [TestComponent()]
+    operator2.components = [TestComponent2()]
     operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1', port=1602))
 
 

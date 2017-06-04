@@ -85,6 +85,7 @@ class DefaultAlgorithm(Algorithm):
                         res = operator.search(recursion_limit-1, i_data.Set(current_stream, input_set.output_stream))
                         full_outs = res.run(current_stream)
                     this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+
                     if this_cost < lowest_cost:
                         lowest_cost = this_cost
                         lowest_assembly = res
