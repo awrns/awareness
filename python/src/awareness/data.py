@@ -42,7 +42,7 @@ class Stream:
     def to_datums(self):
 
         arr = self.items.flatten()
-        arr = arr.reshape((-1, 1))
+        arr.shape = (arr.size, 1)
         return arr
 
 
@@ -54,13 +54,13 @@ class Stream:
 
     def inject(self, other_stream, start_parameter, end_parameter):
 
-        self.items[:, start_parameter:end_parameter + 1] = other_stream.items
+        self.items[:, start_parameter:end_parameter] = other_stream.items
 
 
     @classmethod
     def cost(self, arr1, arr2):
 
-        arr = numpy.bitwise_xor(arr1.items, arr2.items)
+        arr = numpy.bitwise_xor(arr1.items.flatten(), arr2.items.flatten())
         arr = numpy.unpackbits(arr)
         mean = numpy.mean(arr)
 
@@ -71,7 +71,7 @@ class Stream:
     def from_count_datums(self, count, datums):
 
         arr = numpy.asarray(datums, dtype=numpy.uint8)
-        arr.reshape((count, -1))
+        arr.shape = (count, arr.size / count)
         return Stream(arr)
 
 
@@ -114,7 +114,7 @@ class Set:
     @classmethod
     def from_inputs_outputs_count_datums(self, n_inputs, n_outputs, count, datums):
 
-        
+
         input_arr = datums[:n_inputs*count]
         output_arr = datums[n_inputs*count:(n_inputs*count) + n_outputs*count]
 
