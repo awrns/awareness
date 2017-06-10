@@ -138,11 +138,7 @@ class DefaultAlgorithm(Algorithm):
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
 
-            # Best results produced by any LocalComponent so far.
-            lowest_cost = float('inf')
-            lowest_component = None
-            lowest_in_offset = 0
-            lowest_out_offset = 0
+            options = []
 
             for component in local_operator.components:
 
@@ -164,12 +160,23 @@ class DefaultAlgorithm(Algorithm):
 
                         # Evaluate the results.
                         this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
-                        if this_cost < lowest_cost:
-                            # Update the best solution.
-                            lowest_cost = this_cost
-                            lowest_component = component
-                            lowest_in_offset = test_in_offset
-                            lowest_out_offset = test_out_offset
+
+                        options.append((this_cost, component, test_in_offset, test_out_offset))
+
+
+            # Best results produced by any LocalComponent so far.
+            lowest_cost = float('inf')
+            lowest_component = None
+            lowest_in_offset = 0
+            lowest_out_offset = 0
+
+            for option in options:
+                if option[0] < lowest_cost:
+                    # Update the best solution.
+                    lowest_cost = option[0]
+                    lowest_component = option[1]
+                    lowest_in_offset = option[2]
+                    lowest_out_offset = option[3]
 
 
             if lowest_component is None:
