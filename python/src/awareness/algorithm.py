@@ -68,15 +68,11 @@ class DefaultAlgorithm(Algorithm):
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, input_set.input_stream.parameters)
 
+
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
 
-            # Best results provided by any RemoteOperator so far.
-            lowest_cost = float('inf')
-            lowest_assembly = i_data.Assembly([])
-
-            # Prime with the results of our own local capabilities.
-            lowest_assembly, lowest_cost = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
+            options = []
 
             # if it is necessary to recursively search other Operators on the network:
             if recursion_limit > 0:
@@ -86,14 +82,21 @@ class DefaultAlgorithm(Algorithm):
                         full_outs = res.run(current_stream)
                     this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
 
-                    if this_cost < lowest_cost:
-                        lowest_cost = this_cost
-                        lowest_assembly = res
+                    options.append((this_cost, res))
 
-            else:
-                # In the case that we are only searching locally, there's no sense in calling search_internal again.
-                # Return its result, which is the best we'll get.
-                return lowest_assembly
+
+            # Best results provided by any RemoteOperator so far.
+            lowest_cost = float('inf')
+            lowest_assembly = i_data.Assembly([])
+
+            # Prime with the results of our own local capabilities.
+            internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
+            options.append((internal_cost, internal_assembly))
+
+            for option in options:
+                if option[0] < lowest_cost:
+                    lowest_cost = option[0]
+                    lowest_assembly = option[1]
 
 
             # Update known state of the data stream, and of the Assembly that has formed
@@ -202,4 +205,4 @@ class DefaultAlgorithm(Algorithm):
 
         # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
         # since cost decreased on the last iteration. Use the 'last' (previous) iteration as the best result.
-        return last_assembly, last_cost
+        return last_cost, last_assembly
