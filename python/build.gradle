@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-	python 'pypi:numpy:1.13.0rc2'
+	python 'pypi:Theano:0.9.0'
 }
 
 repositories {
