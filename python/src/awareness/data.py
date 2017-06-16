@@ -61,7 +61,7 @@ class Stream:
     @classmethod
     def cost(self, arr1, arr2):
 
-        arr = numpy.bitwise_xor(arr1.items.flatten(), arr2.items.flatten())
+        arr = numpy.bitwise_xor(arr1.items, arr2.items)
         arr = numpy.unpackbits(arr)
         mean = numpy.mean(arr)
 
