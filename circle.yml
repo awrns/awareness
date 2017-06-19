@@ -1,6 +1,7 @@
 compile:
   override:
-    - ./gradlew assemble
+    - ./gradlew assemble:
+        timeout: 3600
   post:
     - cp python/build/distributions/* $CIRCLE_ARTIFACTS/
 
