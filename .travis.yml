@@ -2,4 +2,4 @@ language: java
 
 before_install:
   - sudo apt-get update -y
-  - sudo apt-get install -y libopenblas-dev
+  - sudo apt-get install -y liblapack-dev
