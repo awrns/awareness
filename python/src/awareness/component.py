@@ -17,13 +17,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
-import exception
-import misc
-import algorithm as i_algorithm
-import backend as i_backend
-import data as i_data
-import operator as i_operator
-import protocol as i_protocol
+
 
 
 class Component:
@@ -52,6 +46,15 @@ class LocalComponent(Component):
     def __init__(self):
 
         pass
+
+
+    def to_json(self):
+        raise NotImplementedError()
+
+
+    @classmethod
+    def from_json(self, json):
+        raise NotImplementedError()
 
 
 

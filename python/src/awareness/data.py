@@ -16,15 +16,10 @@
 #
 
 
-import exception
-import misc
-import component as i_component
-import algorithm as i_algorithm
-import backend as i_backend
+
 import operator as i_operator
-import protocol as i_protocol
 import numpy
-import theano
+
 
 import warnings
 warnings.filterwarnings("ignore")

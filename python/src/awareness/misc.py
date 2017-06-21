@@ -16,7 +16,6 @@
 #
 
 
-from abc import ABCMeta, abstractproperty
 
 import struct
 
