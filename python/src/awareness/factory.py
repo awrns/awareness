@@ -15,21 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import cStringIO
+import sys
 
-import component
-import algorithm
-import backend
-import data
-import operator
-import protocol
-import misc
-import factory
+backup = sys.stderr
+sys.stderr = cStringIO.StringIO()
+import theano
+out = sys.stderr.getvalue()
+sys.stderr = backup
 
-from operator import LocalOperator as LocalOperator
-from operator import RemoteOperator as RemoteOperator
-from component import LocalComponent as LocalComponent
-from component import RemoteComponent as RemoteComponent
+if out.find("(") != -1:
+    out = out[:out.find("(")]
 
-from data import Stream as Stream
-from data import Set as Set
-from data import Assembly as Assembly
+sub = out.split(":")[-1]
+device = sub.strip() if sub.strip() != "" else "CPU"
