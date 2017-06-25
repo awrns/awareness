@@ -54,13 +54,39 @@ class Stream:
 
 
     @classmethod
-    def cost(self, arr1, arr2):
+    def cost(self, stream1, stream2):
 
-        arr = numpy.bitwise_xor(arr1.items, arr2.items)
+        # Mean bitwise error
+
+        arr = numpy.bitwise_xor(stream1.items, stream2.items)
         arr = numpy.unpackbits(arr)
         mean = numpy.mean(arr)
 
         return mean
+
+
+    @classmethod
+    def msdi(self, stream1, stream2):
+
+        # Most significant difference index
+
+        costs = numpy.empty(stream1.items.parameters, dtype=numpy.uint8)
+
+        for i in xrange(stream1.items.parameters):
+
+            s1 = stream1.items[:, i:i+1]
+            s2 = stream2.items[:, i:i+1]
+
+            arr = numpy.bitwise_xor(s1, s2)
+            arr = numpy.unpackbits(arr)
+            mean = numpy.mean(arr)
+
+            costs[i] = mean
+
+
+        greatest_idx = numpy.argmax(costs)
+
+        return greatest_idx
 
 
     @classmethod
@@ -138,7 +164,10 @@ class Set:
 
 class Assembly:
 
-    # List of tuples (addr, port, index, in_offset, out_offset)
+    # Naive conditional operation sequence.
+
+
+    # List of tuples (thresh_idx, targ_0, addr0, port0, index0, in_offset0, out_offset0, targ_1, addr1, port1, index1, in_offset1, out_offset1)
     operations = []
 
     def __init__(self, operations):

@@ -144,13 +144,13 @@ class DefaultAlgorithm(Algorithm):
                 # Note that the expression   current_stream.parameters - component.inputs
                 # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
-                for test_in_offset in range(current_stream.parameters - component.inputs + 1):
+                for test_in_offset in xrange(current_stream.parameters - component.inputs + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
                     res = component.run(current_stream.extract(test_in_offset, test_in_offset + component.inputs))
 
 
-                    for test_out_offset in range(current_stream.parameters - component.outputs + 1):
+                    for test_out_offset in xrange(current_stream.parameters - component.outputs + 1):
 
                         # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
                         full_outs = copy.deepcopy(current_stream)
@@ -168,6 +168,11 @@ class DefaultAlgorithm(Algorithm):
             lowest_in_offset = 0
             lowest_out_offset = 0
 
+            second_lowest_cost = float('inf')
+            second_lowest_component = None
+            second_lowest_in_offset = 0
+            second_lowest_out_offset = 0
+
             for option in options:
                 if option[0] < lowest_cost:
                     # Update the best solution.
@@ -176,8 +181,14 @@ class DefaultAlgorithm(Algorithm):
                     lowest_in_offset = option[2]
                     lowest_out_offset = option[3]
 
+                elif option[0] < second_lowest_cost:
+                    second_lowest_cost - option[0]
+                    second_lowest_component = option[1]
+                    second_lowest_in_offset = option[2]
+                    second_lowest_out_offset = option[3]
 
-            if lowest_component is None:
+
+            if lowest_component is None and second_lowest_component is None:
                 return i_data.Assembly([]), float('inf')
 
             # Analogous to the offset processing in the above loop - update current_stream by first
