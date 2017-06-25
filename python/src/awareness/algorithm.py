@@ -191,18 +191,18 @@ class DefaultAlgorithm(Algorithm):
             if lowest_component is None and second_lowest_component is None:
                 return i_data.Assembly([]), float('inf')
 
-            # Analogous to the offset processing in the above loop - update current_stream by first
-            # extracting the section of it that has proved to be the best by the above loop
-            # and processing it by the LocalComponent that has been the most promising.
-            # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + component.inputs))
-            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
+            # Determine the parameter index to use as a threshold.
+            thresh_idx = i_data.Stream.msdi()
 
-            # Add information about this new component to the Assembly we're creating.
-            append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
+            # Add information about this new operation to the Assembly we're creating.
+            append_tuple = (thresh_idx, local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
+
+            # Update the state of the current stream.
+            subassembly = i_data.Assembly(append_tuple)
+            current_stream = subassembly.run(current_stream)
 
             # Update costs.
             last_cost = cost
