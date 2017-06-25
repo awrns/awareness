@@ -241,9 +241,8 @@ class Assembly:
                         substream.inject(result, data_out_start_idx, data_out_end_idx)
 
 
-                # now we have substream as the result of all of this crazy effort. And now it has to be assembled into the output (one 'slice' of parameters.)
-
-
+                # Now we have substream. And now it has to be assembled into the output (one 'slice' of parameters.)
+                item = substream.items # So the second-to-outermost for loop replaces each item in turn.
 
 
         return stream_state
