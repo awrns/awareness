@@ -86,31 +86,7 @@ class Stream:
 
         best_idx = mean_arr.argmin()
 
-        return numpy.mean(arr), best_idx #Also return ordinary cost
-
-
-    @classmethod
-    def msdi(self, stream1, stream2):
-
-        # Most significant difference index
-
-        costs = numpy.empty(stream1.items.parameters, dtype=numpy.uint8)
-
-        for i in xrange(stream1.items.parameters):
-
-            s1 = stream1.items[:, i:i+1]
-            s2 = stream2.items[:, i:i+1]
-
-            arr = numpy.bitwise_xor(s1, s2)
-            arr = numpy.unpackbits(arr)
-            mean = numpy.mean(arr)
-
-            costs[i] = mean
-
-
-        greatest_idx = numpy.argmax(costs)
-
-        return greatest_idx
+        return numpy.mean(arr), best_idx # Also return ordinary cost
 
 
     @classmethod

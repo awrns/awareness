@@ -197,12 +197,28 @@ class DefaultAlgorithm(Algorithm):
 
 
             # Determine the parameter index to use as a threshold.
-            thresh_idx = i_data.Stream.msdi()
+            stream_opt0 = i_data.Stream([current_stream.items[lowest_best_item_idx]  ,])
+            stream_opt1 = i_data.Stream([current_stream.items[second_lowest_best_item_idx]  ,])
 
-            targ_high, targ_low = 
+            highest_diffcost = 0
+            chosen_idx = 0
+            for i in xrange(stream_opt0.parameters):
+                this = i_data.Stream.cost(stream_opt0.extract(i, i+1), stream_opt1.extract(i, i+1))
+                if this > highest_diffcost:
+                    highest_diffcost = this
+                    chosen_idx = i
+
+            # Get the values
+            targ0 = stream_opt0.items[0][chosen_idx]
+            targ1 = stream_opt1.items[0][chosen_idx]
 
             # Add information about this new operation to the Assembly we're creating.
-            append_tuple = (thresh_idx, local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
+            append_tuple = (chosen_idx, targ0, 
+                            local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset,
+                            targ1,
+                            local_operator.public_host, local_operator.port, local_operator.components.index(second_lowest_component), second_lowest_in_offset, second_lowest_out_offset
+                            )
+
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
 
