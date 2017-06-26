@@ -141,7 +141,7 @@ class DefaultAlgorithm(Algorithm):
             for component in local_operator.components:
 
                 # Large nested iterative search over all possible configurations.
-                # Note that the expression   current_stream.parameters - component.inputs
+                # Note that the expression   current_stream.parameters - component.inputs + 1
                 # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
                 for test_in_offset in xrange(current_stream.parameters - component.inputs + 1):
@@ -157,18 +157,20 @@ class DefaultAlgorithm(Algorithm):
                         full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
-                        this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+                        this_cost, best_item_idx = i_data.Stream.cost_with_best(full_outs.extract(0, input_set.outputs), input_set.output_stream)
 
-                        options.append((this_cost, component, test_in_offset, test_out_offset))
+                        options.append((this_cost, best_item_idx, component, test_in_offset, test_out_offset))
 
 
             # Best results produced by any LocalComponent so far.
             lowest_cost = float('inf')
+            lowest_best_item_idx = 0
             lowest_component = None
             lowest_in_offset = 0
             lowest_out_offset = 0
 
             second_lowest_cost = float('inf')
+            second_lowest_best_item_idx = 0
             second_lowest_component = None
             second_lowest_in_offset = 0
             second_lowest_out_offset = 0
@@ -177,15 +179,17 @@ class DefaultAlgorithm(Algorithm):
                 if option[0] < lowest_cost:
                     # Update the best solution.
                     lowest_cost = option[0]
-                    lowest_component = option[1]
-                    lowest_in_offset = option[2]
-                    lowest_out_offset = option[3]
+                    lowest_best_item_idx = option[1]
+                    lowest_component = option[2]
+                    lowest_in_offset = option[3]
+                    lowest_out_offset = option[4]
 
                 elif option[0] < second_lowest_cost:
-                    second_lowest_cost - option[0]
-                    second_lowest_component = option[1]
-                    second_lowest_in_offset = option[2]
-                    second_lowest_out_offset = option[3]
+                    second_lowest_cost = option[0]
+                    second_lowest_best_item_idx = option[1]
+                    second_lowest_component = option[2]
+                    second_lowest_in_offset = option[3]
+                    second_lowest_out_offset = option[4]
 
 
             if lowest_component is None and second_lowest_component is None:
@@ -194,6 +198,8 @@ class DefaultAlgorithm(Algorithm):
 
             # Determine the parameter index to use as a threshold.
             thresh_idx = i_data.Stream.msdi()
+
+            targ_high, targ_low = 
 
             # Add information about this new operation to the Assembly we're creating.
             append_tuple = (thresh_idx, local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)

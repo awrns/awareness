@@ -54,6 +54,15 @@ class Stream:
         self.items[:, start_parameter:end_parameter] = other_stream.items
 
 
+    def maxmin_items(self, param_idx):
+
+        # Item indexes which differ most with respect to the parameter at param_idx
+
+        max_arr = self.items.argmax(axis=0)
+
+        return max_arr[param_idx]
+
+
     @classmethod
     def cost(self, stream1, stream2):
 
@@ -64,6 +73,20 @@ class Stream:
         mean = numpy.mean(arr)
 
         return mean
+
+
+    @classmethod
+    def cost_with_best(self, stream1, stream2):
+
+        # Mean bitwise error, but also returning the index of the item with the lowest cost
+
+        arr = numpy.bitwise_xor(stream1.items, stream2.items)
+        arr = numpy.unpackbits(arr)
+        mean_arr = numpy.mean(arr, axis = 1) # Mean of all parameter costs in each item
+
+        best_idx = mean_arr.argmin()
+
+        return numpy.mean(arr), best_idx #Also return ordinary cost
 
 
     @classmethod
