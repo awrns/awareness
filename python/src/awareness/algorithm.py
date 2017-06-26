@@ -157,7 +157,17 @@ class DefaultAlgorithm(Algorithm):
                         full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
-                        this_cost, best_item_idx = i_data.Stream.cost_with_best(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+                        outset = full_outs.extract(0, input_set.outputs)
+                        this_cost = i_data.Stream.cost(outset, input_set.output_stream)
+
+                        # Find the item of the test set that has the best cost (is most characteristic of this solution).
+                        best_item_cost = float('inf')
+                        best_item_idx = 0
+                        for i in xrange(outset.count):
+                            this = i_data.Stream.cost(i_data.Stream(outset.items[i]), input_set.output_stream)
+                            if this < best_item_cost:
+                                best_item_cost = this
+                                best_item_idx = i
 
                         options.append((this_cost, best_item_idx, component, test_in_offset, test_out_offset))
 
@@ -223,7 +233,7 @@ class DefaultAlgorithm(Algorithm):
             current_assembly.operations.append(append_tuple)
 
             # Update the state of the current stream.
-            subassembly = i_data.Assembly(append_tuple)
+            subassembly = i_data.Assembly([append_tuple,])
             current_stream = subassembly.run(current_stream)
 
             # Update costs.

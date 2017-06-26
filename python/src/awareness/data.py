@@ -76,20 +76,6 @@ class Stream:
 
 
     @classmethod
-    def cost_with_best(self, stream1, stream2):
-
-        # Mean bitwise error, but also returning the index of the item with the lowest cost
-
-        arr = numpy.bitwise_xor(stream1.items, stream2.items)
-        arr = numpy.unpackbits(arr)
-        mean_arr = numpy.mean(arr, axis = 1) # Mean of all parameter costs in each item
-
-        best_idx = mean_arr.argmin()
-
-        return numpy.mean(arr), best_idx # Also return ordinary cost
-
-
-    @classmethod
     def from_count_datums(self, count, datums):
 
         arr = numpy.asarray(datums, dtype=numpy.uint8)
@@ -199,7 +185,7 @@ class Assembly:
 
             for item in stream_state.items:
 
-                substream = Stream(item) # The one-item part of the overall Stream to operate on
+                substream = Stream([item,]) # The one-item part of the overall Stream to operate on
 
                 singleitem_stream = substream.extract(operation[0], operation[0] + 1) # So here we get a Stream of item count 1 and parameter count 1.
                 targ0 = Stream([[operation[1],],]) # Same single-valued Stream for comparison to target option 0.
