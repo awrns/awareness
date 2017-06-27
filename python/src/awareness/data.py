@@ -170,7 +170,8 @@ class Assembly:
         operations = []
         for datum in datums:
             listdatum = list(datum)
-            listdatum[0] = listdatum[0].rstrip('\0')
+            listdatum[2] = listdatum[2].rstrip('\0')
+            listdatum[8] = listdatum[8].rstrip('\0')
             operations.append(tuple(listdatum))
 
         return Assembly(operations)
