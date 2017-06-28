@@ -20,6 +20,7 @@ from abc import ABCMeta, abstractmethod
 import threading
 import logging
 import socket
+import ssl
 
 
 
@@ -69,13 +70,19 @@ class NativeBackend(Backend):
 
 
     def connect(self, host, port=1600):
-        return socket.create_connection((host, port))
+
+        sock = socket.create_connection((host, port))
+        #sock = ssl.wrap_socket(sock)
+
+        return sock
 
 
     def listen(self, host='', port=1600, use_ipv6=False, backlog=5):
         type = socket.AF_INET6 if use_ipv6 else socket.AF_INET
 
         listener = socket.socket(type, socket.SOCK_STREAM)
+        #listener = ssl.wrap_socket(listener, server_side=True)
+
         listener.bind((host, port))
         listener.listen(backlog)
 
