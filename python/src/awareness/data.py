@@ -19,7 +19,6 @@
 
 import operator as i_operator
 import numpy
-import copy
 
 
 import warnings
