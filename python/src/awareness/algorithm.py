@@ -40,8 +40,9 @@ class Algorithm:
 
 class DefaultAlgorithm(Algorithm):
 
-    # Aedan's algorithm implementation
-    # that 'merges' the results of lower Operators to create a 'program' (Assembly)
+
+    # Aedan's algorithm implementation; there are certainly better ways to do this though.
+    # that 'merges' the results of lower Operators to create a 'program' (Assembly).
 
     def search(self,
                local_operator,
