@@ -35,6 +35,15 @@ class Stream:
         self.items = numpy.asarray(items, dtype=numpy.uint8)
 
 
+    def to_bytes(self):
+
+        arr = []
+        for item in self.items:
+            arr.append(item.tobytes())
+
+        return arr
+
+
     def to_datums(self):
 
         arr = self.items.flatten()
@@ -60,6 +69,12 @@ class Stream:
         max_arr = self.items.argmax(axis=0)
 
         return max_arr[param_idx]
+
+
+    @classmethod
+    def from_bytes(self, bytes):
+
+        return Stream(bytes)
 
 
     @classmethod
