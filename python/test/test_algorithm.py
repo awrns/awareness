@@ -28,7 +28,7 @@ def test_algorithm():
     operator2.remote_operators.append(awareness.RemoteOperator('127.0.0.1', port=1602))
 
 
-    input_set = awareness.Set(awareness.Stream([[1,],]), awareness.Stream([[1, 2],]))
+    input_set = awareness.Set(awareness.Stream([[1,],[50,]]), awareness.Stream([[1, 2],[255, 255]]))
 
     
     res = operator2.search(1, input_set)
