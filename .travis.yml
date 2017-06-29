@@ -2,4 +2,6 @@ language: java
 
 before_install:
   - sudo apt-get update -y
-  - sudo apt-get install -y gfortran libopenblas-dev liblapack-dev
+  - sudo apt-get install -y gfortran libopenblas-dev
+
+install: travis_wait ./gradlew assemble
