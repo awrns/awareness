@@ -67,6 +67,28 @@ class DefaultAlgorithm(Algorithm):
         current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, input_set.input_stream.parameters)
 
+        suggestions = []
+
+        internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
+        for i in xrange(len(internal_assembly.operations)):
+            if 0 <= i < len(suggestions): # If this level exists
+                suggestions[i].append(internal_assembly.operations[i][2:7])
+                suggestions[i].append(internal_assembly.operations[i][8:13])
+            else:
+                suggestions[i] = [internal_assembly.operations[i][2:7], internal_assembly.operations[i][8:13]]
+
+
+       if recursion_limit > 0:
+            for operator in remote_operators:
+                with operator:
+                    res = operator.search(recursion_limit-1, i_data.Set(current_stream, input_set.output_stream))
+                    for i in xrange(len(res.operations)):
+                        if 0 <= i < len(suggestions):
+                            suggestions[i].append(res.operations[i][2:7])
+                            suggestions[i].append(res.operations[i][8:13])
+                        else:
+                            suggestions[i] = [res.operations[i][2:7], res.operations[i][8:13]]
+
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
             first = False
