@@ -69,7 +69,7 @@ class DefaultAlgorithm(Algorithm):
 
         suggestions = []
 
-        internal_assembly = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
+        internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
         for i in xrange(len(internal_assembly.operations)):
             if 0 <= i < len(suggestions): # If this level exists
                 suggestions[i].append(internal_assembly.operations[i][2:7])
@@ -269,4 +269,4 @@ class DefaultAlgorithm(Algorithm):
 
         # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
         # since cost decreased on the last iteration. Use the 'last' (previous) iteration as the best result.
-        return last_assembly
+        return last_cost, last_assembly
