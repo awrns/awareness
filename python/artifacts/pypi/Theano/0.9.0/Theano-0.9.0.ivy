@@ -10,7 +10,7 @@
     <artifact name="Theano" ext="tar.gz" conf="default" type="tar.gz" />
   </publications>
   <dependencies defaultconfmapping="*-&gt;default">
-    <dependency org="pypi" name="numpy" rev="1.13.0" conf="default" />
+    <dependency org="pypi" name="numpy" rev="1.13.1" conf="default" />
     <dependency org="pypi" name="scipy" rev="0.19.1" conf="default" />
     <dependency org="pypi" name="six" rev="1.10.0" conf="default" />
     <dependency org="pypi" name="Sphinx" rev="0.5.1" conf="doc" />
