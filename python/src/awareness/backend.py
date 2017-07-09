@@ -24,9 +24,7 @@ import ssl
 
 
 
-class Backend:
-    __metaclass__ = ABCMeta
-
+class Backend(metaclass=ABCMeta):
     @abstractmethod
     def threading_async(self, function, args=(), kwargs={}, callback=None):
         raise NotImplementedError()

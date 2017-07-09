@@ -17,15 +17,13 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
-import component as i_component
-import algorithm as i_algorithm
-import backend as i_backend
-import protocol as i_protocol
+from . import component as i_component
+from . import algorithm as i_algorithm
+from . import backend as i_backend
+from . import protocol as i_protocol
 
 
-class Operator:
-    __metaclass__ = ABCMeta
-
+class Operator(metaclass=ABCMeta):
     def gethost(self): raise NotImplementedError()
     def sethost(self, value): raise NotImplementedError()
     host = abstractproperty(gethost, sethost)

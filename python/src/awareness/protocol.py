@@ -19,13 +19,11 @@
 from abc import ABCMeta, abstractmethod
 import socket
 import logging
-import exception
-import misc
-import data as i_data
+from . import exception
+from . import misc
+from . import data as i_data
 
-class Protocol:
-    __metaclass__ = ABCMeta
-
+class Protocol(metaclass=ABCMeta):
     @abstractmethod
     def capabilities(self, connection):
         raise NotImplementedError()
@@ -107,11 +105,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         unit_pre_struct = self.unit_pre_structs[unit_type]
         unit_datum_struct = self.unit_datum_structs[unit_type]
 
-        tran_datums = ''
+        tran_datums = bytearray()
         tran_pres = unit_pre_struct.pack(*pres)
 
         for datum in datums:
-            tran_datums += unit_datum_struct.pack(*datum)
+            tran_datums.append(unit_datum_struct.pack(*datum))
 
         tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
 
@@ -119,11 +117,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def receive(self, connection, valid):
-        recv_header = ''
-        while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction precents overfilling
+        recv_header = bytearray()
+        while len(recv_header) < self.pdu_header_struct.size: recv_header.append(connection.recv(self.pdu_header_struct.size - len(recv_header)))  # This subtraction prevents overfilling
         version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
-        recv_data = ''
-        while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
+        recv_data = bytearray()
+        while len(recv_data) < data_len: recv_data.append(connection.recv(data_len - len(recv_data)))  # Same 'goal-subtraction' routine
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])

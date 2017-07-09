@@ -16,20 +16,20 @@
 #
 
 
-import component
-import algorithm
-import backend
-import data
-import operator
-import protocol
-import misc
-import factory
+from . import component
+from . import algorithm
+from . import backend
+from . import data
+from . import operator
+from . import protocol
+from . import misc
+from . import factory
 
-from operator import LocalOperator as LocalOperator
-from operator import RemoteOperator as RemoteOperator
-from component import LocalComponent as LocalComponent
-from component import RemoteComponent as RemoteComponent
+from .operator import LocalOperator as LocalOperator
+from .operator import RemoteOperator as RemoteOperator
+from .component import LocalComponent as LocalComponent
+from .component import RemoteComponent as RemoteComponent
 
-from data import Stream as Stream
-from data import Set as Set
-from data import Assembly as Assembly
+from .data import Stream as Stream
+from .data import Set as Set
+from .data import Assembly as Assembly

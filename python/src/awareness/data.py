@@ -17,7 +17,7 @@
 
 
 
-import operator as i_operator
+from . import operator as i_operator
 import numpy
 
 

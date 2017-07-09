@@ -15,11 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import cStringIO
+import io
 import sys
 
 backup = sys.stderr
-sys.stderr = cStringIO.StringIO()
+sys.stderr = io.StringIO()
 import theano
 out = sys.stderr.getvalue()
 sys.stderr = backup

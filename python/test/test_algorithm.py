@@ -33,5 +33,5 @@ def test_algorithm():
     
     res = operator2.search(1, input_set)
 
-    print res.operations
+    print(res.operations)
 
