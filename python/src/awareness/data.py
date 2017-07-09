@@ -167,7 +167,7 @@ class Assembly:
     # Naive conditional operation sequence.
 
 
-    # List of tuples (thresh_idx, targ_0, addr0, port0, index0, in_offset0, out_offset0, targ_1, addr1, port1, index1, in_offset1, out_offset1)
+    # List of tuples (addr, port, index, in_offset, out_offset)
     operations = []
 
     def __init__(self, operations):
@@ -184,8 +184,7 @@ class Assembly:
         operations = []
         for datum in datums:
             listdatum = list(datum)
-            listdatum[2] = listdatum[2].rstrip('\0')
-            listdatum[8] = listdatum[8].rstrip('\0')
+            listdatum[0] = listdatum[0].rstrip('\0')
             operations.append(tuple(listdatum))
 
         return Assembly(operations)
@@ -198,51 +197,19 @@ class Assembly:
 
         for operation in self.operations:
 
-            for item in stream_state.items:
+            with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
+                operator.retrieve_components()
 
-                substream = Stream([item,]) # The one-item part of the overall Stream to operate on
+                data_in_start_idx = operation[3]  # in_offset
+                data_in_end_idx = operation[3] + operator.components[operation[2]].inputs  # plus number of inputs
 
-                singleitem_stream = substream.extract(operation[0], operation[0] + 1) # So here we get a Stream of item count 1 and parameter count 1.
-                targ0 = Stream([[operation[1],],]) # Same single-valued Stream for comparison to target option 0.
-                targ1 = Stream([[operation[7],],])
+                data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
 
-                if Stream.cost(singleitem_stream, targ0) >= Stream.cost(singleitem_stream, targ1):
+                result = operator.process(operation[2], data_section)
 
-                    with i_operator.RemoteOperator(operation[2], port=operation[3]) as operator:
-                        operator.retrieve_components()
-
-                        data_in_start_idx = operation[5]  # in_offset
-                        data_in_end_idx = operation[5] + operator.components[operation[4]].inputs  # plus number of inputs
-
-                        data_section = substream.extract(data_in_start_idx, data_in_end_idx)
-
-                        result = operator.process(operation[4], data_section)
-
-                        data_out_start_idx = operation[6]  # out_offset
-                        data_out_end_idx = operation[6] + operator.components[operation[4]].outputs  # plus number of outputs
-
-                        substream.inject(result, data_out_start_idx, data_out_end_idx)
-
-                else:
-
-                    with i_operator.RemoteOperator(operation[8], port=operation[9]) as operator:
-                        operator.retrieve_components()
-
-                        data_in_start_idx = operation[11]  # in_offset
-                        data_in_end_idx = operation[11] + operator.components[operation[10]].inputs  # plus number of inputs
-
-                        data_section = substream.extract(data_in_start_idx, data_in_end_idx)
-
-                        result = operator.process(operation[10], data_section)
-
-                        data_out_start_idx = operation[12]  # out_offset
-                        data_out_end_idx = operation[12] + operator.components[operation[10]].outputs  # plus number of outputs
-
-                        substream.inject(result, data_out_start_idx, data_out_end_idx)
-
-
-                # Now we have substream. And now it has to be assembled into the output (one 'slice' of parameters.)
-                item = substream.items # So the second-to-outermost for loop replaces each item in turn.
+                data_out_start_idx = operation[4]  # out_offset
+                data_out_end_idx = operation[4] + operator.components[operation[2]].outputs  # plus number of outputs
+                stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
 
 
         return stream_state

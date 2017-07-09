@@ -161,84 +161,42 @@ class DefaultAlgorithm(Algorithm):
                         full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
-                        outset = full_outs.extract(0, input_set.outputs)
-                        this_cost = i_data.Stream.cost(outset, input_set.output_stream)
+                        this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
 
-                        # Find the item of the test set that has the best cost (is most characteristic of this solution).
-                        best_item_cost = float('inf')
-                        best_item_idx = 0
-                        for i in xrange(outset.count):
-                            this = i_data.Stream.cost(i_data.Stream(outset.items[i]), input_set.output_stream)
-                            if this < best_item_cost:
-                                best_item_cost = this
-                                best_item_idx = i
 
-                        options.append((this_cost, best_item_idx, component, test_in_offset, test_out_offset))
+                        options.append((this_cost, component, test_in_offset, test_out_offset))
 
 
             # Best results produced by any LocalComponent so far.
             lowest_cost = float('inf')
-            lowest_best_item_idx = 0
             lowest_component = None
             lowest_in_offset = 0
             lowest_out_offset = 0
-
-            second_lowest_cost = float('inf')
-            second_lowest_best_item_idx = 0
-            second_lowest_component = None
-            second_lowest_in_offset = 0
-            second_lowest_out_offset = 0
 
             for option in options:
                 if option[0] < lowest_cost:
                     # Update the best solution.
                     lowest_cost = option[0]
-                    lowest_best_item_idx = option[1]
-                    lowest_component = option[2]
-                    lowest_in_offset = option[3]
-                    lowest_out_offset = option[4]
-
-                elif option[0] < second_lowest_cost:
-                    second_lowest_cost = option[0]
-                    second_lowest_best_item_idx = option[1]
-                    second_lowest_component = option[2]
-                    second_lowest_in_offset = option[3]
-                    second_lowest_out_offset = option[4]
+                    lowest_component = option[1]
+                    lowest_in_offset = option[2]
+                    lowest_out_offset = option[3]
 
 
-            if lowest_component is None and second_lowest_component is None:
+            if lowest_component is None:
                 return i_data.Assembly([]), float('inf')
 
+            # Analogous to the offset processing in the above loop - update current_stream by first
+            # extracting the section of it that has proved to be the best by the above loop
+            # and processing it by the LocalComponent that has been the most promising.
+            # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            # Determine the parameter index to use as a threshold.
-            stream_opt0 = i_data.Stream([current_stream.items[lowest_best_item_idx]  ,])
-            stream_opt1 = i_data.Stream([current_stream.items[second_lowest_best_item_idx]  ,])
+            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + component.inputs))
+            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
 
-            highest_diffcost = 0
-            chosen_idx = 0
-            for i in xrange(stream_opt0.parameters):
-                this = i_data.Stream.cost(stream_opt0.extract(i, i+1), stream_opt1.extract(i, i+1))
-                if this > highest_diffcost:
-                    highest_diffcost = this
-                    chosen_idx = i
-
-            # Get the values
-            targ0 = stream_opt0.items[0][chosen_idx]
-            targ1 = stream_opt1.items[0][chosen_idx]
-
-            # Add information about this new operation to the Assembly we're creating.
-            append_tuple = (chosen_idx, targ0, 
-                            local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset,
-                            targ1,
-                            local_operator.public_host, local_operator.port, local_operator.components.index(second_lowest_component), second_lowest_in_offset, second_lowest_out_offset
-                            )
-
+            # Add information about this new component to the Assembly we're creating.
+            append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
-
-            # Update the state of the current stream.
-            subassembly = i_data.Assembly([append_tuple,])
-            current_stream = subassembly.run(current_stream)
 
             # Update costs.
             last_cost = cost
