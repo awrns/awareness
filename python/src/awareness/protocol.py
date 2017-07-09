@@ -105,11 +105,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         unit_pre_struct = self.unit_pre_structs[unit_type]
         unit_datum_struct = self.unit_datum_structs[unit_type]
 
-        tran_datums = bytearray()
+        tran_datums = b''
         tran_pres = unit_pre_struct.pack(*pres)
 
         for datum in datums:
-            tran_datums.append(unit_datum_struct.pack(*datum))
+            tran_datums += unit_datum_struct.pack(*datum)
 
         tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
 
@@ -117,11 +117,11 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
 
     def receive(self, connection, valid):
-        recv_header = bytearray()
-        while len(recv_header) < self.pdu_header_struct.size: recv_header.append(connection.recv(self.pdu_header_struct.size - len(recv_header)))  # This subtraction prevents overfilling
+        recv_header = b''
+        while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction prevents overfilling
         version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
-        recv_data = bytearray()
-        while len(recv_data) < data_len: recv_data.append(connection.recv(data_len - len(recv_data)))  # Same 'goal-subtraction' routine
+        recv_data = b''
+        while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
@@ -137,7 +137,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             pres = unit_pre_struct.unpack(recv_data[:unit_pre_struct.size])
             datums = []
             if unit_datum_struct.size > 0:
-                for i in range(len(recv_data[unit_pre_struct.size:]) / unit_datum_struct.size):
+                for i in range(len(recv_data[unit_pre_struct.size:]) // unit_datum_struct.size):
                     start_data_index = unit_pre_struct.size + (i*unit_datum_struct.size)
                     data_roi = recv_data[start_data_index:start_data_index + unit_datum_struct.size]
                     datums.append(unit_datum_struct.unpack(data_roi))
