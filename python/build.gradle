@@ -3,7 +3,6 @@ plugins {
 }
 
 python {
-    details.prependExecutableDirectory(new File('/usr/bin/python3'))
     details.pythonVersion = '3'
 }
 
