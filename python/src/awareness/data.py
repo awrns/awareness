@@ -93,7 +93,7 @@ class Stream:
     def from_count_datums(self, count, datums):
 
         arr = numpy.asarray(datums, dtype=numpy.uint8)
-        arr.shape = (count, arr.size / count)
+        arr.shape = (count, arr.size // count)
         return Stream(arr)
 
 
@@ -184,7 +184,7 @@ class Assembly:
         operations = []
         for datum in datums:
             listdatum = list(datum)
-            listdatum[0] = listdatum[0].rstrip('\0')
+            listdatum[0] = listdatum[0].rstrip(b'\0')
             operations.append(tuple(listdatum))
 
         return Assembly(operations)
