@@ -160,6 +160,7 @@ class RemoteOperator(Operator):
 
 
     def __exit__(self, type, value, traceback):
+        self.connection.shutdown(2) # socket.SHUT_RDWR
         self.connection.close()
         self.connection = None
 

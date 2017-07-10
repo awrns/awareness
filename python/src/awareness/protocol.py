@@ -195,6 +195,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, progress), datums)
 
                 except (exception.ProvisionException, exception.ConnectionException, socket.error) as e:  # Use of ConnectionException for custom backends
+                    connection.shutdown(2) # socket.SHUT_RDWR
                     connection.close()
                     return
 
