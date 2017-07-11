@@ -24,6 +24,14 @@ from . import protocol as i_protocol
 
 
 class Operator(metaclass=ABCMeta):
+
+    @abstractmethod
+    def __enter__(self): raise NotImplementedError()
+
+    @abstractmethod
+    def __exit__(self, type, value, traceback): raise NotImplementedError()
+
+
     def gethost(self): raise NotImplementedError()
     def sethost(self, value): raise NotImplementedError()
     host = abstractproperty(gethost, sethost)
@@ -98,6 +106,13 @@ class LocalOperator(Operator):
 
         # Kickoff the server. Get a listener from self.backend, and give it to self.protocol to use.
         self.provider = self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='provide-' + str(port))
+
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, traceback):
+        pass
 
 
     def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
