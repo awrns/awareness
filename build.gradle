@@ -3,7 +3,7 @@ plugins {
 }
 
 python {
-    details.pythonVersion = '3.5.3'
+    details.pythonVersion = '3'
 }
 
 dependencies {
