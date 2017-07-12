@@ -3,8 +3,8 @@ plugins {
 }
 
 python {
-	details.prependExecutableDirectory(new File('/usr/bin/python3'))
-    details.pythonVersion = '3'
+	details.prependExecutableDirectory(new File('/usr/bin/python3.5'))
+    details.pythonVersion = '3.5'
 }
 
 dependencies {
