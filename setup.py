@@ -5,6 +5,10 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
 
+    install_requires=[
+          'Theano==0.9.0',
+    ],
+
     name='awareness',
     version='0.7.3',
     description='A new way to think about data on the Internet, like nothing ever before.',
