@@ -14,7 +14,7 @@ setup(
     description='A new way to think about data on the Internet, like nothing ever before.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
-    url='https://github.com/awrns/awareness-python',
+    url='https://github.com/awrns/awareness',
     keywords = ['networking', 'ai', 'machine', 'learning', 'software', 'architecture', 'library', 'python', 'module', 'cocomputation', 'protocol', 'cloud', 'computing', 'iot']
 )
 
