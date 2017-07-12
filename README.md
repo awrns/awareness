@@ -1,4 +1,4 @@
-![Awareness introduction image](banner/banner.png)
+![Awareness introduction image](graphics/banner.png)
 ```bash
 $ pip3 install awareness
 $ python3
