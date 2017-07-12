@@ -5,13 +5,13 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
 
-    name='awareness-operator',
-    version='0.7.1',
-    description='A Python implementation of the Awareness operator, a new way to think about data transfer and processing on the Internet.',
+    name='awareness',
+    version='0.7.3',
+    description='A new way to think about data on the Internet, like nothing ever before.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
-    url='https://github.com/awrns/operator',
-    keywords = ['functionality', 'distribution', 'network', 'learning', 'processing', 'awareness', 'operator']
+    url='https://github.com/awrns/awareness-python',
+    keywords = ['networking', 'ai', 'machine', 'learning', 'software', 'architecture', 'library', 'python', 'module', 'cocomputation', 'protocol', 'cloud', 'computing', 'iot']
 )
 
 
