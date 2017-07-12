@@ -1,6 +1,7 @@
 .gradle
 .cache
 build/
+dist/
 gradle-app.setting
 .gradletasknamecache
 *.egg-info/
@@ -8,7 +9,3 @@ gradle-app.setting
 activate
 pinned.txt
 *.sublime-workspace
-
-cpp/
-java/
-device/
