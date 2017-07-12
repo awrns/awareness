@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="44.32254mm"
+   width="50.307381mm"
+   viewBox="0 0 178.2545 157.04837"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="awareness-short.svg"
+   inkscape:export-filename="/home/aedan/Pictures/Awareness/awareness.png"
+   inkscape:export-xdpi="500"
+   inkscape:export-ydpi="500">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     id="namedview6"
+     showgrid="false"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10"
+     inkscape:zoom="4.7063492"
+     inkscape:cx="85.203116"
+     inkscape:cy="77.443222"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2"
+     showborder="true" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="92.760017"
+     y="44.84827"
+     id="text3140"><tspan
+       sodipodi:role="line"
+       id="tspan3142"
+       x="92.760017"
+       y="44.84827"
+       style="font-size:40px;line-height:1.25"> </tspan><tspan
+       sodipodi:role="line"
+       x="92.760017"
+       y="94.848274"
+       id="tspan3144"
+       style="font-size:40px;line-height:1.25"> </tspan></text>
+  <path
+     sodipodi:type="star"
+     style="fill:none;fill-opacity:1;stroke:#bc00bc;stroke-width:15.52082253;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="path3146"
+     sodipodi:sides="3"
+     sodipodi:cx="56.727997"
+     sodipodi:cy="422.56567"
+     sodipodi:r1="150.06139"
+     sodipodi:r2="75.030685"
+     sodipodi:arg1="1.0471976"
+     sodipodi:arg2="2.0943952"
+     inkscape:flatsided="false"
+     inkscape:rounded="0"
+     inkscape:randomized="0"
+     d="M 131.75868,552.52265 19.212648,487.54415 -93.333389,422.56567 19.21266,357.58719 131.7587,292.6087 l -2e-5,129.95698 z"
+     inkscape:transform-center-x="-10.223915"
+     transform="matrix(0.2778535,-0.16041877,0.16041877,0.2778535,13.264296,-13.258325)"
+     inkscape:transform-center-y="-21.510878" />
+  <g
+     transform="matrix(0.14585909,-0.25342189,0.25342189,0.14585909,9.3745024,132.81293)"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     id="flowRoot3203">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:63.89425659px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.93195391px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="97.131905"
+       y="78.683571"
+       id="text4505"><tspan
+         sodipodi:role="line"
+         id="tspan4503"
+         x="97.131905"
+         y="78.683571"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Quicksand;-inkscape-font-specification:Quicksand;stroke-width:3.93195391px">awareness</tspan></text>
+  </g>
+</svg>
