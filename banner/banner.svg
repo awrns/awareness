@@ -17,8 +17,8 @@
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="banner.svg"
    inkscape:export-filename="/home/aedan/awareness-python/banner/banner.png"
-   inkscape:export-xdpi="1000"
-   inkscape:export-ydpi="1000">
+   inkscape:export-xdpi="500"
+   inkscape:export-ydpi="500">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.85416667"
-     inkscape:cx="326.77044"
+     inkscape:cx="118.96556"
      inkscape:cy="847.5799"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
