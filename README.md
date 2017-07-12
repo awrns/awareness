@@ -1,0 +1,1 @@
+![Awareness introduction image](banner/banner.png)
