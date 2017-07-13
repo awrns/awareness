@@ -28,10 +28,7 @@ $ python3
 
 <hr />
 
-#### Licensing
-###### Awareness is distributed under the GNU Lesser General Public License. More details are in the files COPYING and COPYING.LESSER. Copyright (c) 2016-2017 Aedan S. Cullen.
-
-#### Contributing
+#### Building from source and contributing
 ###### If you'd like to mess with the source code a bit and submit a pull request to make Awareness better for everyone, we'd be very grateful. Awareness is developed using the Gradle build system and [PyGradle](https://github.com/linkedin/pygradle). Getting started with a virtualenv-based installation of Awareness is simple:
 ```bash
 $ sudo apt install python3 python3-dev libopenblas-dev
@@ -48,3 +45,8 @@ $ source activate
 $ deactivate
 ```
 ###### to leave the virtual environment. Of course, if you do make any changes to the code located in the `src/awareness` directory, don't forget to re-run `./gradlew build` in the root of the repository before re-activating the virtual environment.
+
+<br />
+
+#### Licensing
+###### Awareness is distributed under the GNU Lesser General Public License. More details are in the files COPYING and COPYING.LESSER. Copyright (c) 2016-2017 Aedan S. Cullen.
