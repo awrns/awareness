@@ -1,7 +1,11 @@
 
 <a href="#">
 
-![Awareness introduction image](graphics/banner.png)
+![A new way to think about data on the Internet, like nothing ever before. Computers can program themselves now. Well, somewhat. Awareness represents the data-processing capabilities of each device on the Internet as a set of numerical inputs and outputs. This way, its crazy new algorithm can solve computational problems automatically by forming an optimal "pipeline" of processing steps available on the network. Designed for data,
+from the ground up. Awareness works with whatever data you have, and whatever data you want. No matter what format your application uses, Awareness can handle it. What's more, it can computationally analyze the capabilities of your application in order to help other devices on the Internet solve problems. Capable, intuitive
+and elegant. Awareness is designed for everyone. You don't have to be a software expert to use it and understand it, but if scientific computing is your thing, Awareness is happy with that too. No matter what you use it for, Awareness stays out of the way and lets your application do what it does best. Crafted for prowess
+when speed matters. Every element of Awareness is capable of low-latency, high-bandwidth communication. With its unique "zero polling" network architecture ard asynchronous task system, Awareness guarantees that your application will always be able to keep tabs on the progress of its communications. Open to the 
+world's creations. For Awareness's crazy new algorithm to work, we need software developers everywhere to come on board and connect their applications to this crazy new system. It'll be interesting and fun. And maybe the future of the Internet will appear along the way. Let's go.](graphics/banner.png)
 
 </a>
 
