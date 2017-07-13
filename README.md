@@ -1,4 +1,10 @@
+
+<a href="#">
+
 ![Awareness introduction image](graphics/banner.png)
+
+</a>
+
 ```bash
 $ pip3 install awareness
 $ python3
