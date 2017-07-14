@@ -11,16 +11,17 @@ world's creations. For Awareness's crazy new algorithm to work, we need software
 
 ```bash
 $ pip3 install awareness
-$ python3
 ```
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;More of a Python 2 person? Awareness is happy with that too.
 ```bash
 $ pip install awareness
-$ python
 ```
 
 <br />
 
+```bash
+$ python
+```
 ```python
 >>> import awareness as a
 >>>
