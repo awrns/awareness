@@ -105,6 +105,14 @@ class LocalOperator(Operator):
         self.provider = self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='provide-' + str(port))
 
 
+    def to_json(self):
+        pass
+
+
+    @classmethod
+    def from_json(self, in_json):
+        pass
+
 
     def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
 
