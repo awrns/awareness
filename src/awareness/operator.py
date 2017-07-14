@@ -86,7 +86,6 @@ class LocalOperator(Operator):
                  backend = None,
                  protocol = None,
                  algorithm = None,
-                 assemblies = [],
                  remote_operators = []):
 
         self.public_host = public_host
@@ -96,7 +95,6 @@ class LocalOperator(Operator):
         self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
-        self.assemblies = assemblies
         self.remote_operators = remote_operators
 
         # self.backend.setupLogger()
