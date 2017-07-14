@@ -19,6 +19,7 @@
 
 
 from abc import ABCMeta, abstractmethod
+from . import exception
 import threading
 import logging
 import socket
@@ -71,8 +72,11 @@ class NativeBackend(Backend):
 
     def connect(self, host, port=1600):
 
-        sock = socket.create_connection((host, port))
+        try:
+            sock = socket.create_connection((host, port))
         #sock = ssl.wrap_socket(sock)
+        except socket.error as e:
+            raise exception.ConnectionException(e)
 
         return sock
 
@@ -80,11 +84,15 @@ class NativeBackend(Backend):
     def listen(self, host='', port=1600, use_ipv6=False, backlog=5):
         type = socket.AF_INET6 if use_ipv6 else socket.AF_INET
 
-        listener = socket.socket(type, socket.SOCK_STREAM)
-        #listener = ssl.wrap_socket(listener, server_side=True)
+        try:
+            listener = socket.socket(type, socket.SOCK_STREAM)
+            #listener = ssl.wrap_socket(listener, server_side=True)
 
-        listener.bind((host, port))
-        listener.listen(backlog)
+            listener.bind((host, port))
+            listener.listen(backlog)
+            
+        except socket.error as e:
+            raise exception.ConnectionException(e)
 
         return listener
 

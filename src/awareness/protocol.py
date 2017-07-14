@@ -115,15 +115,28 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
         tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
 
-        connection.sendall(tran_header + tran_pres + tran_datums)
+        try:
+            connection.sendall(tran_header + tran_pres + tran_datums)
+        except Exception as e:
+            raise exception.ConnectionException(e)
 
 
     def receive(self, connection, valid):
-        recv_header = b''
-        while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction prevents overfilling
-        version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
-        recv_data = b''
-        while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
+        try:
+            recv_header = b''
+            while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction prevents overfilling
+            
+            try: 
+                version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
+            except:
+                self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
+                raise exception.UnitError("Received PDU header was unparseable")
+
+            recv_data = b''
+            while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
+
+        except Exception as e:
+            raise exception.ConnectionException(e)
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
@@ -196,7 +209,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         progress = res[0] if res else 0
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, progress), datums)
 
-                except (exception.ProvisionException, exception.ConnectionException, socket.error) as e:  # Use of ConnectionException for custom backends
+                except (exception.ProtocolException, exception.ConnectionException) as e:  # Use of ConnectionException for custom backends
                     connection.shutdown(2) # socket.SHUT_RDWR
                     connection.close()
                     return

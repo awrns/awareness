@@ -18,14 +18,14 @@
 #
 
 
-class ProvisionException(Exception):
+class ProtocolException(Exception):
     pass
 
 
-class UnitError(ProvisionException):
+class UnitError(ProtocolException):
     pass
 
-class DataError(ProvisionException):
+class DataError(ProtocolException):
     pass
 
 
