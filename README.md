@@ -19,9 +19,6 @@ $ pip install awareness
 
 <br />
 
-```bash
-$ python
-```
 ```python
 >>> import awareness as a
 >>>
