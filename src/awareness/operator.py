@@ -159,6 +159,15 @@ class RemoteOperator(Operator):
         #        self.retrieve_components()
 
 
+    def to_json(self):
+        raise NotImplementedError()
+
+
+    @classmethod
+    def from_json(self, json):
+        raise NotImplementedError()
+
+
     def __enter__(self):
         self.connection = self.backend.connect(self.host, port=self.port)
         return self

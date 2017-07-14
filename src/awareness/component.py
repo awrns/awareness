@@ -23,6 +23,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 
 
 class Component(metaclass=ABCMeta):
+    
     def getinputs(self): raise NotImplementedError()
     def setinputs(self, values): raise NotImplementedError()
     inputs = abstractproperty(getinputs, setinputs)
