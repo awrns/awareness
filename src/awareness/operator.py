@@ -19,6 +19,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import json
 from . import component as i_component
 from . import algorithm as i_algorithm
 from . import backend as i_backend
@@ -104,6 +105,14 @@ class LocalOperator(Operator):
         self.provider = self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='provide-' + str(port))
 
 
+    def to_json(self):
+        pass
+
+
+    @classmethod
+    def from_json(self, in_json):
+        pass
+
 
     def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
 
@@ -160,12 +169,22 @@ class RemoteOperator(Operator):
 
 
     def to_json(self):
-        raise NotImplementedError()
+        out = json.dumps({'host': self.host, 'port': self.port})
+
+        return out
 
 
     @classmethod
-    def from_json(self, json):
-        raise NotImplementedError()
+    def from_json(self, in_json):
+        
+        out = json.loads(in_json)
+
+        host = out['host'].encode('ascii')
+        port = int(out['port'])
+
+        new_operator = RemoteOperator(host, port)
+
+        return new_operator
 
 
     def __enter__(self):
