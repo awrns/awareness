@@ -19,6 +19,7 @@
 
 
 from abc import ABCMeta, abstractproperty, abstractmethod
+import json
 from . import component as i_component
 from . import algorithm as i_algorithm
 from . import backend as i_backend
@@ -160,12 +161,22 @@ class RemoteOperator(Operator):
 
 
     def to_json(self):
-        raise NotImplementedError()
+        out = json.dumps({'host': self.host, 'port': self.port})
+
+        return out
 
 
     @classmethod
-    def from_json(self, json):
-        raise NotImplementedError()
+    def from_json(self, in_json):
+        
+        out = json.loads(in_json)
+
+        host = out['host'].encode('ascii')
+        port = int(out['port'])
+
+        new_operator = RemoteOperator(host, port)
+
+        return new_operator
 
 
     def __enter__(self):
