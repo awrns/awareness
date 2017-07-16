@@ -151,11 +151,11 @@ class DefaultAlgorithm(Algorithm):
                 for test_offset in range(current_stream.parameters - component.inputs + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
-                    res = component.run(current_stream.extract(test_in_offset, test_in_offset + component.inputs))
+                    res = component.run(current_stream.extract(test_offset, test_offset + component.inputs))
 
                     # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
                     full_outs = copy.deepcopy(current_stream)
-                    full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
+                    full_outs.inject(res, test_offset, test_offset + component.outputs)
 
                     # Evaluate the results.
                     this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
@@ -185,8 +185,8 @@ class DefaultAlgorithm(Algorithm):
             # and processing it by the LocalComponent that has been the most promising.
             # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + component.inputs))
-            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
+            res = lowest_component.run(current_stream.extract(lowest_offset, lowest_offset + component.inputs))
+            current_stream.inject(res, lowest_offset, lowest_offset + lowest_component.outputs)
 
             # Add information about this new component to the Assembly we're creating.
             append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_offset)

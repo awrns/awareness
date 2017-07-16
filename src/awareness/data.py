@@ -169,7 +169,7 @@ class Assembly:
     # Naive conditional operation sequence.
 
 
-    # List of tuples (addr, port, index, in_offset, out_offset)
+    # List of tuples (addr, port, index, offset)
     operations = []
 
     def __init__(self, operations):
@@ -202,15 +202,15 @@ class Assembly:
             with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
                 operator.retrieve_components()
 
-                data_in_start_idx = operation[3]  # in_offset
+                data_in_start_idx = operation[3]
                 data_in_end_idx = operation[3] + operator.components[operation[2]].inputs  # plus number of inputs
 
                 data_section = stream_state.extract(data_in_start_idx, data_in_end_idx)
 
                 result = operator.process(operation[2], data_section)
 
-                data_out_start_idx = operation[4]  # out_offset
-                data_out_end_idx = operation[4] + operator.components[operation[2]].outputs  # plus number of outputs
+                data_out_start_idx = operation[3]  # out_offset
+                data_out_end_idx = operation[3] + operator.components[operation[2]].outputs  # plus number of outputs
                 stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
 
 
