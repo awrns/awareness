@@ -148,7 +148,9 @@ class DefaultAlgorithm(Algorithm):
                 # Note that the expression   current_stream.parameters - component.inputs + 1
                 # evaluates to the number of offsets which are possible for the given component.inputs count and stream parameters count.
 
-                for test_offset in range(current_stream.parameters - component.inputs + 1):
+                max_iolen = max(component.inputs, component.outputs)
+
+                for test_offset in range(current_stream.parameters - max_iolen + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
                     res = component.run(current_stream.extract(test_offset, test_offset + component.inputs))
