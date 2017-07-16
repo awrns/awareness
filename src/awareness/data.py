@@ -166,7 +166,6 @@ class Set:
 
 class Assembly:
 
-    # Naive conditional operation sequence.
 
 
     # List of tuples (addr, port, index, in_offset, out_offset)
