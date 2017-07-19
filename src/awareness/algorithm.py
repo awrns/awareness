@@ -21,6 +21,7 @@
 from abc import ABCMeta, abstractmethod
 import copy
 from . import data as i_data
+from . import operator as i_operator
 
 
 
@@ -107,6 +108,20 @@ class DefaultAlgorithm(Algorithm):
             # Update known state of the cost
             last_cost = cost
             cost = lowest_cost
+
+
+        # Now, last_assembly is the final result. Search the local Operator's remote_operators and add any that we don't know about yet.
+
+        for operation in last_assembly.operations:
+            found = False
+            for existing_operator in local_operator.remote_operators:
+                if existing_operator.host == operation[0] and existing_operator.port == operation[1]:
+                    found = True
+                    break
+
+            if not found:
+                new_remoteoperator = i_operator.RemoteOperator(operation[0], port = operation[1])
+                local_operator.remote_operators.append(new_remoteoperator)
 
 
         # Note that when the 'while cost.....' loop exits, both curernt_assembly and cost are not optimal,
