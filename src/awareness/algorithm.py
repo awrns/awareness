@@ -150,6 +150,9 @@ class DefaultAlgorithm(Algorithm):
 
                 max_iolen = max(component.inputs, component.outputs)
 
+                if max_iolen > current_stream.parameters:
+                    continue
+
                 for test_offset in range(current_stream.parameters - max_iolen + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
