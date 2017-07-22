@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="230.08817mm"
-   height="307.34854mm"
-   viewBox="0 0 230.08817 307.34855"
+   width="258.12549mm"
+   height="330.04855mm"
+   viewBox="0 0 258.1255 330.04856"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
@@ -29,8 +29,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0310355"
-     inkscape:cx="315.26838"
-     inkscape:cy="574.58018"
+     inkscape:cx="353.06366"
+     inkscape:cy="574.58027"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -40,9 +40,9 @@
      inkscape:window-y="24"
      inkscape:window-maximized="1"
      units="mm"
-     fit-margin-left="20"
-     fit-margin-top="20"
-     fit-margin-right="20"
+     fit-margin-left="30"
+     fit-margin-top="30"
+     fit-margin-right="30"
      fit-margin-bottom="0" />
   <metadata
      id="metadata5">
@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -60,7 +60,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(9.1544088,9.0462164)">
+     transform="translate(19.154409,31.746222)">
     <g
        id="g88"
        transform="translate(3.7417734,-19.162825)">
@@ -161,7 +161,7 @@
        y="-191.76894"
        transform="scale(-1)" />
     <rect
-       style="fill:#f0ce5d;fill-opacity:0.50196081;stroke:none;stroke-width:1.4391824;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#f0ce5d;fill-opacity:0.50196078;stroke:none;stroke-width:1.4391824;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect941-3-6-7-5"
        width="50"
        height="1.3229166"
