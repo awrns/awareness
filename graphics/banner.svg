@@ -10,8 +10,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="243.1255mm"
-   height="325.04855mm"
-   viewBox="0 0 243.12551 325.04856"
+   height="356.76663mm"
+   viewBox="0 0 243.12551 356.76664"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.1 r15371"
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.72905219"
-     inkscape:cx="397.49533"
-     inkscape:cy="514.56879"
+     inkscape:zoom="0.65969093"
+     inkscape:cx="526.60729"
+     inkscape:cy="745.16589"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -41,9 +41,9 @@
      inkscape:window-maximized="1"
      units="mm"
      fit-margin-left="25"
-     fit-margin-top="25"
+     fit-margin-top="20"
      fit-margin-right="20"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="2" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -60,61 +60,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(14.154409,26.746222)">
-    <g
-       id="g88"
-       transform="translate(3.7417734,-19.162825)">
-      <text
-         id="text3140"
-         y="18.240826"
-         x="34.838428"
-         style="font-style:normal;font-weight:normal;font-size:3.38666677px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28222224px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           style="font-size:11.28888893px;line-height:1.25;stroke-width:0.28222224px"
-           y="18.240826"
-           x="34.838428"
-           id="tspan3142"
-           sodipodi:role="line"> </tspan><tspan
-           style="font-size:11.28888893px;line-height:1.25;stroke-width:0.28222224px"
-           id="tspan3144"
-           y="32.351936"
-           x="34.838428"
-           sodipodi:role="line"> </tspan></text>
-      <path
-         inkscape:transform-center-y="-21.510878"
-         transform="matrix(0.07841643,-0.04527374,0.04527374,0.07841643,12.402969,1.8418533)"
-         inkscape:transform-center-x="-10.223915"
-         d="M 131.75868,552.52265 19.212648,487.54415 -93.333389,422.56567 19.21266,357.58719 131.7587,292.6087 l -2e-5,129.95698 z"
-         inkscape:randomized="0"
-         inkscape:rounded="0"
-         inkscape:flatsided="false"
-         sodipodi:arg2="2.0943952"
-         sodipodi:arg1="1.0471976"
-         sodipodi:r2="75.030685"
-         sodipodi:r1="150.06139"
-         sodipodi:cy="422.56567"
-         sodipodi:cx="56.727997"
-         sodipodi:sides="3"
-         id="path3146"
-         style="fill:none;fill-opacity:1;stroke:#bc00bc;stroke-width:15.52082253;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:type="star" />
-      <g
-         id="flowRoot3203"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         transform="matrix(0.38845744,0,0,0.38845744,13.253784,9.0927653)">
-        <text
-           id="text4505"
-           y="78.683571"
-           x="97.131905"
-           style="font-style:normal;font-weight:normal;font-size:63.89425659px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.93195391px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Quicksand;-inkscape-font-specification:Quicksand;stroke-width:3.93195391px"
-             y="78.683571"
-             x="97.131905"
-             id="tspan4503"
-             sodipodi:role="line">awareness</tspan></text>
-      </g>
-    </g>
+     transform="translate(14.154409,56.464296)">
     <flowRoot
        xml:space="preserve"
        id="flowRoot98"
@@ -311,5 +257,59 @@
            x="169.70563"
            y="264.90018"
            style="font-size:16px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
-         id="flowPara1552-7-7-9">When software doesn't already exist to solve a problem, Awareness creates new processing components using machine learning and shares them on the Internet. And yes - it seamlessly supports CUDA and OpenCL. Whether you have some LEDs to blink or an autonomous vehicle to navigate, Awareness can do the job.</flowPara></flowRoot>  </g>
+         id="flowPara1552-7-7-9">When software doesn't already exist to solve a problem, Awareness creates new processing components using machine learning and shares them on the Internet. And yes - it seamlessly supports CUDA and OpenCL. Whether you have some LEDs to blink or an autonomous vehicle to navigate, Awareness can do the job.</flowPara></flowRoot>    <g
+       id="g192"
+       transform="matrix(2.6048321,0,0,2.6048321,-114.14133,-58.368698)">
+      <text
+         id="text3140"
+         y="8.628541"
+         x="83.768913"
+         style="font-style:normal;font-weight:normal;font-size:3.38666677px;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28222224px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-size:11.28888893px;line-height:1.25;stroke-width:0.28222224px"
+           y="8.628541"
+           x="83.768913"
+           id="tspan3142"
+           sodipodi:role="line"> </tspan><tspan
+           style="font-size:11.28888893px;line-height:1.25;stroke-width:0.28222224px"
+           id="tspan3144"
+           y="22.739653"
+           x="83.768913"
+           sodipodi:role="line"> </tspan></text>
+      <path
+         inkscape:transform-center-y="-21.510878"
+         transform="matrix(0.07841643,-0.04527374,0.04527374,0.07841643,61.33345,-7.7704312)"
+         inkscape:transform-center-x="-10.223915"
+         d="M 131.75868,552.52265 19.212648,487.54415 -93.333389,422.56567 19.21266,357.58719 131.7587,292.6087 l -2e-5,129.95698 z"
+         inkscape:randomized="0"
+         inkscape:rounded="0"
+         inkscape:flatsided="false"
+         sodipodi:arg2="2.0943952"
+         sodipodi:arg1="1.0471976"
+         sodipodi:r2="75.030685"
+         sodipodi:r1="150.06139"
+         sodipodi:cy="422.56567"
+         sodipodi:cx="56.727997"
+         sodipodi:sides="3"
+         id="path3146"
+         style="fill:none;fill-opacity:1;stroke:#bc00bc;stroke-width:15.52082253;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:type="star" />
+      <g
+         id="flowRoot3203"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.04116468,-0.07152129,0.07152129,0.04116468,60.235664,33.454125)">
+        <text
+           id="text4505"
+           y="78.683571"
+           x="97.131905"
+           style="font-style:normal;font-weight:normal;font-size:63.89425659px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.93195391px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Quicksand;-inkscape-font-specification:Quicksand;stroke-width:3.93195391px"
+             y="78.683571"
+             x="97.131905"
+             id="tspan4503"
+             sodipodi:role="line">awareness</tspan></text>
+      </g>
+    </g>
+  </g>
 </svg>
