@@ -24,6 +24,7 @@ from . import component as i_component
 from . import algorithm as i_algorithm
 from . import backend as i_backend
 from . import protocol as i_protocol
+from . import factory as i_factory
 
 
 class Operator(metaclass=ABCMeta):
@@ -75,6 +76,8 @@ class LocalOperator(Operator):
 
     algorithm = None
 
+    factory = None
+
     remote_operators = []  # List of RemoteOperator.
 
 
@@ -86,6 +89,7 @@ class LocalOperator(Operator):
                  backend = None,
                  protocol = None,
                  algorithm = None,
+                 factory = None,
                  remote_operators = []):
 
         self.public_host = public_host
@@ -95,6 +99,7 @@ class LocalOperator(Operator):
         self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
         self.protocol = protocol() if protocol else i_protocol.Protocol0()
         self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
+        #self.factory = factory() if factory else i_factory.DefaultFactory()
         self.remote_operators = remote_operators
 
         # self.backend.setupLogger()
