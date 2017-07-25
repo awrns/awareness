@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -75,7 +75,7 @@
            y="155.8037"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;font-family:'Josefin Sans';-inkscape-font-specification:'Josefin Sans'" /></flowRegion><flowPara
          id="flowPara104"
-         style="font-size:32px;line-height:125%;text-align:center;text-anchor:middle">A new way to think about data on the Internet, like nothing ever before.</flowPara></flowRoot>    <rect
+         style="font-size:32px;line-height:125%;text-align:center;text-anchor:middle">A new way to think about data processing and machine learning on the Internet.</flowPara></flowRoot>    <rect
        style="fill:#000000;fill-opacity:0.50196078;stroke:none;stroke-width:1.44646943;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect941"
        width="50"
