@@ -1,0 +1,13 @@
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra" xmlns:m="http://ant.apache.org/ivy/maven">
+  <info organisation="pypi" module="pep8" revision="1.3" />
+  <configurations>
+    <conf name="default" description="auto generated configuration for default" />
+    <conf name="source" description="auto generated configuration for source" extends="default" />
+  </configurations>
+  <publications>
+    <artifact name="pep8" ext="tar.gz" conf="default" type="tar.gz" />
+  </publications>
+  <dependencies defaultconfmapping="*-&gt;default">
+    <dependency org="pypi" name="setuptools" rev="36.2.2" conf="default" />
+  </dependencies>
+</ivy-module>

@@ -1,0 +1,13 @@
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra" xmlns:m="http://ant.apache.org/ivy/maven">
+  <info organisation="pypi" module="pydot-ng" revision="1.0.0" />
+  <configurations>
+    <conf name="default" description="auto generated configuration for default" />
+    <conf name="source" description="auto generated configuration for source" extends="default" />
+  </configurations>
+  <publications>
+    <artifact name="pydot-ng" ext="tar.gz" conf="default" type="tar.gz" />
+  </publications>
+  <dependencies defaultconfmapping="*-&gt;default">
+    <dependency org="pypi" name="pyparsing" rev="2.0.1" conf="default" />
+  </dependencies>
+</ivy-module>
