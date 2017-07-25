@@ -54,3 +54,18 @@ if out.find("(") != -1:
 
 sub = out.split(":")[-1]
 device = sub.strip() if sub.strip() != "" else "CPU"
+
+from abc import ABCMeta, abstractmethod
+
+
+class Factory(metaclass=ABCMeta):
+
+    @abstractmethod
+    def fabricate(self, input_set, progress_frequency=0, progress_callback=None):
+        raise NotImplementedError()
+
+
+class DefaultFactory(Factory):
+
+    def fabricate(self, input_set, progress_frequency=0, progress_callback=None):
+        pass
