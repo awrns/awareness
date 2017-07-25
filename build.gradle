@@ -7,7 +7,7 @@ python {
 }
 
 dependencies {
-	python 'pypi:Keras:2.0.6'
+	python 'pypi:Theano:0.9.0'
 }
 
 repositories {
