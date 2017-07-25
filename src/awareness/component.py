@@ -48,12 +48,12 @@ class LocalComponent(Component):
         pass
 
 
-    def to_json(self):
+    def to_file(self):
         raise NotImplementedError()
 
 
     @classmethod
-    def from_json(self, json):
+    def from_file(self, in_file):
         raise NotImplementedError()
 
 

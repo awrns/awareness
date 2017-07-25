@@ -108,12 +108,12 @@ class LocalOperator(Operator):
         self.provider = self.backend.threading_async(self.protocol.provide, args=(self.backend.listen(host=host,port=port), self), name='provide-' + str(port))
 
 
-    def to_json(self):
+    def to_file(self):
         pass
 
 
     @classmethod
-    def from_json(self, in_json):
+    def from_file(self, in_file):
         pass
 
 
@@ -171,16 +171,16 @@ class RemoteOperator(Operator):
         #        self.retrieve_components()
 
 
-    def to_json(self):
+    def to_file(self):
         out = json.dumps({'host': self.host, 'port': self.port})
 
         return out
 
 
     @classmethod
-    def from_json(self, in_json):
+    def from_file(self, in_file):
         
-        out = json.loads(in_json)
+        out = json.loads(in_file)
 
         host = out['host'].encode('ascii')
         port = int(out['port'])
