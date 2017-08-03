@@ -53,6 +53,7 @@ class DefaultAlgorithm(Algorithm):
                progress_frequency=0,
                progress_callback=None):
 
+        # BEGIN currently unused separation of training and test sets
 
         training_set = i_data.Set(
             i_data.Stream(input_set.input_stream.items[:input_set.input_stream.count//2]),
@@ -69,6 +70,8 @@ class DefaultAlgorithm(Algorithm):
             # In the case that input_set's streams had items arrays of length 1
 
             training_set = copy.deepcopy(test_set)
+
+        # END
 
 
         # Overall cost tracking for termination detection.
