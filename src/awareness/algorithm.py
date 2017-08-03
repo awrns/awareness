@@ -168,33 +168,38 @@ class DefaultAlgorithm(Algorithm):
                 if max_iolen > current_stream.parameters:
                     continue
 
-                for test_offset in range(current_stream.parameters - max_iolen + 1):
+                for test_in_offset in range(current_stream.parameters - component.inputs + 1):
 
                     # Extract the subset of the current_stream data that this Component will try to process.
-                    res = component.run(current_stream.extract(test_offset, test_offset + component.inputs))
-
-                    # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
-                    full_outs = copy.deepcopy(current_stream)
-                    full_outs.inject(res, test_offset, test_offset + component.outputs)
-
-                    # Evaluate the results.
-                    this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+                    res = component.run(current_stream.extract(test_in_offset, test_in_offset + component.inputs))
 
 
-                    options.append((this_cost, component, test_offset))
+                    for test_out_offset in range(current_stream.parameters - component.outputs + 1):
+
+                        # Create a 'model' stream in which to inject the result of the component's processing at the correct offset.
+                        full_outs = copy.deepcopy(current_stream)
+                        full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
+
+                        # Evaluate the results.
+                        this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+
+
+                        options.append((this_cost, component, test_in_offset, test_out_offset))
 
 
             # Best results produced by any LocalComponent so far.
             lowest_cost = float('inf')
             lowest_component = None
-            lowest_offset = 0
+            lowest_in_offset = 0
+            lowest_out_offset = 0
 
             for option in options:
                 if option[0] < lowest_cost:
                     # Update the best solution.
                     lowest_cost = option[0]
                     lowest_component = option[1]
-                    lowest_offset = option[2]
+                    lowest_in_offset = option[2]
+                    lowest_out_offset = option[3]
 
 
             if lowest_component is None:
@@ -205,11 +210,11 @@ class DefaultAlgorithm(Algorithm):
             # and processing it by the LocalComponent that has been the most promising.
             # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            res = lowest_component.run(current_stream.extract(lowest_offset, lowest_offset + component.inputs))
-            current_stream.inject(res, lowest_offset, lowest_offset + lowest_component.outputs)
+            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + component.inputs))
+            current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
 
             # Add information about this new component to the Assembly we're creating.
-            append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_offset)
+            append_tuple = (local_operator.public_host, local_operator.port, local_operator.components.index(lowest_component), lowest_in_offset, lowest_out_offset)
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.append(append_tuple)
 
