@@ -65,6 +65,12 @@ class DefaultAlgorithm(Algorithm):
             )
 
 
+        if training_set.input_stream.count == 0:
+            # In the case that input_set's streams had items arrays of length 1
+
+            training_set = copy.deepcopy(test_set)
+
+
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
         cost = float('inf')
