@@ -54,6 +54,17 @@ class DefaultAlgorithm(Algorithm):
                progress_callback=None):
 
 
+        training_set = i_data.Set(
+            i_data.Stream(input_set.input_stream.items[:input_set.input_stream.count//2]),
+            i_data.Stream(input_set.output_stream.items[:input_set.output_stream.count//2])
+            )
+
+        test_set = i_data.Set(
+            i_data.Stream(input_set.input_stream.items[input_set.input_stream.count//2:]),
+            i_data.Stream(input_set.output_stream.items[input_set.output_stream.count//2:])
+            )
+
+
         # Overall cost tracking for termination detection.
         last_cost = float('inf')
         cost = float('inf')
