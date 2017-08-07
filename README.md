@@ -52,7 +52,6 @@ $ pip install awareness
 #### Building from source and contributing
 ###### If you'd like to mess with the source code a bit and submit a pull request to make Awareness better for everyone, we'd be very grateful. Awareness is developed using the Gradle build system and [PyGradle](https://github.com/linkedin/pygradle). Getting started with a virtualenv-based installation of Awareness is simple:
 ```bash
-$ sudo apt install libopenblas-dev
 $ git clone https://github.com/awrns/awareness
 $ cd awareness
 $ ./gradlew build
