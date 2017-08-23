@@ -10,8 +10,8 @@ setup(
     ],
 
     name='awareness',
-    version='0.7.3',
-    description='A new way to think about data on the Internet, like nothing ever before.',
+    version='8-protocol0',
+    description='The new architecture of co-computation for data processing and machine learning. ',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
     url='https://github.com/awrns/awareness',
