@@ -20,6 +20,7 @@
 
 from abc import ABCMeta, abstractmethod
 import copy
+import numpy
 from . import data as i_data
 from . import operator as i_operator
 
@@ -32,6 +33,7 @@ class Algorithm(metaclass=ABCMeta):
                remote_operators,
                recursion_limit,
                input_set,
+               split_idx,
                progress_frequency=0,
                progress_callback=None):
 
@@ -42,7 +44,7 @@ class Algorithm(metaclass=ABCMeta):
 class DefaultAlgorithm(Algorithm):
 
 
-    # Aedan's algorithm implementation; there are certainly better ways to do this though.
+    # Aedan's algorithm implementation; there are probably better ways to do this though.
     # that evaluates the results of Components to create a 'program' (Assembly).
 
     def search(self,
@@ -50,28 +52,21 @@ class DefaultAlgorithm(Algorithm):
                remote_operators,
                recursion_limit,
                input_set,
+               split_idx,
                progress_frequency=0,
                progress_callback=None):
 
-        # BEGIN currently unused separation of training and test sets
-
+        
         training_set = i_data.Set(
-            i_data.Stream(input_set.input_stream.items[:input_set.input_stream.count//2]),
-            i_data.Stream(input_set.output_stream.items[:input_set.output_stream.count//2])
+            i_data.Stream(input_set.input_stream.items[:split_idx]),
+            i_data.Stream(input_set.output_stream.items[:split_idx])
             )
 
         test_set = i_data.Set(
-            i_data.Stream(input_set.input_stream.items[input_set.input_stream.count//2:]),
-            i_data.Stream(input_set.output_stream.items[input_set.output_stream.count//2:])
+            i_data.Stream(input_set.input_stream.items[split_idx:]),
+            i_data.Stream(input_set.output_stream.items[split_idx:])
             )
 
-
-        if training_set.input_stream.count == 0:
-            # In the case that input_set's streams had items arrays of length 1
-
-            training_set = copy.deepcopy(test_set)
-
-        # END
 
 
         # Overall cost tracking for termination detection.
@@ -85,8 +80,12 @@ class DefaultAlgorithm(Algorithm):
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         max_param_len = max(input_set.outputs, input_set.inputs)
-        current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
-        current_stream.inject(input_set.input_stream, 0, input_set.input_stream.parameters)
+
+        current_training_stream = i_data.Stream.blankFromCountParameters(training_set.output_stream.count, max_param_len)
+        current_training_stream.inject(training_set.input_stream, 0, training_set.input_stream.parameters)
+
+        current_test_stream = i_data.Stream.blankFromCountParameters(test_set.output_stream.count, max_param_len)
+        current_test_stream.inject(test_set.input_stream, 0, test_set.input_stream.parameters)
 
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
@@ -97,10 +96,21 @@ class DefaultAlgorithm(Algorithm):
             # if it is necessary to recursively search other Operators on the network:
             if recursion_limit > 0:
                 for operator in remote_operators:
+                    
+
+                    glued_set = i_data.Set(
+                        i_data.Stream(numpy.concatenate(current_training_stream.items, current_test_stream.items)),
+                        i_data.Stream(numpy.concatenate(training_set.output_stream.items, test_set.output_stream.items))
+                    )
+
+                    glue_index = current_training_stream.count
+
                     with operator:
-                        res = operator.search(recursion_limit-1, i_data.Set(current_stream, input_set.output_stream))
-                        full_outs = res.run(current_stream)
-                    this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+                        res = operator.search(recursion_limit-1, glued_set, glue_index)
+
+                    full_outs = res.run(current_test_stream)
+
+                    this_cost = i_data.Stream.cost(full_outs.extract(0, test_set.outputs), test_set.output_stream)
 
                     options.append((this_cost, res))
 
@@ -110,7 +120,7 @@ class DefaultAlgorithm(Algorithm):
             lowest_assembly = i_data.Assembly([])
 
             # Prime with the results of our own local capabilities.
-            internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_stream, input_set.output_stream))
+            internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_training_stream, training_set.output_stream))
             options.append((internal_cost, internal_assembly))
 
             for option in options:
@@ -119,8 +129,9 @@ class DefaultAlgorithm(Algorithm):
                     lowest_assembly = option[1]
 
 
-            # Update known state of the data stream, and of the Assembly that has formed
-            current_stream = lowest_assembly.run(current_stream)
+            # Update known state of the data streams, and of the Assembly that has formed
+            current_training_stream = lowest_assembly.run(current_training_stream)
+            current_test_stream = lowest_assembly.run(current_test_stream)
             
             last_assembly = copy.deepcopy(current_assembly)
             current_assembly.operations.extend(lowest_assembly.operations)
@@ -154,6 +165,7 @@ class DefaultAlgorithm(Algorithm):
     def search_internal(self,
                         local_operator,
                         input_set,
+                        split_idx,
                         progress_frequency=0,
                         progress_callback=None):
 

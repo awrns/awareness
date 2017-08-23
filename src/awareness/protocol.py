@@ -31,7 +31,7 @@ class Protocol(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, connection, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
+    def search(self, connection, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -57,10 +57,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 unit_type, requested_type, pres, datums = res
         return datums
 
-    def search(self, connection, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
+    def search(self, connection, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
         magic = self.last_search_magic
         self.last_search_magic = self.last_search_magic + 1 if self.last_search_magic < self.MAGIC_MAX_VALUE else 0
-        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, input_set.inputs, input_set.outputs, input_set.count, recursion_limit, progress_frequency), input_set.to_datums())
+        self.send(connection, self.SEARCH_TASK_START, self.NOTHING, (magic, input_set.inputs, input_set.outputs, input_set.count, split_idx, recursion_limit, progress_frequency), input_set.to_datums())
         pres = (-1, -1)
         while pres[1] != 1:
             res = self.receive(connection, self.valid_provider_to_accessor)
@@ -180,8 +180,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unit_type == self.SEARCH_TASK_START:
                         reply_call = lambda progress, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], assembly), assembly.to_datums())
                         callback = monitor.add_search_task(pres[0], reply_call)
-                        search_args = (pres[4], i_data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums))
-                        search_kwargs = {'progress_frequency':pres[5], 'progress_callback':callback}
+                        search_args = (pres[5], i_data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums), pres[4])
+                        search_kwargs = {'progress_frequency':pres[6], 'progress_callback':callback}
                         term_callback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], 1.0), assembly.to_datums())
                         operator.backend.threading_async(operator.search, search_args, search_kwargs, name='search-' + str(connection.getpeername()[0]) + '-' + str(pres[0]), callback=term_callback)
                     

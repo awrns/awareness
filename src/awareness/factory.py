@@ -60,13 +60,13 @@ from theano.tensor import tanh
 class Factory(metaclass=ABCMeta):
 
     @abstractmethod
-    def fabricate(self, input_set, progress_frequency=0, progress_callback=None):
+    def fabricate(self, input_set, split_idx, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
 
 class DefaultFactory(Factory):
 
-    def fabricate(self, input_set, progress_frequency=0, progress_callback=None):
+    def fabricate(self, input_set, split_idx, progress_frequency=0, progress_callback=None):
         pass
 
 

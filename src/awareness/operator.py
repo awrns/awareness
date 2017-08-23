@@ -56,7 +56,7 @@ class Operator(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
@@ -117,10 +117,10 @@ class LocalOperator(Operator):
         pass
 
 
-    def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
 
         # Search both the components here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self, self.remote_operators, recursion_limit, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.algorithm.search(self, self.remote_operators, recursion_limit, input_set, split_idx, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
@@ -210,9 +210,9 @@ class RemoteOperator(Operator):
             self.components.append(new_component)
 
 
-    def search(self, recursion_limit, input_set, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
 
-        return self.protocol.search(self.connection, recursion_limit, input_set, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.protocol.search(self.connection, recursion_limit, input_set, split_idx, progress_frequency=progress_frequency, progress_callback=progress_callback)
 
 
     def process(self, index, input_stream, progress_frequency=0, progress_callback=None):

@@ -47,7 +47,7 @@ class Protocol0Constants:
     blank_pre_struct =                      struct.Struct("!")	    		# intentional
     capabilities_pre_struct =               struct.Struct("!")	    		# intentional
 
-    search_task_start_pre_struct =          struct.Struct("!6Q")    		# magic, inputs, outputs, count, propagation_limit, progress_frequency
+    search_task_start_pre_struct =          struct.Struct("!7Q")    		# magic, inputs, outputs, count, split_idx, propagation_limit, progress_frequency
     search_task_status_pre_struct =         struct.Struct("!Q f")    		# magic, progress
     search_task_stop_pre_struct =           struct.Struct("!Q")	    		# magic
 
