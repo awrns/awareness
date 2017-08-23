@@ -99,8 +99,8 @@ class DefaultAlgorithm(Algorithm):
                     
 
                     glued_set = i_data.Set(
-                        i_data.Stream(numpy.concatenate(current_training_stream.items, current_test_stream.items)),
-                        i_data.Stream(numpy.concatenate(training_set.output_stream.items, test_set.output_stream.items))
+                        i_data.Stream(current_training_stream.items.tolist() + current_test_stream.items.tolist()),
+                        i_data.Stream(training_set.output_stream.items.tolist() + test_set.output_stream.items.tolist())
                     )
 
                     glue_index = current_training_stream.count
@@ -164,8 +164,8 @@ class DefaultAlgorithm(Algorithm):
 
     def search_internal(self,
                         local_operator,
-                        input_set,
-                        split_idx,
+                        input_set, # Note no split_idx. 
+
                         progress_frequency=0,
                         progress_callback=None):
 
