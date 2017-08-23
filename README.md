@@ -30,12 +30,22 @@ $ pip install awareness
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ready? Head over to [the Awareness documentation](https://github.com/awrns/awareness/wiki/Awareness-Documentation) to learn a lot more.
 
 <br />
+<br />
+<br />
 
 #### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can also ask questions and give feedback [on Gitter](https://gitter.im/awrns/Lobby) if you'd like.
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seriously - if you're interested, please go there and say hi. Or, send [Aedan](https://github.com/aedancullen) an email.
 
 <br />
+
+#### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Awareness will also have an exhibit at [World Maker Faire 2017](//makerfaire.com/new-york/) in New York!
+
 <br />
-<br />
+
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="//makerfaire.com/new-york/">
+  <img src="http://yydxg3i41b1482qi9hidybgs.wpengine.netdna-cdn.com/wp-content/uploads/2017/06/MF17NY_Badge.png" alt="World Maker Faire New York" width="150" height="150" border="0" />
+</a>
+
 <br />
 <br />
 <br />
@@ -43,9 +53,9 @@ $ pip install awareness
 <hr />
 
 #### Building from source and contributing
-###### If you'd like to mess with the source code a bit and submit a pull request to make Awareness better for everyone, we'd be very grateful. Awareness is developed using the Gradle build system and [PyGradle](https://github.com/linkedin/pygradle). Getting started with a virtualenv-based installation of Awareness is simple:
+###### If you'd like to mess with the source code a bit and submit a pull request to make Awareness better for everyone, we'd be very grateful. Awareness is still a young project, and pull requests are welcome. You can head over [to Gitter](https://gitter.im/awrns/Lobby) to discuss changes and improvements too.
+###### Awareness is developed using the Gradle build system and [PyGradle](https://github.com/linkedin/pygradle). Getting started with a virtualenv-based installation of Awareness is simple:
 ```bash
-$ sudo apt install libopenblas-dev
 $ git clone https://github.com/awrns/awareness
 $ cd awareness
 $ ./gradlew build
