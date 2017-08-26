@@ -34,7 +34,6 @@ class Algorithm(metaclass=ABCMeta):
                recursion_limit,
                input_set,
                split_idx,
-               progress_frequency=0,
                progress_callback=None):
 
         raise NotImplementedError()
@@ -53,7 +52,6 @@ class DefaultAlgorithm(Algorithm):
                recursion_limit,
                input_set,
                split_idx,
-               progress_frequency=0,
                progress_callback=None):
 
         
@@ -166,7 +164,6 @@ class DefaultAlgorithm(Algorithm):
                         local_operator,
                         input_set, # Note no split_idx. 
 
-                        progress_frequency=0,
                         progress_callback=None):
 
 

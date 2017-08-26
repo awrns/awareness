@@ -35,7 +35,7 @@ class Component(metaclass=ABCMeta):
 
 
     @abstractmethod
-    def run(self, input_stream, progress_frequency=0, progress_callback=None):
+    def run(self, input_stream, progress_callback=None):
         raise NotImplementedError()
 
 
@@ -79,9 +79,9 @@ class RemoteComponent(Component):
         self.outputs = outputs
 
 
-    def run(self, connection, input_stream, progress_frequency=0, progress_callback=None):
+    def run(self, connection, input_stream, progress_callback=None):
 
-        output = self.operator.protocol.process(connection, self.index, input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        output = self.operator.protocol.process(connection, self.index, input_stream, progress_callback=progress_callback)
 
         return output
 

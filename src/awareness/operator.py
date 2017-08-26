@@ -56,11 +56,11 @@ class Operator(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_callback=None):
         raise NotImplementedError()
 
     @abstractmethod
-    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
+    def process(self, index, input_stream, progress_callback=None):
         raise NotImplementedError()
 
 
@@ -117,16 +117,16 @@ class LocalOperator(Operator):
         pass
 
 
-    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_callback=None):
 
         # Search both the components here and the RemoteAbilities that the RemoteOperators make available.
-        return self.algorithm.search(self, self.remote_operators, recursion_limit, input_set, split_idx, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.algorithm.search(self, self.remote_operators, recursion_limit, input_set, split_idx, progress_callback=progress_callback)
 
 
-    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
+    def process(self, index, input_stream, progress_callback=None):
 
         # Hand inputSet to our indexed LocalComponent.
-        return self.components[index].run(input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.components[index].run(input_stream, progress_callback=progress_callback)
 
 
     def capabilities(self):
@@ -210,14 +210,14 @@ class RemoteOperator(Operator):
             self.components.append(new_component)
 
 
-    def search(self, recursion_limit, input_set, split_idx, progress_frequency=0, progress_callback=None):
+    def search(self, recursion_limit, input_set, split_idx, progress_callback=None):
 
-        return self.protocol.search(self.connection, recursion_limit, input_set, split_idx, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.protocol.search(self.connection, recursion_limit, input_set, split_idx, progress_callback=progress_callback)
 
 
-    def process(self, index, input_stream, progress_frequency=0, progress_callback=None):
+    def process(self, index, input_stream, progress_callback=None):
 
-        return self.components[index].run(self.connection, input_stream, progress_frequency=progress_frequency, progress_callback=progress_callback)
+        return self.components[index].run(self.connection, input_stream, progress_callback=progress_callback)
 
 
     def capabilities(self):

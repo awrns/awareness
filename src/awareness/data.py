@@ -191,7 +191,7 @@ class Assembly:
         return Assembly(operations)
 
 
-    def run(self, input_stream, progress_frequency=0, progress_callback=None):
+    def run(self, input_stream, progress_callback=None):
 
 
         stream_state = input_stream  # Pump pipeline on first iteration
