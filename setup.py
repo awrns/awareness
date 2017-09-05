@@ -10,7 +10,7 @@ setup(
     ],
 
     name='awareness',
-    version='12',
+    version='14',
     description='The new architecture of co-computation for data processing and machine learning.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
