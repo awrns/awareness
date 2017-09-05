@@ -141,6 +141,10 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received version did not match the known version")
+        if unit_type == self.UNIT_ERROR:
+            raise exception.UnitError("Got UnitError")
+        if unit_type == self.DATA_ERROR:
+            raise exception.DataError("Got DataError")
         if unit_type not in valid or requested_type not in valid[unit_type]:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
             raise exception.UnitError("Received unit type or requested type was not valid in context")
