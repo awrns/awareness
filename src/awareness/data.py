@@ -168,7 +168,7 @@ class Assembly:
 
 
 
-    # List of tuples (addr, port, index, offset)
+    # List of tuples (addr, port, index, in_offset, out_offset)
     operations = []
 
     def __init__(self, operations):
@@ -208,8 +208,8 @@ class Assembly:
 
                 result = operator.process(operation[2], data_section)
 
-                data_out_start_idx = operation[3]  # out_offset
-                data_out_end_idx = operation[3] + operator.components[operation[2]].outputs  # plus number of outputs
+                data_out_start_idx = operation[4]  # out_offset
+                data_out_end_idx = operation[4] + operator.components[operation[2]].outputs  # plus number of outputs
                 stream_state.inject(result, data_out_start_idx, data_out_end_idx)  # stream_state will then be used above to construct a new Stream for the next operation
 
 
