@@ -11,7 +11,7 @@ setup(
 
     name='awareness',
     version='12-protocol0',
-    description='The new architecture of co-computation for data processing and machine learning. ',
+    description='The new architecture of co-computation for data processing and machine learning.',
     author='Aedan Cullen',
     author_email='aedancullen@gmail.com',
     url='https://github.com/awrns/awareness',
