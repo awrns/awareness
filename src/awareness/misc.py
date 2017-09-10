@@ -47,7 +47,7 @@ class Protocol0Constants:
     blank_pre_struct =                      struct.Struct("!")	    		# intentional
     capabilities_pre_struct =               struct.Struct("!")	    		# intentional
 
-    search_task_start_pre_struct =          struct.Struct("!6Q")    		# magic, inputs, outputs, count, split_idx, propagation_limit
+    search_task_start_pre_struct =          struct.Struct("!6Q")    		# magic, inputs, outputs, count, split_idx, recursion_limit
     search_task_status_pre_struct =         struct.Struct("!Q ?")    		# magic, finished
     search_task_stop_pre_struct =           struct.Struct("!Q")	    		# magic
 
@@ -100,11 +100,11 @@ class Protocol0Constants:
                                   SEARCH_TASK_STATUS: (NOTHING,),
                                   PROCESS_TASK_STATUS: (NOTHING,)}
 
-    valid_accessor_to_provider = {BLANK: (BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                                  SEARCH_TASK_STOP: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                                  PROCESS_TASK_STOP: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                                  SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS),
-                                  PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES, SEARCH_TASK_STATUS, PROCESS_TASK_STATUS)}
+    valid_accessor_to_provider = {BLANK: (BLANK, CAPABILITIES),
+                                  SEARCH_TASK_STOP: (NOTHING, BLANK, CAPABILITIES),
+                                  PROCESS_TASK_STOP: (NOTHING, BLANK, CAPABILITIES),
+                                  SEARCH_TASK_START: (NOTHING, BLANK, CAPABILITIES),
+                                  PROCESS_TASK_START: (NOTHING, BLANK, CAPABILITIES)}
 
 
 class ProviderTask:
