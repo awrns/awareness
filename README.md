@@ -9,7 +9,7 @@ and elegant. Awareness is designed for everyone. You don't have to be a software
 
 </a>
 
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check out [the documentation](https://github.com/awrns/awareness/wiki/Awareness-Documentation) if you're confused by this tutorial.
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check out [the documentation](https://github.com/awrns/awareness/wiki/Awareness-Documentation) if you're confused by this tutorial.
 
 ```bash
 $ pip3 install awareness
@@ -26,7 +26,7 @@ $ python3
 ...     inputs = 2 # We'll take two numerical inputs
 ...     outputs = 1 # and produce one numerical output.
 ...
-...     def run(self, input):
+...     def run(self, input, progress_callback=None):
 ...         output = []
 ...         for item in input.items:
 ...             value1 = item[0] # The first of the two numerical inputs
@@ -37,15 +37,15 @@ $ python3
 
 >>> # Now let's put it on the network using an Operator.
 
->>> operator = a.LocalOperator('192.168.1.2') # The IP address of this computer 
+>>> operator = a.LocalOperator(b'192.168.1.2') # The IP address of this computer 
 >>> operator.components.append(AdderComponent())
 
 >>> # Now let's make another Operator on the same network.
 >>> # You'll need to switch to a different computer now.
 
->>> operator2 = a.LocalOperator('192.168.1.3') # The IP address of this other computer
+>>> operator2 = a.LocalOperator(b'192.168.1.3') # The IP address of this other computer
 >>> # It should know about the other Operator that we created earlier on 192.168.1.2.
->>> operator2.remote_operators.append(RemoteOperator('192.168.1.2'))
+>>> operator2.remote_operators.append(a.RemoteOperator(b'192.168.1.2'))
 
 >>> # Now, we'll make some 'examples' of data that our AdderComponent should be able to handle.
 
@@ -66,7 +66,7 @@ $ python3
 
 >>> suggestion = operator2.search(1, examples, 2)
 >>> print suggestion.operations
-['192.168.1.2', 1600, 0, 0, 0]
+[(b'192.168.1.2', 1600, 0, 0, 0)]
 
 >>> # It knows that the AdderComponent is probably a good fit for our examples! Let's try it:
 
