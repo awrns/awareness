@@ -102,21 +102,23 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         return i_data.Stream.from_count_datums(pres[1], datums)
 
     def send(self, connection, unit_type, requested_type, pres, datums):
-        logging.getLogger('awareness').info('Sending type '+str(unit_type)+' requesting '+str(requested_type)+' to '+str(connection.getpeername()[0]))
-
-        unit_pre_struct = self.unit_pre_structs[unit_type]
-        unit_datum_struct = self.unit_datum_structs[unit_type]
-
-        tran_datums = b''
-        tran_pres = unit_pre_struct.pack(*pres)
-
-        for datum in datums:
-            tran_datums += unit_datum_struct.pack(*datum)
-
-        tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
+        logging.getLogger('awareness').debug('Sending type '+str(unit_type)+' requesting '+str(requested_type)+' to '+str(connection.getpeername()[0]))
 
         try:
+
+            unit_pre_struct = self.unit_pre_structs[unit_type]
+            unit_datum_struct = self.unit_datum_structs[unit_type]
+
+            tran_datums = b''
+            tran_pres = unit_pre_struct.pack(*pres)
+
+            for datum in datums:
+                tran_datums += unit_datum_struct.pack(*datum)
+
+            tran_header = self.pdu_header_struct.pack(self.VERSION_BYTE, unit_type, requested_type, len(tran_datums)+len(tran_pres))
+
             connection.sendall(tran_header + tran_pres + tran_datums)
+
         except Exception as e:
             raise exception.ConnectionException(e)
 
@@ -174,7 +176,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
             raise exception.DataError("Received preambles and/or datums were unparseable in context")
 
-        logging.getLogger('awareness').info('Received type '+str(unit_type)+' requesting '+str(requested_type)+' from '+str(connection.getpeername()[0]))
+        logging.getLogger('awareness').debug('Received type '+str(unit_type)+' requesting '+str(requested_type)+' from '+str(connection.getpeername()[0]))
         return unit_type, requested_type, pres, datums
 
     def provide(self, listener, operator):
