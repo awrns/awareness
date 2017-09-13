@@ -124,7 +124,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     def receive(self, connection, valid):
         try:
             recv_header = b''
-            while len(recv_header) < self.pdu_header_struct.size: recv_header += connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction prevents overfilling
+            while len(recv_header) < self.pdu_header_struct.size:
+                res = connection.recv(self.pdu_header_struct.size - len(recv_header))  # This subtraction prevents overfilling
+                if len(res) != 0:
+                    recv_header += res
+                else:
+                    raise Exception("Connection closed by client")
             
             try: 
                 version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
@@ -133,7 +138,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 raise exception.UnitError("Received PDU header was unparseable")
 
             recv_data = b''
-            while len(recv_data) < data_len: recv_data += connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
+            while len(recv_data) < data_len: 
+                res = connection.recv(data_len - len(recv_data))  # Same 'goal-subtraction' routine
+                if len(res) != 0:
+                    recv_data += res
+                else:
+                    raise Exception("Connection closed by client")
 
         except Exception as e:
             raise exception.ConnectionException(e)
@@ -214,6 +224,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, finished), datums)
 
                 except (exception.ProtocolException, exception.ConnectionException) as e:
+                    logging.getLogger('awareness').info('Closing connection with' + str(connection.getpeername()[0]))
                     connection.shutdown(2) # socket.SHUT_RDWR
                     connection.close()
                     return
