@@ -65,14 +65,17 @@ $ python3
 >>> # (The result should be our AdderComponent on 192.168.1.2.)
 
 >>> suggestion = operator2.search(1, examples, 2)
->>> print suggestion.operations
+>>> print(suggestion.operations)
 [(b'192.168.1.2', 1600, 0, 0, 0)]
 
 >>> # It knows that the AdderComponent is probably a good fit for our examples! Let's try it:
 
 >>> result = suggestion.run(a.Stream([example1, example2, example3]))
->>> print result.items
-[[4] [4] [3]]
+>>> result = result.extract(0, 1) # Restrict the result to just one output for readability
+>>> print(result.items)
+[[4]
+ [4]
+ [3]]
 
 >>> # That's very cool. Imagine how easy it might be to find solutions to computational problems
 >>> # if all software was in the form of Components!
