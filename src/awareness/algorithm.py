@@ -232,7 +232,7 @@ class DefaultAlgorithm(Algorithm):
 
 
             if lowest_component is None:
-                return i_data.Assembly([]), float('inf')
+                return float('inf'), i_data.Assembly([])
 
             # Analogous to the offset processing in the above loop - update current_stream by first
             # extracting the section of it that has proved to be the best by the above loop
