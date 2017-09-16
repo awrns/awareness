@@ -194,7 +194,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unit_type == self.PROCESS_TASK_STOP: monitor.stop_process_task(pres[0])
 
                     elif unit_type == self.SEARCH_TASK_START:
-                        reply_call = lambda finished, assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], finished), assembly.to_datums())
+                        reply_call = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], False), assembly.to_datums())
                         callback = monitor.add_search_task(pres[0], reply_call)
                         search_args = (pres[5], i_data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums), pres[4])
                         search_kwargs = {'progress_callback':callback}
@@ -202,7 +202,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         operator.backend.threading_async(operator.search, search_args, search_kwargs, name='search-' + str(connection.getpeername()[0]) + '-' + str(pres[0]), callback=term_callback)
                     
                     elif unit_type == self.PROCESS_TASK_START:
-                        reply_call = lambda finished, stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, finished), stream.to_datums())
+                        reply_call = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, False), stream.to_datums())
                         callback = monitor.add_process_task(pres[0], reply_call)
                         process_args = (pres[2], i_data.Stream.from_count_datums(pres[1], datums))
                         process_kwargs = {'progress_callback':callback}
