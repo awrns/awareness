@@ -102,7 +102,8 @@ class Stream:
     def from_count_datums(self, count, datums):
 
         arr = numpy.asarray(datums, dtype=numpy.uint8)
-        arr.shape = (count, arr.size // count)
+        if count != 0:
+            arr.shape = (count, arr.size // count)
         return Stream(arr)
 
 
