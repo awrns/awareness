@@ -131,7 +131,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 if len(res) != 0:
                     recv_header += res
                 else:
-                    raise Exception("Connection closed by client")
+                    raise Exception("Connection closed by peer")
             
             try: 
                 version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
@@ -145,7 +145,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 if len(res) != 0:
                     recv_data += res
                 else:
-                    raise Exception("Connection closed by client")
+                    raise Exception("Connection closed by peer")
 
         except Exception as e:
             raise exception.ConnectionException(e)
