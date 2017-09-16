@@ -239,7 +239,7 @@ class DefaultAlgorithm(Algorithm):
             # and processing it by the LocalComponent that has been the most promising.
             # Finally, inject its results at the best known ouput offset over the same current data stream.
 
-            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_out_offset + lowest_component.inputs))
+            res = lowest_component.run(current_stream.extract(lowest_in_offset, lowest_in_offset + lowest_component.inputs))
             current_stream.inject(res, lowest_out_offset, lowest_out_offset + lowest_component.outputs)
 
             # Add information about this new component to the Assembly we're creating.
