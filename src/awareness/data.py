@@ -84,8 +84,12 @@ class Stream:
 
         # Mean bitwise error
 
-        arr = numpy.bitwise_xor(stream1.items, stream2.items)
-        arr = numpy.unpackbits(arr)
+        #arr = numpy.bitwise_xor(stream1.items, stream2.items)
+        #arr = numpy.unpackbits(arr)
+        #mean = numpy.mean(arr)
+
+        arr = numpy.subtract(stream1.items.astype(numpy.float32), stream2.items.astype(numpy.float32))
+        arr = numpy.absolute(arr)
         mean = numpy.mean(arr)
 
         return mean
