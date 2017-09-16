@@ -74,9 +74,12 @@ class Stream:
 
 
     @classmethod
-    def from_bytes(self, bytes):
+    def from_bytes(self, items):
 
-        return Stream(bytes)
+        out = []
+        for item in items:
+            out.append(numpy.fromstring(item, dtype=numpy.uint8))
+        return Stream(out)
 
 
     @classmethod
