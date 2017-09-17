@@ -217,7 +217,7 @@ class RemoteOperator(Operator):
 
     def process(self, index, input_stream, progress_callback=None):
 
-        return self.components[index].run(self.connection, input_stream, progress_callback=progress_callback)
+        return self.protocol.process(self.connection, index, input_stream, progress_callback=progress_callback)
 
 
     def capabilities(self):

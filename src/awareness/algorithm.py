@@ -79,10 +79,10 @@ class DefaultAlgorithm(Algorithm):
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         max_param_len = max(input_set.outputs, input_set.inputs)
 
-        current_training_stream = i_data.Stream.blankFromCountParameters(training_set.output_stream.count, max_param_len)
+        current_training_stream = i_data.Stream.from_blank(training_set.output_stream.count, max_param_len)
         current_training_stream.inject(training_set.input_stream, 0, training_set.input_stream.parameters)
 
-        current_test_stream = i_data.Stream.blankFromCountParameters(test_set.output_stream.count, max_param_len)
+        current_test_stream = i_data.Stream.from_blank(test_set.output_stream.count, max_param_len)
         current_test_stream.inject(test_set.input_stream, 0, test_set.input_stream.parameters)
 
 
@@ -178,7 +178,7 @@ class DefaultAlgorithm(Algorithm):
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         max_param_len = max(input_set.outputs, input_set.inputs)
-        current_stream = i_data.Stream.blankFromCountParameters(input_set.output_stream.count, max_param_len)
+        current_stream = i_data.Stream.from_blank(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, input_set.inputs)
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...

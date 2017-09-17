@@ -120,7 +120,7 @@ class Stream:
 
 
     @classmethod
-    def blankFromCountParameters(self, count, parameters):
+    def from_blank(self, count, parameters):
         
         arr = numpy.zeros((count, parameters), dtype=numpy.uint8)
         return Stream(arr)
