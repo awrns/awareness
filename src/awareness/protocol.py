@@ -72,6 +72,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             if (_unit_type == self.SEARCH_TASK_STATUS and _pres[0] == magic):
                 unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
 
+                if pres[1] is True: continue # Check again now that we've verified we're recieving updates intended for us
+
                 res = progress_callback(i_data.Assembly.from_datums(datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
@@ -84,6 +86,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
         self.last_process_magic = self.last_process_magic + 1 if self.last_process_magic < self.MAGIC_MAX_VALUE else 0
         self.send(connection, self.PROCESS_TASK_START, self.NOTHING, (magic, input_stream.count, index), input_stream.to_datums())
         pres = (-1, -1, -1)
+
         while pres[2] is not True:
             res = self.receive(connection, self.valid_provider_to_accessor)
             if res is None:
@@ -93,6 +96,8 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
             if (_unit_type == self.PROCESS_TASK_STATUS and _pres[0] == magic):
                 unit_type, requested_type, pres, datums = _unit_type, _requested_type, _pres, _datums
+
+                if pres[2] is True: continue # Check again now that we've verified we're recieving updates intended for us
 
                 res = progress_callback(i_data.Stream.from_count_datums(pres[1], datums)) if progress_callback else True
                 if not res:
