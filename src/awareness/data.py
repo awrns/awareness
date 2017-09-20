@@ -21,6 +21,7 @@
 
 from . import operator as i_operator
 import numpy
+import copy
 
 
 import warnings
@@ -191,7 +192,7 @@ class Assembly:
         return Assembly(operations)
 
 
-    def run(self, input_stream, progress_callback=None):
+    def runOld(self, input_stream, progress_callback=None):
 
 
         stream_state = input_stream  # Pump pipeline on first iteration
@@ -216,10 +217,10 @@ class Assembly:
         return stream_state
 
 
-    def runV2(self, input_stream, progress_callback=None):
+    def run(self, input_stream, progress_callback=None):
 
-
-        stream_state = input_stream
+        if not progress_callback:
+            progress_callback = lambda *args,**kwargs:True
 
         finished = [False,] * len(self.operations)
 
@@ -233,6 +234,8 @@ class Assembly:
 
         def run_from_idx(idx, stream):
             operation = self.operations[idx]
+            operator = operators[idx]
+
             data_in_start_idx = operation[3]
             data_in_end_idx = operation[3] + operator.components[operation[2]].inputs
 
@@ -249,6 +252,7 @@ class Assembly:
                     progress_callback(int_stream)
                 else:
                     run_from_idx(idx + 1, int_stream)
+                return True
 
             result = operator.process(operation[2], data_section, progress_callback=intermediate_result)
 
@@ -259,9 +263,12 @@ class Assembly:
             if idx + 1 == len(self.operations) and False not in finished:
                 # We done!
                 for operator in operators:
-                    operator.__exit__()
+                    operator.__exit__(None, None, None) # type, value traceback garbage
                 return stream
             elif idx + 1 == len(self.operations):
                 progress_callback(stream)
             else:
                 run_from_idx(idx + 1, stream)
+
+
+        return run_from_idx(0, input_stream)
