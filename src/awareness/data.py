@@ -240,6 +240,13 @@ class Assembly:
             operators.append(newop)
 
 
+        inputs = operators[0].components[self.operations[0][2]].inputs
+        outputs = operators[-1].components[self.operations[-1][2]].outputs
+        max_param_len = max(inputs, outputs)
+        input_stream_new = Stream.from_blank(input_stream.count, max_param_len)
+        input_stream_new.inject(input_stream, 0, 0+input_stream.parameters)
+
+
         def run_from_idx(idx, stream):
             operation = self.operations[idx]
             operator = operators[idx]
@@ -279,4 +286,4 @@ class Assembly:
                 return run_from_idx(idx + 1, stream)
 
 
-        return run_from_idx(0, input_stream)
+        return run_from_idx(0, input_stream_new)
