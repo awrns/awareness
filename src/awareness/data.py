@@ -276,7 +276,7 @@ class Assembly:
             elif idx + 1 == len(self.operations):
                 progress_callback(stream)
             else:
-                run_from_idx(idx + 1, stream)
+                return run_from_idx(idx + 1, stream)
 
 
         return run_from_idx(0, input_stream)
