@@ -243,6 +243,7 @@ class Assembly:
             max_param_len = max(max_param_len, newop.components[operation[2]].outputs)
             operators.append(newop)
 
+        max_param_len = max(max_param_len, input_stream.parameters)
 
         input_stream_new = Stream.from_blank(input_stream.count, max_param_len)
         input_stream_new.inject(input_stream, 0, 0+input_stream.parameters)
