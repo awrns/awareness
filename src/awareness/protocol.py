@@ -21,9 +21,9 @@
 from abc import ABCMeta, abstractmethod
 import socket
 import logging
-from . import exception
-from . import misc
-from . import data as i_data
+import awareness.exception
+import awareness.misc
+import awareness.data
 
 class Protocol(metaclass=ABCMeta):
     @abstractmethod
@@ -42,7 +42,7 @@ class Protocol(metaclass=ABCMeta):
     def provide(self, listener, operator):
         raise NotImplementedError()
 
-class Protocol0(Protocol, misc.Protocol0Constants):
+class Protocol0(Protocol, awareness.misc.Protocol0Constants):
     last_search_magic = 0
     last_process_magic = 0
 
@@ -74,12 +74,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 if pres[1] is True: continue # Check again now that we've verified we're recieving updates intended for us
 
-                res = progress_callback(i_data.Assembly.from_datums(datums)) if progress_callback else True
+                res = progress_callback(awareness.data.Assembly.from_datums(datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.SEARCH_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Assembly.from_datums(datums)
+                    return awareness.data.Assembly.from_datums(datums)
 
-        return i_data.Assembly.from_datums(datums)
+        return awareness.data.Assembly.from_datums(datums)
 
     def process(self, connection, index, input_stream, progress_callback=None):
         magic = self.last_process_magic
@@ -99,12 +99,12 @@ class Protocol0(Protocol, misc.Protocol0Constants):
 
                 if pres[2] is True: continue # Check again now that we've verified we're recieving updates intended for us
 
-                res = progress_callback(i_data.Stream.from_count_datums(pres[1], datums)) if progress_callback else True
+                res = progress_callback(awareness.data.Stream.from_count_datums(pres[1], datums)) if progress_callback else True
                 if not res:
                     self.send(connection, self.PROCESS_TASK_STOP, self.NOTHING, (), [])
-                    return i_data.Stream.from_count_datums(pres[1], datums)
+                    return awareness.data.Stream.from_count_datums(pres[1], datums)
 
-        return i_data.Stream.from_count_datums(pres[1], datums)
+        return awareness.data.Stream.from_count_datums(pres[1], datums)
 
     def send(self, connection, unit_type, requested_type, pres, datums):
         logging.getLogger('awareness').debug('Sending type '+str(unit_type)+' requesting '+str(requested_type)+' to '+str(connection.getpeername()[0]))
@@ -125,7 +125,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
             connection.sendall(tran_header + tran_pres + tran_datums)
 
         except Exception as e:
-            raise exception.ConnectionException(e)
+            raise awareness.exception.ConnectionException(e)
 
 
     def receive(self, connection, valid):
@@ -142,7 +142,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                 version, unit_type, requested_type, data_len = self.pdu_header_struct.unpack(recv_header)
             except:
                 self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
-                raise exception.UnitError("Received PDU header was unparseable")
+                raise awareness.exception.UnitError("Received PDU header was unparseable")
 
             recv_data = b''
             while len(recv_data) < data_len: 
@@ -153,18 +153,18 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     raise Exception("Connection closed by peer")
 
         except Exception as e:
-            raise exception.ConnectionException(e)
+            raise awareness.exception.ConnectionException(e)
 
         if version != self.VERSION_BYTE:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
-            raise exception.UnitError("Received version did not match the known version")
+            raise awareness.exception.UnitError("Received version did not match the known version")
         if unit_type == self.UNIT_ERROR:
-            raise exception.UnitError("Got UnitError")
+            raise awareness.exception.UnitError("Got UnitError")
         if unit_type == self.DATA_ERROR:
-            raise exception.DataError("Got DataError")
+            raise awareness.exception.DataError("Got DataError")
         if unit_type not in valid or requested_type not in valid[unit_type]:
             self.send(connection, self.UNIT_ERROR, self.NOTHING, (), [])
-            raise exception.UnitError("Received unit type or requested type was not valid in context")
+            raise awareness.exception.UnitError("Received unit type or requested type was not valid in context")
 
         unit_pre_struct = self.unit_pre_structs[unit_type]
         unit_datum_struct = self.unit_datum_structs[unit_type]
@@ -179,7 +179,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     datums.append(unit_datum_struct.unpack(data_roi))
         except:
             self.send(connection, self.DATA_ERROR, self.NOTHING, (), [])
-            raise exception.DataError("Received preambles and/or datums were unparseable in context")
+            raise awareness.exception.DataError("Received preambles and/or datums were unparseable in context")
 
         logging.getLogger('awareness').debug('Received type '+str(unit_type)+' requesting '+str(requested_type)+' from '+str(connection.getpeername()[0]))
         return unit_type, requested_type, pres, datums
@@ -187,7 +187,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
     def provide(self, listener, operator):
 
         def handle(connection, operator):
-            monitor = misc.ProviderTaskMonitor()
+            monitor = awareness.misc.ProviderTaskMonitor()
             while True:
                 try:
                     res = self.receive(connection, self.valid_accessor_to_provider)
@@ -201,7 +201,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unit_type == self.SEARCH_TASK_START:
                         reply_call = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], False), assembly.to_datums())
                         callback = monitor.add_search_task(pres[0], reply_call)
-                        search_args = (pres[5], i_data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums), pres[4])
+                        search_args = (pres[5], awareness.data.Set.from_inputs_outputs_count_datums(pres[1], pres[2], pres[3], datums), pres[4])
                         search_kwargs = {'progress_callback':callback}
                         term_callback = lambda assembly: self.send(connection, self.SEARCH_TASK_STATUS, self.NOTHING, (pres[0], True), assembly.to_datums())
                         operator.backend.threading_async(operator.search, search_args, search_kwargs, name='search-' + str(connection.getpeername()[0]) + '-' + str(pres[0]), callback=term_callback)
@@ -209,7 +209,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                     elif unit_type == self.PROCESS_TASK_START:
                         reply_call = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, False), stream.to_datums())
                         callback = monitor.add_process_task(pres[0], reply_call)
-                        process_args = (pres[2], i_data.Stream.from_count_datums(pres[1], datums))
+                        process_args = (pres[2], awareness.data.Stream.from_count_datums(pres[1], datums))
                         process_kwargs = {'progress_callback':callback}
                         term_callback = lambda stream: self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], stream.count, True), stream.to_datums())
                         operator.backend.threading_async(operator.process, process_args, process_kwargs, name='process-' + str(connection.getpeername()[0]) + '-' + str(pres[0]), callback=term_callback)
@@ -230,7 +230,7 @@ class Protocol0(Protocol, misc.Protocol0Constants):
                         finished = res[0] if res else False
                         self.send(connection, self.PROCESS_TASK_STATUS, self.NOTHING, (pres[0], count, finished), datums)
 
-                except (exception.ProtocolException, exception.ConnectionException) as e:
+                except (awareness.exception.ProtocolException, awareness.exception.ConnectionException) as e:
                     logging.getLogger('awareness').info('Closing connection with' + str(connection.getpeername()[0]))
                     connection.shutdown(2) # socket.SHUT_RDWR
                     connection.close()

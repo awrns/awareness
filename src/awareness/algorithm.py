@@ -21,8 +21,8 @@
 from abc import ABCMeta, abstractmethod
 import copy
 import numpy
-from . import data as i_data
-from . import operator as i_operator
+import awareness.data
+import awareness.operator
 
 
 
@@ -55,14 +55,14 @@ class DefaultAlgorithm(Algorithm):
                progress_callback=None):
 
         
-        training_set = i_data.Set(
-            i_data.Stream(input_set.input_stream.items[:split_idx]),
-            i_data.Stream(input_set.output_stream.items[:split_idx])
+        training_set = awareness.data.Set(
+            awareness.data.Stream(input_set.input_stream.items[:split_idx]),
+            awareness.data.Stream(input_set.output_stream.items[:split_idx])
             )
 
-        test_set = i_data.Set(
-            i_data.Stream(input_set.input_stream.items[split_idx:]),
-            i_data.Stream(input_set.output_stream.items[split_idx:])
+        test_set = awareness.data.Set(
+            awareness.data.Stream(input_set.input_stream.items[split_idx:]),
+            awareness.data.Stream(input_set.output_stream.items[split_idx:])
             )
 
 
@@ -73,16 +73,16 @@ class DefaultAlgorithm(Algorithm):
         first = True
 
         # Overall assembly state tracking.
-        last_assembly = i_data.Assembly([])
-        current_assembly = i_data.Assembly([])
+        last_assembly = awareness.data.Assembly([])
+        current_assembly = awareness.data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         max_param_len = max(input_set.outputs, input_set.inputs)
 
-        current_training_stream = i_data.Stream.from_blank(training_set.output_stream.count, max_param_len)
+        current_training_stream = awareness.data.Stream.from_blank(training_set.output_stream.count, max_param_len)
         current_training_stream.inject(training_set.input_stream, 0, training_set.input_stream.parameters)
 
-        current_test_stream = i_data.Stream.from_blank(test_set.output_stream.count, max_param_len)
+        current_test_stream = awareness.data.Stream.from_blank(test_set.output_stream.count, max_param_len)
         current_test_stream.inject(test_set.input_stream, 0, test_set.input_stream.parameters)
 
 
@@ -96,9 +96,9 @@ class DefaultAlgorithm(Algorithm):
                 for operator in remote_operators:
                     
 
-                    glued_set = i_data.Set(
-                        i_data.Stream(current_training_stream.items.tolist() + current_test_stream.items.tolist()),
-                        i_data.Stream(training_set.output_stream.items.tolist() + test_set.output_stream.items.tolist())
+                    glued_set = awareness.data.Set(
+                        awareness.data.Stream(current_training_stream.items.tolist() + current_test_stream.items.tolist()),
+                        awareness.data.Stream(training_set.output_stream.items.tolist() + test_set.output_stream.items.tolist())
                     )
 
                     glue_index = current_training_stream.count
@@ -108,17 +108,17 @@ class DefaultAlgorithm(Algorithm):
 
                     full_outs = res.run(current_test_stream)
 
-                    this_cost = i_data.Stream.cost(full_outs.extract(0, test_set.outputs), test_set.output_stream)
+                    this_cost = awareness.data.Stream.cost(full_outs.extract(0, test_set.outputs), test_set.output_stream)
 
                     options.append((this_cost, res))
 
 
             # Best results provided by any RemoteOperator so far.
             lowest_cost = float('inf')
-            lowest_assembly = i_data.Assembly([])
+            lowest_assembly = awareness.data.Assembly([])
 
             # Prime with the results of our own local capabilities.
-            internal_cost, internal_assembly = self.search_internal(local_operator, i_data.Set(current_training_stream, training_set.output_stream))
+            internal_cost, internal_assembly = self.search_internal(local_operator, awareness.data.Set(current_training_stream, training_set.output_stream))
             options.append((internal_cost, internal_assembly))
 
             for option in options:
@@ -149,7 +149,7 @@ class DefaultAlgorithm(Algorithm):
                     break
 
             if not found:
-                new_remoteoperator = i_operator.RemoteOperator(operation[0], port = operation[1])
+                new_remoteoperator = awareness.operator.RemoteOperator(operation[0], port = operation[1])
                 local_operator.remote_operators.append(new_remoteoperator)
 
 
@@ -173,12 +173,12 @@ class DefaultAlgorithm(Algorithm):
         first = True
 
         #Overall assembly state tracking.
-        last_assembly = i_data.Assembly([])
-        current_assembly = i_data.Assembly([])
+        last_assembly = awareness.data.Assembly([])
+        current_assembly = awareness.data.Assembly([])
 
         # Current data status, used in order to prevent re-run()-ning the current assembly each iteration
         max_param_len = max(input_set.outputs, input_set.inputs)
-        current_stream = i_data.Stream.from_blank(input_set.output_stream.count, max_param_len)
+        current_stream = awareness.data.Stream.from_blank(input_set.output_stream.count, max_param_len)
         current_stream.inject(input_set.input_stream, 0, input_set.inputs)
 
         while cost < last_cost or first: # TODO use a more sophisticated stopping mechanism...
@@ -210,7 +210,7 @@ class DefaultAlgorithm(Algorithm):
                         full_outs.inject(res, test_out_offset, test_out_offset + component.outputs)
 
                         # Evaluate the results.
-                        this_cost = i_data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
+                        this_cost = awareness.data.Stream.cost(full_outs.extract(0, input_set.outputs), input_set.output_stream)
 
 
                         options.append((this_cost, component, test_in_offset, test_out_offset))
@@ -232,7 +232,7 @@ class DefaultAlgorithm(Algorithm):
 
 
             if lowest_component is None:
-                return float('inf'), i_data.Assembly([])
+                return float('inf'), awareness.data.Assembly([])
 
             # Analogous to the offset processing in the above loop - update current_stream by first
             # extracting the section of it that has proved to be the best by the above loop

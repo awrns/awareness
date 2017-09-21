@@ -19,7 +19,7 @@
 
 
 from abc import ABCMeta, abstractmethod
-from . import exception
+import awareness.exception
 import threading
 import logging
 import socket
@@ -76,7 +76,7 @@ class NativeBackend(Backend):
             sock = socket.create_connection((host, port))
         #sock = ssl.wrap_socket(sock)
         except socket.error as e:
-            raise exception.ConnectionException(e)
+            raise awareness.exception.ConnectionException(e)
 
         return sock
 
@@ -92,7 +92,7 @@ class NativeBackend(Backend):
             listener.listen(backlog)
             
         except socket.error as e:
-            raise exception.ConnectionException(e)
+            raise awareness.exception.ConnectionException(e)
 
         return listener
 

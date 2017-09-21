@@ -80,6 +80,6 @@ from awareness.operator import RemoteOperator
 from awareness.component import LocalComponent
 from awareness.component import RemoteComponent
 
-import awareness.data.Stream as Stream
-import awareness.data.Set as Set
-import awareness.data.Assembly as Assembly
+from awareness.data import Stream
+from awareness.data import Set
+from awareness.data import Assembly

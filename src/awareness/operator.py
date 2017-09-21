@@ -20,11 +20,11 @@
 
 from abc import ABCMeta, abstractproperty, abstractmethod
 import json
-from . import component as i_component
-from . import algorithm as i_algorithm
-from . import backend as i_backend
-from . import protocol as i_protocol
-from . import factory as i_factory
+import awareness.component
+import awareness.algorithm
+import awareness.backend
+import awareness.protocol
+import awareness.factory
 
 
 class Operator(metaclass=ABCMeta):
@@ -96,10 +96,10 @@ class LocalOperator(Operator):
         self.host = host
         self.port = port
         self.components = components
-        self.backend = backend() if backend else i_backend.NativeBackend()  # If not passed in, use default
-        self.protocol = protocol() if protocol else i_protocol.Protocol0()
-        self.algorithm = algorithm() if algorithm else i_algorithm.DefaultAlgorithm()
-        #self.factory = factory() if factory else i_factory.DefaultFactory()
+        self.backend = backend() if backend else awareness.backend.NativeBackend()  # If not passed in, use default
+        self.protocol = protocol() if protocol else awareness.protocol.Protocol0()
+        self.algorithm = algorithm() if algorithm else awareness.algorithm.DefaultAlgorithm()
+        #self.factory = factory() if factory else awareness.factory.DefaultFactory()
         self.remote_operators = remote_operators
 
         # self.backend.setupLogger()
@@ -161,8 +161,8 @@ class RemoteOperator(Operator):
         self.host = host
         self.port = port
         self.components = components
-        self.backend = backend() if backend else i_backend.NativeBackend()  # Set to default if None.
-        self.protocol = protocol() if protocol else i_protocol.Protocol0()
+        self.backend = backend() if backend else awareness.backend.NativeBackend()  # Set to default if None.
+        self.protocol = protocol() if protocol else awareness.protocol.Protocol0()
 
 
         # Do a quick routine to get the Component details.
@@ -205,7 +205,7 @@ class RemoteOperator(Operator):
         capabilities = self.protocol.capabilities(self.connection)
         for i in range(len(capabilities)):
             component_profile = capabilities[i]
-            new_component = i_component.RemoteComponent(self, i, *component_profile)  # unpack inputs and outputs from 2-tuple
+            new_component = awareness.component.RemoteComponent(self, i, *component_profile)  # unpack inputs and outputs from 2-tuple
 
             self.components.append(new_component)
 

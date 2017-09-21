@@ -19,7 +19,7 @@
 
 
 
-from . import operator as i_operator
+import awareness.operator
 import numpy
 import copy
 
@@ -207,7 +207,7 @@ class Assembly:
 
         for operation in self.operations:
 
-            with i_operator.RemoteOperator(operation[0], port=operation[1]) as operator:
+            with awareness.operator.RemoteOperator(operation[0], port=operation[1]) as operator:
                 operator.retrieve_components()
 
                 data_in_start_idx = operation[3]
@@ -234,7 +234,7 @@ class Assembly:
 
         operators = []
         for operation in self.operations:
-            newop = i_operator.RemoteOperator(operation[0], port=operation[1])
+            newop = awareness.operator.RemoteOperator(operation[0], port=operation[1])
             newop.__enter__()
             newop.retrieve_components()
             operators.append(newop)
