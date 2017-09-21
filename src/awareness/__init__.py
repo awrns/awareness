@@ -66,20 +66,20 @@
 #
 
 
-from . import component
-from . import algorithm
-from . import backend
-from . import data
-from . import operator
-from . import protocol
-from . import misc
-from . import factory
+import awareness.component
+import awareness.algorithm
+import awareness.backend
+import awareness.data
+import awareness.operator
+import awareness.protocol
+import awareness.misc
+import awareness.factory
 
-from .operator import LocalOperator as LocalOperator
-from .operator import RemoteOperator as RemoteOperator
-from .component import LocalComponent as LocalComponent
-from .component import RemoteComponent as RemoteComponent
+from awareness.operator import LocalOperator
+from awareness.operator import RemoteOperator
+from awareness.component import LocalComponent
+from awareness.component import RemoteComponent
 
-from .data import Stream as Stream
-from .data import Set as Set
-from .data import Assembly as Assembly
+import awareness.data.Stream as Stream
+import awareness.data.Set as Set
+import awareness.data.Assembly as Assembly
