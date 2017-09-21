@@ -232,17 +232,18 @@ class Assembly:
 
         finished = [False,] * len(self.operations)
 
+        max_param_len = -1
+
         operators = []
         for operation in self.operations:
             newop = awareness.operator.RemoteOperator(operation[0], port=operation[1])
             newop.__enter__()
             newop.retrieve_components()
+            max_param_len = max(max_param_len, newop.components[operation[2]].inputs)
+            max_param_len = max(max_param_len, newop.components[operation[2]].outputs)
             operators.append(newop)
 
 
-        inputs = operators[0].components[self.operations[0][2]].inputs
-        outputs = operators[-1].components[self.operations[-1][2]].outputs
-        max_param_len = max(inputs, outputs)
         input_stream_new = Stream.from_blank(input_stream.count, max_param_len)
         input_stream_new.inject(input_stream, 0, 0+input_stream.parameters)
 
